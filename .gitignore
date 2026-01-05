@@ -1,0 +1,9 @@
+# OS files
+.DS_Store
+
+# Logs
+logs/
+
+# BKB Explorer publication control
+# To disable publication: uncomment the line below
+# bkb-explorer/

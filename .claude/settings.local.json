@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./ConceptSpeak-Text/sync-spec.sh)",
+      "Bash(gh api:*)",
+      "Bash(rsync:*)",
+      "Bash(./run.sh:*)",
+      "Bash(./publish-bkb.sh:*)"
+    ]
+  }
+}

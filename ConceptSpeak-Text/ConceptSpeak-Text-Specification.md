@@ -1,8 +1,9 @@
 # ConceptSpeak Text Language Specification
 
-**Version:** 1.0
-**Date:** 2025-12-20
+**Version:** 1.5
+**Date:** 2025-12-25
 **Status:** Draft
+**Related:** ADR-031, ADR-032, ADR-034, ADR-036, ADR-037, ADR-038, ADR-010 Amendment 2, ADR-045, ADR-047
 
 ---
 
@@ -19,6 +20,12 @@ This specification covers:
 - Syntactic rules (grammar for all constructs)
 - Semantic rules (meaning, equivalences, constraints)
 - Validation requirements
+- **Domain support** (v1.1) - domain directives and cross-domain references
+- **Bracket equivalence** (v1.1) - `Concept` ≡ `[Concept]`
+- **Metadata annotations** (v1.3) - `@` annotations for provenance, FIBO mapping, quality
+- **Property Types** (v1.3) - separate section for identifiers and value types
+- **Taxonomy pattern** (v1.3) - hierarchical classification concepts
+- **Dotted concept directive** (v1.5) - `#~` prefix for context/dotted concepts
 
 ### 1.3 Relationship to Ronald G. Ross
 
@@ -114,6 +121,290 @@ Income =< kind of Income >= [
     Allocated income,
     Core income
 ]
+```
+
+### 2.6 Domain Directive (v1.1, mandatory v1.4)
+
+Domain directives declare the domain context for subsequent concepts.
+
+**Syntax:**
+```
+#! {domain-path}
+```
+
+**Rules:**
+- MUST start with `#!` at beginning of line (shebang-style)
+- MUST be followed by whitespace and domain path
+- Domain path uses colon separator per ADR-010: `RBCZ:MIB:Investment`
+- All concepts after directive belong to this domain until next `#!`
+- Multiple `#!` directives allowed in single file
+- **MANDATORY (v1.4, ADR-045):** Files without `#!` directive produce E008 error
+
+**Example:**
+```
+#! RBCZ:MIB:Investment
+
+Order: A customer request to buy or sell
+Payment -< settles >- Order
+
+#! RBCZ:MIB:Payments
+
+Payment: A financial transaction
+```
+
+**Note:** `#!` is distinct from `#` comments. Comments start with `#` followed by space or text; directives start with `#!`.
+
+**Context tracking (v1.2):**
+
+Each concept inherits the domain from the most recent `#!` directive. Parsers MUST track `context_domain` for each concept:
+
+```
+#! RBCZ:MIB:Investment
+Order: A request        # context_domain = "RBCZ:MIB:Investment"
+Payment                 # context_domain = "RBCZ:MIB:Investment"
+
+#! RBCZ:MIB:Payments
+Payment: Transaction    # context_domain = "RBCZ:MIB:Payments"
+```
+
+If no `#!` directive precedes a concept, `context_domain` is `null`. This triggers warning W201.
+
+### 2.7 Bracket Equivalence (v1.1)
+
+Concepts MAY be enclosed in square brackets for visual emphasis.
+
+**Rule:** `Concept` ≡ `[Concept]` - semantically identical everywhere.
+
+**Examples:**
+```
+# All equivalent:
+Order -< is settled by >- Payment
+[Order] -< is settled by >- Payment
+[Order] -< is settled by >- [Payment]
+
+# Roles - also equivalent:
+Person -< Driver | drives >- Car
+Person -< [Driver] | drives >- [Car]
+
+# Objectification - also equivalent:
+Settlement: Order -< is settled by >- Payment
+[Settlement]: [Order] -< is settled by >- [Payment]
+```
+
+**Context determines function:**
+
+| Position | Function | Brackets |
+|----------|----------|----------|
+| Standalone | Concept | Optional |
+| After `-<` before `|` | Role | Optional |
+| Before `:` + verb | Objectification | Optional |
+| In `=< >= [...]` | List of children | Required (delimiters) |
+| After `-- prop` | Type | Required (delimiters) |
+
+**Rationale:** Honors Ronald G. Ross visual notation where concepts and roles appear in brackets in diagrams.
+
+### 2.8 Cross-Domain Reference (v1.1)
+
+Concepts from other domains use fully qualified paths.
+
+**Syntax:**
+```
+{domain-path}.{Concept}
+```
+
+**Rules:**
+- Domain path uses colon separator: `RBCZ:MIB:Payments`
+- Dot (`.`) separates domain from concept name
+- Only full paths allowed - no relative shortcuts
+- Qualification is addressing only, doesn't change semantics
+
+**Example:**
+```
+#! RBCZ:MIB:Investment
+
+# Reference to concept in another domain
+Order -< is settled by >- RBCZ:MIB:Payments.Payment
+
+# With brackets (equivalent)
+[Order] -< is settled by >- RBCZ:MIB:Payments.[Payment]
+```
+
+### 2.9 Dotted Concept Directive (v1.5, ADR-047)
+
+The dotted concept directive marks concepts and relationships as **context** - visual references to elements defined elsewhere. In Ross notation, these appear as dotted lines in diagrams.
+
+**Syntax:**
+```
+#~Concept
+#~Concept: definition
+#~ConceptA -< verb >- ConceptB
+#~Categorization =< label >= [Children]
+```
+
+**Rules:**
+- MUST start with `#~` at beginning of line or element
+- Whitespace after `#~` is optional: `#~Concept` ≡ `#~ Concept`
+- Can prefix any construct: concepts, categorizations, binary verbs, etc.
+- Marked elements are parsed normally but flagged as `is_dotted=true`
+- Context elements represent external references, not domain-owned concepts
+
+**Examples:**
+```
+#! RBCZ:MIB:Investment
+
+# Concepts
+Order
+Payment
+#~Position                    # context: defined in another domain
+#~Customer                    # context: external reference
+
+# Categorizations
+Order =< @ by state >= [Placed, Executed]
+#~Payment =< type >= [Card, Cash]    # context categorization
+
+# Binary Verb Concepts
+Order -< settles via >- Payment
+#~Position -< is sum of >- Transaction    # context relationship
+```
+
+**Inline Usage:**
+
+The `#~` prefix can also appear inline within constructs:
+
+```
+# Binary verb with context concept on one side
+Order -< belongs to >- #~Customer
+
+# Categorization with context children
+Order =< type >= [BuyOrder, #~SellOrder, MarketOrder]
+```
+
+**Distinction from Comments:**
+
+| Prefix | Meaning | Parsed? |
+|--------|---------|---------|
+| `#` (space/text) | Comment | No |
+| `#!` | Domain directive | Yes |
+| `#~` | Dotted/context | Yes |
+
+**Migration from v1.4:**
+
+Previously, context elements used comment prefix `# Concept`. This is now deprecated:
+
+```
+# OLD (v1.4 - deprecated)
+# Position
+# Context (dotted lines)
+# Position -< is sum of >- Transaction
+
+# NEW (v1.5)
+#~Position
+# Binary Verb Concepts
+#~Position -< is sum of >- Transaction
+```
+
+The `# Context (dotted lines)` section is no longer recognized. All context elements use `#~` prefix inline in their respective sections.
+
+### 2.10 Metadata Annotations (v1.3)
+
+Annotations attach metadata to concepts and properties. Based on ADR-031 Amendment 1.
+
+**Syntax:**
+```
+Concept: definition
+  @key: value
+  @another_key: another value
+  -- property [Type]
+    @property_annotation: value
+```
+
+**Rules:**
+- Annotations start with `@` followed by key, colon, and value
+- Annotations MUST be indented under the element they describe
+- Multiple annotations allowed per concept/property
+- Annotations are optional (backward compatible)
+- Annotation values extend to end of line
+
+**Annotation Categories:**
+
+#### 2.9.1 Provenance Annotations
+
+Track origin of concepts from source systems.
+
+| Annotation | Description | Example |
+|------------|-------------|---------|
+| `@source` | Source system identifier | `@source: EDI` |
+| `@source_entity` | Original entity name | `@source_entity: EDI_AUM` |
+| `@data_contract` | Source contract file | `@data_contract: edi-aum.yaml` |
+
+#### 2.9.2 FIBO Mapping Annotations
+
+Track FIBO ontology mappings per GOV-006.
+
+| Annotation | Description | Example |
+|------------|-------------|---------|
+| `@fibo` | FIBO URI | `@fibo: fibo-ind:AssetsUnderManagement` |
+| `@fibo_source` | Mapping origin | `@fibo_source: contract` / `llm` / `override` |
+| `@fibo_confidence` | Confidence level | `@fibo_confidence: VERIFIED` / `MAPPED` / `DRAFT` |
+
+#### 2.9.3 Quality Annotations
+
+Track definition quality per GOV-002.
+
+| Annotation | Description | Example |
+|------------|-------------|---------|
+| `@status` | Definition status | `@status: VERIFIED` / `DRAFT` |
+| `@warning` | Quality warning | `@warning: Definition incomplete` |
+| `@warning_rule` | Detection rule code | `@warning_rule: DQD-1` |
+
+#### 2.9.4 Type Annotations
+
+For Property Types (ADR-036) and type detection (GOV-010).
+
+| Annotation | Description | Example |
+|------------|-------------|---------|
+| `@type` | Type category | `@type: identifier` / `value` / `code` / `taxonomy` |
+| `@pattern` | Regex pattern | `@pattern: "[A-Z]{2}"` |
+| `@format` | Display format | `@format: ISO8601` |
+| `@type_source` | Detection method | `@type_source: contract` / `dictionary` / `heuristic` |
+| `@type_pattern` | Matched pattern | `@type_pattern: "*_eur"` |
+
+#### 2.9.5 Value Annotations
+
+For property-level metadata.
+
+| Annotation | Description | Example |
+|------------|-------------|---------|
+| `@currency` | Currency code | `@currency: EUR` |
+| `@unit` | Unit of measure | `@unit: percent` |
+
+#### 2.9.6 Taxonomy Annotations
+
+For hierarchical classifications (ADR-037).
+
+| Annotation | Description | Example |
+|------------|-------------|---------|
+| `@max_depth` | Maximum hierarchy depth | `@max_depth: 3` |
+
+**Complete Example:**
+```
+Assets Under Management: Total market value of assets managed on behalf of clients
+  @source: EDI
+  @source_entity: EDI_AUM
+  @fibo: fibo-ind:AssetsUnderManagement
+  @fibo_source: contract
+  @fibo_confidence: VERIFIED
+  @status: VERIFIED
+  -- date [Date]
+  -- amount eur [Monetary Amount]
+    @currency: EUR
+    @type_source: heuristic
+    @type_pattern: "*_eur"
+
+Calendar Day: ultimo of the month
+  @status: DRAFT
+  @warning: Definition appears to be business rule, not semantic definition
+  @warning_rule: DQD-3
 ```
 
 ---
@@ -334,6 +625,98 @@ Order -- customer [Customer]
 - Property names SHOULD start with lowercase (they are attributes, not concepts)
 - Multiple properties of same type can be grouped in `[]`
 
+### 3.10 Property Type (v1.3)
+
+Declares a reusable type for properties, distinct from concepts. Based on ADR-036.
+
+**Syntax:**
+```
+# Property Types
+TypeName: definition
+  @type: category
+  @pattern: regex
+```
+
+**Examples:**
+```
+# Property Types
+Country Code: ISO 3166-1 alpha-2 country code
+  @type: identifier
+  @pattern: "[A-Z]{2}"
+
+ISIN Code: International Securities Identification Number (ISO 6166)
+  @type: identifier
+  @pattern: "[A-Z]{2}[A-Z0-9]{10}"
+
+Monetary Amount: A quantity of money in a specific currency
+  @type: value
+  @fibo: fibo-fnd-acc-cur:MonetaryAmount
+```
+
+**Rules:**
+- Property Types MUST appear in `# Property Types` section
+- `@type` annotation is REQUIRED (values: `identifier`, `value`, `code`, `reference`)
+- `@pattern` annotation is OPTIONAL (regex for validation)
+- Property Types are referenced in property declarations: `-- field [Property Type]`
+
+**Type Categories:**
+
+| Category | Description | Examples |
+|----------|-------------|----------|
+| `identifier` | Unique identifier for entities | ISIN, LEI, BIC, Customer ID |
+| `value` | Measurable quantity | Monetary Amount, Percentage |
+| `code` | Enumerated or constrained code | Country Code, Currency Code |
+| `reference` | Reference to another concept | Customer, Account (as FK) |
+
+### 3.11 Taxonomy Concept (v1.3)
+
+Declares a hierarchical classification scheme. Based on ADR-037.
+
+**Syntax:**
+```
+TaxonomyName: definition
+  @type: taxonomy
+  @max_depth: N
+  -- name [String]
+  -- level [Integer]
+  -- parent [TaxonomyName]
+```
+
+**Examples:**
+```
+Product Type: Classification of financial products
+  @type: taxonomy
+  @max_depth: 2
+  -- name [String]
+  -- level [Integer]
+  -- parent [Product Type]
+
+Segment: Financial segmentation category
+  @type: taxonomy
+  @max_depth: 3
+  -- name [String]
+  -- level [Integer]
+  -- parent [Segment]
+```
+
+**Rules:**
+- Taxonomy concepts MUST have `@type: taxonomy` annotation
+- `@max_depth` annotation is OPTIONAL (default: unlimited)
+- Taxonomy concepts MUST have these properties:
+  - `name [String]` - display name
+  - `level [Integer]` - depth in hierarchy (0 = root)
+  - `parent [Self]` - reference to parent node
+
+**Taxonomy Detection (from Data Contract):**
+
+When processing Data Contracts with L0/L1/L2 field patterns, parser consolidates into single taxonomy:
+
+| Pattern | Detection |
+|---------|-----------|
+| `l0_*`, `l1_*`, `l2_*` | Level-prefixed hierarchy |
+| `*_level_0`, `*_level_1` | Level-suffixed hierarchy |
+| `parent_*`, `*_parent` | Parent reference field |
+
 ---
 
 ## 4. Semantics
@@ -380,45 +763,90 @@ Order =< @ by state >= [Placed, Executed, Settled]
 
 ### 4.3 Context (Dotted Elements)
 
-Concepts and relationships exported as comments represent **context** - references to elements defined elsewhere.
+Concepts and relationships prefixed with `#~` represent **context** - references to elements defined elsewhere. In visual diagrams, these appear as dotted lines.
 
 ```
 # Concepts
 Order
 Payment
-# Position                              # context reference (defined elsewhere)
+#~Position                              # context reference (defined elsewhere)
 
-# Context (dotted lines)
-# Order -< relates to >- Position       # context relationship
+# Binary Verb Concepts
+Order -< settles via >- Payment
+#~Order -< relates to >- Position       # context relationship
 ```
 
-Context elements are syntactically comments but carry semantic meaning as external references.
+**Rules:**
+- Context elements are parsed and validated like normal elements
+- Context elements have `is_dotted=true` flag in AST
+- Context elements appear inline in their regular sections (no separate `# Context` section)
+- Regular elements appear before context elements when serialized
 
 ---
 
 ## 5. Validation
 
-### 5.1 Syntactic Errors (Parser MUST reject)
+### 5.1 Validation Strategy
 
-| Error | Example | Reason |
-|-------|---------|--------|
-| Name starts with lowercase | `person -< drives >- Car` | Invalid identifier |
-| Missing block terminator | `Driving:` + lines without `.` | Incomplete block |
-| Unclosed delimiter | `Car =< size >= [Sedan, SUV` | Missing `]` |
-| Nested inline objectification | `A: B: C -< v >- D` | Not allowed |
-| Missing verb in unary state | `Car --< Inactive \| >` | Verb required |
+Parsers SHOULD follow **lenient parsing + strict validation**:
 
-### 5.2 Semantic Warnings (Validator SHOULD report)
+1. **Lenient parsing:** Accept input, build AST even with recoverable issues
+2. **Strict validation:** Report all errors and warnings on complete AST
+3. **`--strict` mode:** Treat warnings as errors (exit code 1)
 
-| Warning | Example | Reason |
-|---------|---------|--------|
-| Duplicate definition | Two `Person: ...` definitions | Redefinition |
-| Instance in categorization | `CZK =< type >= [...]` where `CZK` is enumeration value | Instances cannot be parents |
-| Empty enumeration | `Status := { }` | No values defined |
-| Unnamed relationship | `A -< >- B` | Missing verb phrase |
-| Segmentation violation | Instance with multiple `@` values | Mutual exclusivity broken |
-| Cyclic categorization | `A =< >= [B]` + `B =< >= [A]` | Circular hierarchy |
-| Undefined reference | `--< State \| verb \| Unknown >` | Unknown not defined |
+This approach allows:
+- Partial parsing of malformed files
+- Complete error reporting (not just first error)
+- User choice on warning severity via CLI flags
+
+### 5.2 Syntax Errors (E0xx)
+
+Syntax errors indicate malformed input. Parser MUST reject files with syntax errors.
+
+| Code | Description | Example |
+|------|-------------|---------|
+| E001 | Invalid token | Unexpected character in expression |
+| E002 | Unclosed delimiter | `Car =< size >= [Sedan, SUV` (missing `]`) |
+| E003 | Missing required element | `Car --< State \| >` (missing verb) |
+| E004 | Invalid domain path format | `#! invalid..path` |
+| E005 | Invalid concept name | `person -< drives >- Car` (lowercase) |
+| E006 | Nested inline objectification | `A: B: C -< v >- D` |
+| E007 | Missing block terminator | `Driving:` + lines without `.` |
+| E008 | Missing required domain directive | File without `#!` directive (ADR-045) |
+| E009 | Inconsistent domain across files | Multiple files with different `#!` domains |
+
+### 5.3 Semantic Errors (E1xx)
+
+Semantic errors indicate logical inconsistencies. Validator MUST report these as errors.
+
+| Code | Description | Example |
+|------|-------------|---------|
+| E101 | Reference to undefined concept | `--< State \| verb \| Unknown >` where Unknown not defined |
+| E102 | Cyclic categorization detected | `A =< >= [B]` + `B =< >= [A]` |
+| E103 | Instance used as categorization parent | `CZK =< type >= [...]` where CZK is enumeration value |
+
+### 5.4 Semantic Warnings (W1xx)
+
+Semantic warnings indicate potential issues. Validator SHOULD report these as warnings.
+
+| Code | Description | Example |
+|------|-------------|---------|
+| W101 | Duplicate concept definition | Two `Person: ...` definitions |
+| W102 | Empty enumeration | `Status := { }` |
+| W103 | Unnamed relationship | `A -< >- B` (missing verb phrase) |
+| W104 | Segmentation violation | Instance with multiple `@` category values |
+
+### 5.5 Domain Warnings (W2xx)
+
+Domain warnings relate to ADR-010 and ADR-031 compliance.
+
+| Code | Description | Example |
+|------|-------------|---------|
+| ~~W201~~ | ~~Missing domain directive~~ | Replaced by E008 (ADR-045) |
+| W202 | Cross-domain reference to unknown domain | `Unknown:Domain.Concept` |
+| W203 | Inconsistent bracket style | Mix of `Concept` and `[Concept]` in same file |
+
+**Note:** W201 was promoted to E008 in CST v1.4 per ADR-045. Missing `#!` is now a syntax error.
 
 ---
 
@@ -448,11 +876,31 @@ NAME          = UPPER , { NAME_CHAR } ;
 TEXT          = { ? any character except newline ? } ;
 NEWLINE       = ? line terminator ? ;
 INDENT        = ? one or more spaces or tabs ? ;
-COMMENT       = "#" , TEXT ;
+COMMENT       = "#" , ? not "!" and not "~" ? , TEXT ;
+              (* #! = domain directive, #~ = dotted directive, # = comment *)
+
+(* === Domain Directive (v1.1) === *)
+domain_directive = "#!" , WHITESPACE , domain_path , NEWLINE ;
+domain_path      = NAME , { ":" , NAME } ;
+WHITESPACE       = " " | "\t" , { " " | "\t" } ;
+
+(* === Dotted Directive (v1.5 - ADR-047) === *)
+dotted_directive = "#~" , [ WHITESPACE ] , expression , NEWLINE ;
+                   (* Marks expression as context/dotted *)
+
+(* === Concept with Bracket Equivalence (v1.1) === *)
+concept          = NAME | "[" , NAME , "]" ;
+                   (* NAME ≡ [NAME] - semantically identical *)
+
+(* === Qualified Concept (v1.1) === *)
+qualified_concept = [ domain_path , "." ] , concept ;
+                    (* Cross-domain reference: RBCZ:MIB:Payments.Payment *)
 
 (* === File Structure === *)
 file          = { line } ;
-line          = [ expression ] , [ COMMENT ] , NEWLINE
+line          = domain_directive
+              | dotted_directive                     (* v1.5 *)
+              | [ expression ] , [ COMMENT ] , NEWLINE
               | COMMENT , NEWLINE
               | NEWLINE ;
 
@@ -468,48 +916,67 @@ expression    = definition
               | property ;
 
 (* === Definition === *)
-definition    = NAME , ":" , TEXT ;
+definition    = concept , ":" , TEXT ;
               (* where TEXT is not a valid binary_verb *)
 
 (* === Categorization === *)
-categorization = NAME , "=<" , [ label ] , ">=" , "[" , name_list , "]" ;
+categorization = concept , "=<" , [ label ] , ">=" , "[" , concept_list , "]" ;
 label          = TEXT ;
-name_list      = NAME , { "," , NAME } ;
+concept_list   = concept , { "," , concept } ;
 
 (* === Binary Verb === *)
-binary_verb   = NAME , "-<" , [ inner ] , ">-" , NAME ;
+binary_verb   = qualified_concept , "-<" , [ inner ] , ">-" , qualified_concept ;
 inner         = [ role , "|" ] , [ verbs ] , [ "|" , role ] , [ "|" ] ;
 verbs         = verb , "/" , [ inverse ]
               | "/" , inverse ;
-role          = NAME
-              | "[" , NAME , "]" ;
+role          = concept ;     (* v1.1: role is a concept, brackets optional *)
 verb          = TEXT ;    (* excluding | / >- *)
 inverse       = TEXT ;    (* excluding | / >- *)
 
 (* === Objectification === *)
-objectification = NAME , ":" , binary_verb ;
+objectification = concept , ":" , binary_verb ;
+                  (* v1.1: concept can have brackets *)
 
 (* === Block Objectification === *)
-block_objectification = NAME , ":" , NEWLINE , block_body ;
+block_objectification = concept , ":" , NEWLINE , block_body ;
 block_body    = block_line , { block_line } , final_line ;
 block_line    = INDENT , binary_verb , ";" , NEWLINE ;
 final_line    = INDENT , binary_verb , "." ;
 
 (* === Unary State === *)
-unary_state   = NAME , "--<" , NAME , "|" , verb , ">"
-              | NAME , "--<" , NAME , "|" , verb , "|" , NAME , ">" ;
+unary_state   = concept , "--<" , concept , "|" , verb , ">"
+              | concept , "--<" , concept , "|" , verb , "|" , concept , ">" ;
 
 (* === Whole-Part === *)
-whole_part    = NAME , "-<" , [ inner ] , ">-" , "[" , name_list , "]" ;
+whole_part    = qualified_concept , "-<" , [ inner ] , ">-" , "[" , concept_list , "]" ;
 
 (* === Enumeration === *)
-enumeration   = NAME , ":=" , "{" , [ name_list ] , "}" ;
+enumeration   = concept , ":=" , "{" , [ concept_list ] , "}" ;
 
 (* === Property === *)
-property      = NAME , "--" , prop_names , "[" , NAME , "]" ;
+property      = concept , "--" , prop_names , "[" , concept , "]" , { annotation } ;
 prop_names    = prop_name
               | "[" , prop_name , { "," , prop_name } , "]" ;
 prop_name     = TEXT ;    (* typically lowercase *)
+
+(* === Annotations (v1.3) === *)
+annotation        = INDENT , "@" , annotation_key , ":" , annotation_value , NEWLINE ;
+annotation_key    = IDENTIFIER ;
+annotation_value  = TEXT ;
+IDENTIFIER        = LOWER , { LOWER | DIGIT | "_" } ;
+
+(* === Concept Block with Annotations (v1.3) === *)
+concept_block     = definition , { annotation } , { property_block } ;
+property_block    = property , { annotation } ;
+
+(* === Property Type (v1.3 - ADR-036) === *)
+property_type_section = "# Property Types" , NEWLINE , { property_type_def } ;
+property_type_def     = NAME , ":" , TEXT , NEWLINE , { annotation } ;
+
+(* === Taxonomy (v1.3 - ADR-037) === *)
+taxonomy_concept  = definition , taxonomy_annotation , [ max_depth_annotation ] , { property } ;
+taxonomy_annotation = INDENT , "@type" , ":" , "taxonomy" , NEWLINE ;
+max_depth_annotation = INDENT , "@max_depth" , ":" , DIGIT , { DIGIT } , NEWLINE ;
 ```
 
 ---
@@ -531,7 +998,9 @@ prop_name     = TEXT ;    (* typically lowercase *)
 | `;` | Block continuation | Line continues in block |
 | `.` | Block termination | Last line of block |
 | `#` | Comment | `# this is ignored` |
-| `@` | Segmentation prefix | `=< @ state >= [...]` |
+| `#!` | Domain directive | `#! RBCZ:MIB:Investment` |
+| `#~` | Dotted/context prefix | `#~Position` (v1.5) |
+| `@` | Segmentation prefix / Annotation | `=< @ state >= [...]` / `@source: EDI` |
 
 ### Construct Summary
 
@@ -662,10 +1131,8 @@ Market := { BCPP, US, GY }
 # Properties
 Order -- [ordered date, execution date, settlement date] [Date]
 Order -- quantity [Number]
-
-# Context (external references)
-# Account
-# Account -< holds / is held in >- Position
+#~Account                         # context: external reference
+#~Account -< holds / is held in >- Position   # context relationship
 ```
 
 ---
@@ -675,14 +1142,19 @@ Order -- quantity [Number]
 While not syntactically required, the following section order is RECOMMENDED for readability:
 
 ```
+#! RBCZ:MIB:Investment          # Domain directive (v1.1)
+
 # Concepts
-<definitions and concept declarations>
+<definitions and concept declarations with @annotations>
+#~<context concepts with #~ prefix>      # (v1.5 - ADR-047)
 
 # Categorizations
 <categorization expressions>
+#~<context categorizations>              # (v1.5)
 
 # Binary Verbs
 <binary verb expressions>
+#~<context binary verbs>                 # (v1.5)
 
 # Objectifications
 <objectification expressions>
@@ -696,9 +1168,196 @@ While not syntactically required, the following section order is RECOMMENDED for
 # Unary States
 <state transitions>
 
-# Context (dotted lines)
-<context references as comments>
+# Property Types                 # (v1.3 - ADR-036)
+<property type definitions with @type annotations>
+
+#! RBCZ:MIB:Payments             # Switch domain (v1.1)
+
+# Concepts
+<concepts for new domain>
 ```
+
+**Note (v1.5):** The `# Context (dotted lines)` section is deprecated. Context elements now use `#~` prefix and appear inline in their respective sections. When serializing, regular elements appear first, followed by context elements.
+
+### D.1 Complete Example with v1.3 Features
+
+```
+#! RBCZ:EDI:AUM
+
+# Concepts
+Assets Under Management: Total market value of assets managed on behalf of clients
+  @source: EDI
+  @source_entity: EDI_AUM
+  @fibo: fibo-ind:AssetsUnderManagement
+  @fibo_source: contract
+  @fibo_confidence: VERIFIED
+  @status: VERIFIED
+  -- date [Date]
+  -- country [Country]
+  -- amount eur [Monetary Amount]
+    @currency: EUR
+
+Country: A nation with its own government and territory
+  @source: IDM
+  @fibo: fibo-fnd-plc-ctr:Country
+  -- code [Country Code]
+  -- name [String]
+
+Product Type: Classification of financial products
+  @source: IDM
+  @type: taxonomy
+  @max_depth: 2
+  -- name [String]
+  -- level [Integer]
+  -- parent [Product Type]
+
+Calendar Day: ultimo of the month
+  @status: DRAFT
+  @warning: Definition appears to be business rule, not semantic definition
+  @warning_rule: DQD-3
+
+# Enumerations
+Currency := { CZK, EUR, USD }
+
+# Property Types
+Country Code: ISO 3166-1 alpha-2 country code
+  @type: identifier
+  @pattern: "[A-Z]{2}"
+  @fibo: fibo-fnd-plc-cty:CountryIdentifier
+
+ISIN Code: International Securities Identification Number (ISO 6166)
+  @type: identifier
+  @pattern: "[A-Z]{2}[A-Z0-9]{10}"
+  @fibo: fibo-sec-sec-id:InternationalSecuritiesIdentificationNumber
+
+Monetary Amount: A quantity of money in a specific currency
+  @type: value
+  @fibo: fibo-fnd-acc-cur:MonetaryAmount
+```
+
+---
+
+## Appendix E: CLI Reference
+
+### E.1 Subcommand Pattern (ADR-034)
+
+The `conceptspeak` CLI follows a subcommand pattern:
+
+```bash
+python -m conceptspeak <subcommand> [options] [arguments]
+```
+
+### E.2 Validate Subcommand
+
+Validates `.cs` files against the CST specification.
+
+```bash
+python -m conceptspeak validate <file.cs> [options]
+
+Options:
+  --format {text,json}  Output format (default: text)
+  --strict              Treat warnings as errors
+  --quiet               Suppress output on success
+
+Examples:
+  python -m conceptspeak validate order.cs
+  python -m conceptspeak validate order.cs --format json
+  python -m conceptspeak validate order.cs --strict
+```
+
+**Exit codes:**
+| Code | Meaning |
+|------|---------|
+| 0 | Valid (or warnings only without `--strict`) |
+| 1 | Validation errors found |
+| 2 | File not found / IO error |
+
+### E.3 Parse Subcommand
+
+Parses Miro JSON or Data Contract YAML to ConceptSpeak.
+
+```bash
+python -m conceptspeak parse <input> [output] [options]
+
+Options:
+  --input-type {auto,miro,datacontract}  Input format (default: auto)
+  --domain-path PATH                      Override domain path
+  --auto-dedupe                           Remove duplicate context copies (Miro)
+  --analyze                               Show object inventory only (Miro)
+  --reference FILE                        Reference file for enrichment (Miro)
+
+Examples:
+  python -m conceptspeak parse frame.json output.cs
+  python -m conceptspeak parse contract.yaml --domain-path RBCZ:MIB:Investment
+  python -m conceptspeak parse frame.json --auto-dedupe --analyze
+```
+
+### E.4 Build Subcommand (v1.4, ADR-045)
+
+Builds domain output from ConceptSpeak files. Source files passed as positional arguments.
+
+```bash
+python -m conceptspeak build <file.cs> [file2.cs ...] [options]
+
+Options:
+  -o, --output DIR    Output directory (default: ./output)
+  --format {json,cs}  Output format (default: json)
+
+Examples:
+  # Single file
+  python -m conceptspeak build order.cs -o output/
+
+  # Multiple files (must have same #! domain)
+  python -m conceptspeak build order.cs transaction.cs position.cs -o output/
+
+  # Glob expansion (shell)
+  python -m conceptspeak build domains/Investment/*.cs -o output/
+```
+
+**Validation:**
+- All input files MUST have `#!` directive (E008 if missing)
+- All input files MUST have identical `#!` domain (E009 if inconsistent)
+- Domain path extracted from `#!` directive, no config.json needed
+
+### E.5 JSON Output Schema (ValidationResult)
+
+```json
+{
+  "file": "order.cs",
+  "valid": true,
+  "error_count": 0,
+  "warning_count": 1,
+  "errors": [
+    {
+      "line": 5,
+      "column": 1,
+      "code": "W101",
+      "message": "Duplicate definition for 'Order'",
+      "severity": "warning",
+      "source": "order.cs"
+    }
+  ]
+}
+```
+
+**Fields:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `file` | string | Source file path |
+| `valid` | boolean | `true` if no errors (warnings allowed) |
+| `error_count` | integer | Number of errors |
+| `warning_count` | integer | Number of warnings |
+| `errors` | array | List of validation issues |
+
+**Error object fields:**
+| Field | Type | Description |
+|-------|------|-------------|
+| `line` | integer | 1-based line number |
+| `column` | integer | 1-based column number |
+| `code` | string | Error code (E0xx, E1xx, W1xx, W2xx) |
+| `message` | string | Human-readable description |
+| `severity` | string | `"error"` or `"warning"` |
+| `source` | string | Source file (optional) |
 
 ---
 
@@ -707,3 +1366,8 @@ While not syntactically required, the following section order is RECOMMENDED for
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2025-12-20 | Initial specification |
+| 1.1 | 2025-12-23 | Added domain directive (`#!`), bracket equivalence, cross-domain references (ADR-031) |
+| 1.2 | 2025-12-23 | Validation error codes (ADR-032), CLI reference (ADR-034), context tracking |
+| 1.3 | 2025-12-24 | Metadata annotations `@` (ADR-031 Amendment 1), Property Types section (ADR-036), Taxonomy pattern (ADR-037), EBNF updates |
+| 1.4 | 2025-12-25 | Mandatory domain directive (ADR-045), E008/E009 errors, W201 deprecated, CLI positional args |
+| 1.5 | 2025-12-25 | Dotted concept directive `#~` (ADR-047), deprecated `# Context` section, inline context syntax |
