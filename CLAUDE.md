@@ -23,7 +23,9 @@ This repository contains public-facing content published to GitHub Pages:
 public/
 ├── index.html                                # Root redirect to bkb-explorer/
 ├── .nojekyll                                 # Disable Jekyll processing
-├── publish-bkb.sh                            # Publication control script
+├── .gitignore                                # Publication control
+├── publish-bkb.sh                            # Enable/disable publication
+├── update-bkb.sh                             # Update bkb-explorer from source
 ├── bkb-explorer/                             # BKB Explorer (copied from ~/claude/bkb-explorer)
 │   ├── index.html                            # Main explorer page
 │   ├── js/                                   # Application code
@@ -74,23 +76,32 @@ git push
 
 ### Update BKB Explorer
 
-Copy latest version from source project:
+**Simple way** (recommended):
 
 ```bash
-# From ~/claude/bkb-explorer (source) to public/bkb-explorer (published)
+cd ~/claude/public
+./update-bkb.sh
+# Follow instructions (git push or git push --force)
+```
+
+**How it works:**
+- Syncs latest data from `~/claude/bkb-explorer`
+- If last commit was a bkb update: amends it (keeps only current version)
+- If last commit was something else: creates new commit
+- You must manually push (force push if amended)
+
+**Manual way:**
+
+```bash
 cd ~/claude/public
 rsync -av --delete \
-  --exclude='node_modules' \
-  --exclude='.git' \
-  --exclude='logs' \
-  --exclude='test-screenshots' \
-  --exclude='.pytest_cache' \
-  --exclude='input' \
+  --exclude='node_modules' --exclude='.git' \
+  --exclude='logs' --exclude='input' \
   ~/claude/bkb-explorer/ bkb-explorer/
 
 git add bkb-explorer/
-git commit -m "Update bkb-explorer from source"
-git push
+git commit --amend --no-edit  # Overwrites last commit
+git push --force              # Required for amended commits
 ```
 
 ### Update ConceptSpeak Specification
