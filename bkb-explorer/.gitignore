@@ -10,6 +10,10 @@ logs/
 *.swo
 *~
 
+# Input symlinks (ADR-065)
+# Source: ontology-lift/output/ (symlinks, not needed for GitHub Pages)
+input/
+
 # Generated test data (ADR-029, ADR-024)
 # Source of truth: conceptspeak/tests/
 # Directory structure: test/{domain-hierarchy}/{view}/
