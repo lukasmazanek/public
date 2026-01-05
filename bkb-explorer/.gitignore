@@ -17,7 +17,8 @@ input/
 # Generated test data (ADR-029, ADR-024)
 # Source of truth: conceptspeak/tests/
 # Directory structure: test/{domain-hierarchy}/{view}/
-test/
+# Note: Use specific path to avoid ignoring js/Test/ domain
+/test/
 
 # Node modules (for visual tests)
 node_modules/
