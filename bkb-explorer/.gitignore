@@ -13,7 +13,8 @@ logs/
 # Generated test data (ADR-029, ADR-024)
 # Source of truth: conceptspeak/tests/
 # Directory structure: test/{domain-hierarchy}/{view}/
-test/
+# Note: Using explicit path to avoid matching Test/ domain on case-insensitive filesystems
+/test/
 
 # Node modules (for visual tests)
 node_modules/
