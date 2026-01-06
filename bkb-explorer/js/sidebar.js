@@ -132,15 +132,17 @@ const Sidebar = {
             `;
 
             // Render child domains (subdomains)
+            // BUG-039 FIX: Use data.path for unique identification (not name, which can be duplicate)
             if (hasChildren) {
-                html += `<div class="tree-children collapsed" data-parent="${name}">`;
+                html += `<div class="tree-children collapsed" data-parent="${data.path}">`;
                 html += this.renderHierarchy(data.children, depth + 1, fullPath);
                 html += '</div>';
             }
 
             // Render views (NOT subdomains - just perspectives within the domain)
+            // BUG-039 FIX: Use data.path for unique identification
             if (hasViews) {
-                html += `<div class="tree-children views-list collapsed" data-parent="${name}">`;
+                html += `<div class="tree-children views-list collapsed" data-parent="${data.path}">`;
                 // Sort views alphabetically (ADR-041)
                 const viewEntries = Object.entries(data.views).sort(([a], [b]) => a.localeCompare(b));
                 for (const [viewName, viewData] of viewEntries) {
@@ -172,13 +174,15 @@ const Sidebar = {
     },
 
     /**
-     * Expand a node by name
+     * Expand a node by path
+     * BUG-039 FIX: Use path for unique identification (not name, which can be duplicate)
+     * @param {string} path - Filesystem path (e.g., "Test/MIB")
      */
-    expandNode(name) {
-        const children = this.container.querySelector(`.tree-children[data-parent="${name}"]`);
+    expandNode(path) {
+        const children = this.container.querySelector(`.tree-children[data-parent="${path}"]`);
         if (children) {
             children.classList.remove('collapsed');
-            const item = this.container.querySelector(`.tree-item[data-name="${name}"]`);
+            const item = this.container.querySelector(`.tree-item[data-path="${path}"]`);
             if (item) {
                 const icon = item.querySelector('.icon');
                 if (icon) {
@@ -205,7 +209,8 @@ const Sidebar = {
         const domainName = domainItem.dataset.name;
 
         // Remove existing views container if any
-        const existingViews = domainItem.parentElement.querySelector(`.tree-children.views-list[data-parent="${domainName}"]`);
+        // BUG-039 FIX: Use domainPath instead of domainName for unique identification
+        const existingViews = domainItem.parentElement.querySelector(`.tree-children.views-list[data-parent="${domainPath}"]`);
         if (existingViews) {
             existingViews.remove();
         }
@@ -233,7 +238,8 @@ const Sidebar = {
 
         const viewsContainer = document.createElement('div');
         viewsContainer.className = 'tree-children views-list';
-        viewsContainer.dataset.parent = domainName;
+        // BUG-039 FIX: Use domainPath instead of domainName for unique identification
+        viewsContainer.dataset.parent = domainPath;
         viewsContainer.innerHTML = viewsHtml;
 
         // Insert after domain item
@@ -257,7 +263,8 @@ const Sidebar = {
                 }
 
                 BKBExplorer.selectView(viewId);
-                self.setActiveView(viewDomainName, viewId);
+                // BUG-039 FIX: Pass domainPath for unique identification
+                self.setActiveView(viewDomainName, viewId, viewDomainPath);
             });
         });
 
@@ -276,7 +283,8 @@ const Sidebar = {
 
         // Handle domain click - load data
         if (type === 'domain') {
-            const children = this.container.querySelector(`.tree-children[data-parent="${name}"]`);
+            // BUG-039 FIX: Use path for unique identification (not name, which can be duplicate)
+            const children = this.container.querySelector(`.tree-children[data-parent="${path}"]`);
 
             if (clickedOnIcon && children) {
                 // Click on icon = only toggle expand/collapse
@@ -316,17 +324,20 @@ const Sidebar = {
                 console.log(`📂 Loading domain ${domainPath} before selecting view`);
                 BKBExplorer.selectDomainByPath(domainPath).then(() => {
                     BKBExplorer.selectView(viewId);
-                    this.setActiveView(domainName, viewId);
+                    // BUG-039 FIX: Pass domainPath for unique identification
+                    this.setActiveView(domainName, viewId, domainPath);
                 });
             } else {
                 BKBExplorer.selectView(viewId);
-                this.setActiveView(domainName, viewId);
+                // BUG-039 FIX: Pass domainPath for unique identification
+                this.setActiveView(domainName, viewId, domainPath);
             }
             return;
         }
 
         // Toggle children visibility for folders
-        const children = this.container.querySelector(`.tree-children[data-parent="${name}"]`);
+        // BUG-039 FIX: Use path for unique identification (not name, which can be duplicate)
+        const children = this.container.querySelector(`.tree-children[data-parent="${path}"]`);
         if (children) {
             const isCollapsed = children.classList.contains('collapsed');
             children.classList.toggle('collapsed');
@@ -337,9 +348,13 @@ const Sidebar = {
 
     /**
      * Set active view in sidebar
+     * BUG-039 FIX: Added domainPath parameter for unique identification
+     * @param {string} domainName - Domain name (for view item lookup)
+     * @param {string} viewName - View ID
+     * @param {string} [domainPath] - Filesystem path (for unique identification)
      */
-    setActiveView(domainName, viewName) {
-        console.log(`🔷 setActiveView called: domain=${domainName}, view=${viewName}`);
+    setActiveView(domainName, viewName, domainPath) {
+        console.log(`🔷 setActiveView called: domain=${domainName}, view=${viewName}, path=${domainPath}`);
 
         // Clear all active states
         this.container.querySelectorAll('.tree-item.active').forEach(item => {
@@ -354,17 +369,25 @@ const Sidebar = {
         });
 
         // Ensure domain is expanded (▼ icon)
-        const domainItem = this.container.querySelector(`.tree-item[data-name="${domainName}"][data-type="domain"]`);
+        // BUG-039 FIX: Use path for unique identification when available
+        const domainSelector = domainPath
+            ? `.tree-item[data-path="${domainPath}"][data-type="domain"]`
+            : `.tree-item[data-name="${domainName}"][data-type="domain"]`;
+        const domainItem = this.container.querySelector(domainSelector);
         if (domainItem) {
             const icon = domainItem.querySelector('.icon');
             if (icon) icon.textContent = '▼';
             // Ensure views list is expanded
-            const viewsList = this.container.querySelector(`.tree-children.views-list[data-parent="${domainName}"]`);
+            // BUG-039 FIX: Use path from domainItem for unique identification
+            const actualPath = domainItem.dataset.path;
+            const viewsList = this.container.querySelector(`.tree-children.views-list[data-parent="${actualPath}"]`);
             if (viewsList) viewsList.classList.remove('collapsed');
         }
 
-        // Set view as active
-        const selector = `.tree-item.view-item[data-name="${viewName}"][data-domain="${domainName}"]`;
+        // Set view as active - use data-domain-path for unique identification
+        const selector = domainPath
+            ? `.tree-item.view-item[data-name="${viewName}"][data-domain-path="${domainPath}"]`
+            : `.tree-item.view-item[data-name="${viewName}"][data-domain="${domainName}"]`;
         console.log(`🔍 Looking for view with selector: ${selector}`);
         const viewItem = this.container.querySelector(selector);
         if (viewItem) {
@@ -423,13 +446,15 @@ const Sidebar = {
      * Select a view (called from dropdown)
      * @param {string|null} viewId - View ID or null for all
      * @param {string} domainName - Domain name
+     * @param {string} [domainPath] - Optional filesystem path for unique identification (BUG-039)
      */
-    selectView(viewId, domainName) {
-        console.log(`🔷 selectView called: viewId=${viewId}, domain=${domainName}`);
+    selectView(viewId, domainName, domainPath) {
+        console.log(`🔷 selectView called: viewId=${viewId}, domain=${domainName}, path=${domainPath}`);
 
         if (viewId) {
             // Selecting a specific view - use setActiveView
-            this.setActiveView(domainName, viewId);
+            // BUG-039 FIX: Pass domainPath for unique identification
+            this.setActiveView(domainName, viewId, domainPath);
         } else {
             // Deselecting view (show all) - clear all view selections
             this.container.querySelectorAll('.tree-item.view-item.active').forEach(item => {

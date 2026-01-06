@@ -189,7 +189,8 @@ function fileToViewId(file) {
     // Legacy: Remove path if present
     const filename = file.split('/').pop();
     // BUG-012 FIX: Only remove known file extensions, preserve decimal numbers
-    let viewId = filename.replace(/\.(json|cs|yaml|yml)$/i, '');
+    // BUG-042 FIX: Added .test extension (ConceptSpeak golden test files)
+    let viewId = filename.replace(/\.(json|cs|yaml|yml|test)$/i, '');
 
     // Strip common prefixes (only first match)
     const prefixes = [
@@ -265,6 +266,14 @@ describe('Views.fileToViewId', () => {
 
     it('strips training prefix and preserves decimal (BUG-012)', () => {
         assert.strictEqual(fileToViewId('conceptspeak-training-diagram-1.1.json'), 'diagram-1.1');
+    });
+
+    it('removes .test extension (BUG-042)', () => {
+        assert.strictEqual(fileToViewId('Order.test'), 'Order');
+    });
+
+    it('removes .test extension with path (BUG-042)', () => {
+        assert.strictEqual(fileToViewId('conceptspeak/tests/RBCZ/MIB/Investment/Order.test'), 'Order');
     });
 });
 
@@ -2591,5 +2600,487 @@ describe('BUG-025: Junction Trunk Visibility', () => {
 
         assert.ok(branch1.hidden(), 'Branch edge 1 should be hidden');
         assert.ok(branch2.hidden(), 'Branch edge 2 should be hidden');
+    });
+});
+
+// ============================================
+// BUG-036: Domain Reference Subsumption Tests
+// ============================================
+
+/**
+ * BUG-036: BKB Explorer should handle subsumptions with parent_type: "domain_reference"
+ * These are cross-domain inheritance relationships (e.g., MIB:Account extends RBCZ:Account)
+ */
+
+function isDomainReferenceSubsumption(sub) {
+    const parentType = sub.parent_type || '';
+    const parentDomainRef = sub.parent_domain_ref || '';
+    return parentType === 'domain_reference' && !!parentDomainRef;
+}
+
+function buildDomainRefQname(sub) {
+    if (!isDomainReferenceSubsumption(sub)) return null;
+    const parentDomainRef = sub.parent_domain_ref || '';
+    const parent = sub.parent_name || sub.parent || '';
+    return `bkb-${parentDomainRef.toLowerCase()}:${parent}`;
+}
+
+describe('BUG-036: Domain Reference Subsumption Detection', () => {
+    it('detects domain_reference parent_type', () => {
+        const sub = {
+            child_name: 'Account',
+            parent_name: 'Account',
+            parent_type: 'domain_reference',
+            parent_domain_ref: 'RBCZ'
+        };
+        assert.ok(isDomainReferenceSubsumption(sub));
+    });
+
+    it('rejects subsumption without parent_type', () => {
+        const sub = {
+            child_name: 'Order',
+            parent_name: 'Order',
+            external_uri: 'https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/Order'
+        };
+        assert.ok(!isDomainReferenceSubsumption(sub));
+    });
+
+    it('rejects subsumption with empty parent_domain_ref', () => {
+        const sub = {
+            child_name: 'Account',
+            parent_name: 'Account',
+            parent_type: 'domain_reference',
+            parent_domain_ref: ''
+        };
+        assert.ok(!isDomainReferenceSubsumption(sub));
+    });
+
+    it('builds correct qname for domain reference', () => {
+        const sub = {
+            child_name: 'Account',
+            parent_name: 'Account',
+            parent_type: 'domain_reference',
+            parent_domain_ref: 'RBCZ'
+        };
+        assert.strictEqual(buildDomainRefQname(sub), 'bkb-rbcz:Account');
+    });
+
+    it('handles different domain refs', () => {
+        const sub = {
+            parent_name: 'Transaction',
+            parent_type: 'domain_reference',
+            parent_domain_ref: 'MIB'
+        };
+        assert.strictEqual(buildDomainRefQname(sub), 'bkb-mib:Transaction');
+    });
+
+    it('returns null for non-domain-reference subsumption', () => {
+        const sub = {
+            child_name: 'Order',
+            parent_name: 'Order',
+            external_uri: 'fibo:Order'
+        };
+        assert.strictEqual(buildDomainRefQname(sub), null);
+    });
+});
+
+// ============================================
+// BUG-037: Tooltip Badge Domain Parent Tests
+// ============================================
+
+/**
+ * BUG-037: Tooltip badge should show domain parent (not FIBO) when concept extends domain
+ */
+
+function getTooltipBadgeType(data) {
+    const extendsQname = data.extendsQname || '';
+
+    // Check if extends domain parent (bkb-* but not bkb-fibo)
+    if (extendsQname.startsWith('bkb-') && !extendsQname.startsWith('bkb-fibo')) {
+        return 'domain';
+    }
+
+    // Check FIBO mapping
+    if (data.hasFibo) {
+        return 'fibo';
+    }
+
+    // Check Schema.org
+    if (data.hasSchema) {
+        return 'schema';
+    }
+
+    return null;
+}
+
+function extractDomainFromQname(qname) {
+    if (!qname || !qname.startsWith('bkb-')) return null;
+    // "bkb-rbcz:Account" → "RBCZ"
+    const withoutPrefix = qname.replace('bkb-', '');
+    const domainPart = withoutPrefix.split(':')[0];
+    return domainPart.toUpperCase();
+}
+
+describe('BUG-037: Tooltip Badge Priority', () => {
+    it('returns domain when extends domain parent', () => {
+        const data = {
+            extendsQname: 'bkb-rbcz:Account',
+            hasFibo: true  // Has FIBO mapping but extends domain
+        };
+        assert.strictEqual(getTooltipBadgeType(data), 'domain');
+    });
+
+    it('returns fibo when extends FIBO (bkb-fibo prefix)', () => {
+        const data = {
+            extendsQname: 'bkb-fibo:Account',
+            hasFibo: true
+        };
+        assert.strictEqual(getTooltipBadgeType(data), 'fibo');
+    });
+
+    it('returns fibo when no domain parent but has FIBO mapping', () => {
+        const data = {
+            extendsQname: '',
+            hasFibo: true
+        };
+        assert.strictEqual(getTooltipBadgeType(data), 'fibo');
+    });
+
+    it('returns schema when only Schema.org mapped', () => {
+        const data = {
+            extendsQname: '',
+            hasFibo: false,
+            hasSchema: true
+        };
+        assert.strictEqual(getTooltipBadgeType(data), 'schema');
+    });
+
+    it('returns null when no mapping', () => {
+        const data = {
+            extendsQname: '',
+            hasFibo: false,
+            hasSchema: false
+        };
+        assert.strictEqual(getTooltipBadgeType(data), null);
+    });
+});
+
+describe('BUG-037: Domain Name Extraction from Qname', () => {
+    it('extracts RBCZ from bkb-rbcz:Account', () => {
+        assert.strictEqual(extractDomainFromQname('bkb-rbcz:Account'), 'RBCZ');
+    });
+
+    it('extracts MIB from bkb-mib:Customer', () => {
+        assert.strictEqual(extractDomainFromQname('bkb-mib:Customer'), 'MIB');
+    });
+
+    it('handles lowercase domain', () => {
+        assert.strictEqual(extractDomainFromQname('bkb-investment:Order'), 'INVESTMENT');
+    });
+
+    it('returns null for non-bkb qname', () => {
+        assert.strictEqual(extractDomainFromQname('fibo:Account'), null);
+    });
+
+    it('returns null for empty qname', () => {
+        assert.strictEqual(extractDomainFromQname(''), null);
+    });
+
+    it('returns null for undefined', () => {
+        assert.strictEqual(extractDomainFromQname(undefined), null);
+    });
+});
+
+// ============================================
+// BUG-038: Technical Marker Filter Tests
+// ============================================
+
+/**
+ * BUG-038: Views.extractViews should filter technical markers like "cross-domain-reference"
+ */
+
+const TECHNICAL_MARKERS = [
+    'cross-domain-reference',  // Cross-domain inheritance source (hierarchy_agent.py)
+];
+
+function isValidViewSource(file) {
+    if (!file) return false;
+    if (TECHNICAL_MARKERS.includes(file)) return false;
+    return true;
+}
+
+function fileToViewIdBug038(file) {
+    if (!isValidViewSource(file)) return null;
+    // Strip path and extension
+    const basename = file.split('/').pop().replace(/\.(cs|json)$/, '');
+    return basename;
+}
+
+describe('BUG-038: Technical Marker Filtering', () => {
+    it('rejects cross-domain-reference marker', () => {
+        assert.ok(!isValidViewSource('cross-domain-reference'));
+    });
+
+    it('accepts regular .cs file', () => {
+        assert.ok(isValidViewSource('Shared.cs'));
+    });
+
+    it('accepts path with .cs file', () => {
+        assert.ok(isValidViewSource('output/Test/.temp/Investment.cs'));
+    });
+
+    it('rejects empty file', () => {
+        assert.ok(!isValidViewSource(''));
+    });
+
+    it('rejects null file', () => {
+        assert.ok(!isValidViewSource(null));
+    });
+
+    it('rejects undefined file', () => {
+        assert.ok(!isValidViewSource(undefined));
+    });
+});
+
+describe('BUG-038: View ID from File', () => {
+    it('extracts view ID from .cs file', () => {
+        assert.strictEqual(fileToViewIdBug038('Shared.cs'), 'Shared');
+    });
+
+    it('extracts view ID from path', () => {
+        assert.strictEqual(fileToViewIdBug038('output/Test/.temp/MIB/Investment/Customer.cs'), 'Customer');
+    });
+
+    it('returns null for technical marker', () => {
+        assert.strictEqual(fileToViewIdBug038('cross-domain-reference'), null);
+    });
+
+    it('returns null for empty file', () => {
+        assert.strictEqual(fileToViewIdBug038(''), null);
+    });
+
+    it('strips .json extension', () => {
+        assert.strictEqual(fileToViewIdBug038('data.json'), 'data');
+    });
+});
+
+// ============================================
+// BUG-040: Temp File Path Filter Tests
+// ============================================
+
+/**
+ * BUG-040: Views.extractViews should filter temp file paths like
+ * "output/RBCZ/MIB/Investment/.temp/FinancialAccount.cs"
+ */
+
+function isValidViewSourceBug040(file) {
+    if (!file) return false;
+    if (TECHNICAL_MARKERS.includes(file)) return false;
+    // BUG-040: Filter temp file paths
+    if (file.includes('.temp/') || file.startsWith('output/')) return false;
+    return true;
+}
+
+describe('BUG-040: Temp File Path Filtering', () => {
+    it('rejects .temp directory paths', () => {
+        assert.ok(!isValidViewSourceBug040('output/RBCZ/MIB/Investment/.temp/FinancialAccount.cs'));
+    });
+
+    it('rejects paths starting with output/', () => {
+        assert.ok(!isValidViewSourceBug040('output/Test/Order.cs'));
+    });
+
+    it('accepts clean view name', () => {
+        assert.ok(isValidViewSourceBug040('Financial Account'));
+    });
+
+    it('accepts domain path notation', () => {
+        assert.ok(isValidViewSourceBug040('RBCZ:MIB:Investment#DP_EDI_AUM'));
+    });
+
+    it('accepts simple .cs file (no path)', () => {
+        assert.ok(isValidViewSourceBug040('Order.cs'));
+    });
+
+    it('regression: rejects temp paths that created duplicate Financial Account views', () => {
+        // These two sources should NOT both create views - only the clean name
+        const tempPath = 'output/RBCZ/MIB/Investment/.temp/FinancialAccount.cs';
+        const cleanName = 'Financial Account';
+
+        assert.ok(!isValidViewSourceBug040(tempPath), 'temp path should be rejected');
+        assert.ok(isValidViewSourceBug040(cleanName), 'clean name should be accepted');
+    });
+});
+
+// ============================================
+// BUG-039: Sidebar Duplicate Domain Name Tests
+// ============================================
+
+/**
+ * BUG-039: Sidebar should use data.path (not name) for data-parent to avoid collision
+ * when multiple domains have the same name (e.g., Test:MIB and RBCZ:MIB)
+ */
+
+function buildDataParent(data) {
+    // BUG-039 FIX: Use path for unique identification, not name
+    return data.path || '';
+}
+
+function findChildrenByPath(containers, path) {
+    // Simulates: querySelector(`.tree-children[data-parent="${path}"]`)
+    return containers.filter(c => c.dataParent === path);
+}
+
+describe('BUG-039: Sidebar Data-Parent Uses Path', () => {
+    it('uses path for data-parent attribute', () => {
+        const data = { name: 'MIB', path: 'Test/MIB', type: 'folder' };
+        assert.strictEqual(buildDataParent(data), 'Test/MIB');
+    });
+
+    it('distinguishes same-named domains by path', () => {
+        const testMib = { name: 'MIB', path: 'Test/MIB' };
+        const rbczMib = { name: 'MIB', path: 'RBCZ/MIB' };
+
+        assert.notStrictEqual(buildDataParent(testMib), buildDataParent(rbczMib));
+    });
+
+    it('finds correct children container by path', () => {
+        const containers = [
+            { dataParent: 'RBCZ/MIB', children: ['Investment', 'Allin'] },
+            { dataParent: 'Test/MIB', children: ['Investment'] }
+        ];
+
+        const testChildren = findChildrenByPath(containers, 'Test/MIB');
+        assert.strictEqual(testChildren.length, 1);
+        assert.deepStrictEqual(testChildren[0].children, ['Investment']);
+    });
+
+    it('does not find wrong container with same name', () => {
+        const containers = [
+            { dataParent: 'RBCZ/MIB', children: ['Investment', 'Allin'] },
+            { dataParent: 'Test/MIB', children: ['Investment'] }
+        ];
+
+        // Looking for "MIB" (name only) should not match
+        const wrongMatch = findChildrenByPath(containers, 'MIB');
+        assert.strictEqual(wrongMatch.length, 0);
+    });
+
+    it('handles top-level domains', () => {
+        const data = { name: 'Test', path: 'Test', type: 'domain' };
+        assert.strictEqual(buildDataParent(data), 'Test');
+    });
+
+    it('handles nested paths', () => {
+        const data = { name: 'Investment', path: 'RBCZ/MIB/Investment', type: 'domain' };
+        assert.strictEqual(buildDataParent(data), 'RBCZ/MIB/Investment');
+    });
+});
+
+describe('BUG-039: setActiveView with domainPath', () => {
+    // Tests for the setActiveView(domainName, viewName, domainPath) signature
+
+    function buildViewSelector(domainName, viewName, domainPath) {
+        // BUG-039 FIX: Use path-based selector when domainPath is available
+        if (domainPath) {
+            return `.tree-item.view-item[data-name="${viewName}"][data-domain-path="${domainPath}"]`;
+        }
+        return `.tree-item.view-item[data-name="${viewName}"][data-domain="${domainName}"]`;
+    }
+
+    it('uses domain-path selector when path provided', () => {
+        const selector = buildViewSelector('Investment', 'Order', 'RBCZ/MIB/Investment');
+        assert.ok(selector.includes('data-domain-path="RBCZ/MIB/Investment"'));
+        assert.ok(!selector.includes('data-domain="Investment"'));
+    });
+
+    it('falls back to domain selector when no path', () => {
+        const selector = buildViewSelector('Investment', 'Order', null);
+        assert.ok(selector.includes('data-domain="Investment"'));
+        assert.ok(!selector.includes('data-domain-path'));
+    });
+
+    it('distinguishes same-named domains', () => {
+        const rbczSelector = buildViewSelector('Investment', 'Order', 'RBCZ/MIB/Investment');
+        const testSelector = buildViewSelector('Investment', 'Order', 'Test/MIB/Investment');
+
+        assert.notStrictEqual(rbczSelector, testSelector);
+    });
+});
+
+// ============================================
+// BUG-044: Duplicate Views from Same Concept Name Variations
+// ============================================
+
+/**
+ * BUG-044: When multiple sources reference the same view with different
+ * name formats (e.g., "Financial Account" vs "FinancialAccount"), they
+ * should merge into a single view, not create duplicates.
+ *
+ * Root cause: Test files use domain path notation (RBCZ:MIB:Investment#FinancialAccount)
+ * while data contracts use simple names ("Financial Account"). Both are valid sources
+ * but should not create duplicate views in the sidebar.
+ *
+ * Fix: Normalize viewId by removing spaces so "Financial Account" becomes
+ * "FinancialAccount", matching the domain path notation.
+ */
+
+function fileToViewIdBug044(file) {
+    // Check for fragment notation: "domain:path#ViewName"
+    if (file.includes('#')) {
+        file = file.split('#')[1];
+    }
+
+    // Legacy: Remove path if present
+    const filename = file.split('/').pop();
+    let viewId = filename.replace(/\.(json|cs|yaml|yml|test)$/i, '');
+
+    // BUG-044 FIX: Normalize viewId by removing spaces
+    viewId = viewId.replace(/\s+/g, '');
+
+    return viewId;
+}
+
+describe('BUG-044: Duplicate View Normalization', () => {
+    it('normalizes "Financial Account" to "FinancialAccount"', () => {
+        // Data contract source uses space-separated name
+        assert.strictEqual(fileToViewIdBug044('Financial Account'), 'FinancialAccount');
+    });
+
+    it('extracts "FinancialAccount" from domain path notation', () => {
+        // Test file uses domain#ViewName notation
+        assert.strictEqual(fileToViewIdBug044('RBCZ:MIB:Investment#FinancialAccount'), 'FinancialAccount');
+    });
+
+    it('both source formats produce same viewId', () => {
+        // This is the key test - both should merge to same view
+        const dataContractViewId = fileToViewIdBug044('Financial Account');
+        const testFileViewId = fileToViewIdBug044('RBCZ:MIB:Investment#FinancialAccount');
+
+        assert.strictEqual(dataContractViewId, testFileViewId);
+    });
+
+    it('normalizes multi-word names', () => {
+        assert.strictEqual(fileToViewIdBug044('Trading Market'), 'TradingMarket');
+        assert.strictEqual(fileToViewIdBug044('Network Bank'), 'NetworkBank');
+    });
+
+    it('handles names that are already normalized', () => {
+        assert.strictEqual(fileToViewIdBug044('Order'), 'Order');
+        assert.strictEqual(fileToViewIdBug044('Payment'), 'Payment');
+    });
+
+    it('regression: prevents duplicate Financial Account views', () => {
+        // These two sources from RBCZ Investment domain should create ONE view
+        const sources = [
+            'RBCZ:MIB:Investment#FinancialAccount',  // from test file
+            'Financial Account',                      // from data contract
+        ];
+
+        const viewIds = sources.map(fileToViewIdBug044);
+        const uniqueViewIds = new Set(viewIds);
+
+        assert.strictEqual(uniqueViewIds.size, 1, 'Both sources should produce same viewId');
+        assert.ok(uniqueViewIds.has('FinancialAccount'));
     });
 });

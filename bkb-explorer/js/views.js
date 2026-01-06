@@ -10,9 +10,18 @@
  * - Shared membership: concept can be in multiple Views
  * - Within domain scope only
  * - Flat structure (no nested Views)
+ * - Technical markers (e.g., "cross-domain-reference") are NOT views
  */
 
 const Views = {
+    /**
+     * Technical markers that should NOT create views (BUG-038)
+     * These are internal pipeline markers, not real source files
+     */
+    TECHNICAL_MARKERS: [
+        'cross-domain-reference',  // Cross-domain inheritance source (hierarchy_agent.py)
+    ],
+
     /**
      * Current domain's views
      * Structure: Map<viewId, { id, name, conceptQnames: Set<string> }>
@@ -53,7 +62,11 @@ const Views = {
 
             sources.forEach(source => {
                 const file = source.file || '';
-                if (!file) return;
+                // BUG-038 FIX: Skip empty files and technical markers
+                if (!file || this.TECHNICAL_MARKERS.includes(file)) return;
+
+                // BUG-040 FIX: Skip temp file paths (e.g., output/.../temp/File.cs)
+                if (file.includes('.temp/') || file.startsWith('output/')) return;
 
                 // Extract view ID from filename (remove extension)
                 const viewId = this.fileToViewId(file);
@@ -103,7 +116,8 @@ const Views = {
         // Legacy: Remove path if present
         const filename = file.split('/').pop();
         // BUG-012 FIX: Only remove known file extensions, preserve decimal numbers
-        let viewId = filename.replace(/\.(json|cs|yaml|yml)$/i, '');
+        // BUG-042 FIX: Added .test extension (ConceptSpeak golden test files)
+        let viewId = filename.replace(/\.(json|cs|yaml|yml|test)$/i, '');
 
         // Strip common prefixes (only first match)
         const prefixes = [
@@ -118,6 +132,10 @@ const Views = {
                 break;  // Only remove first matching prefix
             }
         }
+
+        // BUG-044 FIX: Normalize viewId by removing spaces to merge
+        // "Financial Account" with "FinancialAccount" (from domain#ViewName notation)
+        viewId = viewId.replace(/\s+/g, '');
 
         return viewId;
     },

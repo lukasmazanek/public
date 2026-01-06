@@ -5,44 +5,36 @@
  */
 window.BKB_DOMAINS_DATA = {
   "version": "2.0",
-  "generated": "2026-01-04T11:48:47.051376",
+  "generated": "2026-01-06T20:10:40.556497",
   "hierarchy": {
     "Test": {
       "type": "domain",
       "path": "Test",
-      "conceptCount": 126
+      "conceptCount": 6,
+      "children": {
+        "Retail": {
+          "type": "domain",
+          "path": "Test/Retail",
+          "conceptCount": 14
+        },
+        "MIB": {
+          "type": "domain",
+          "path": "Test/MIB",
+          "conceptCount": 22,
+          "children": {
+            "Investment": {
+              "type": "domain",
+              "path": "Test/MIB/Investment",
+              "conceptCount": 351
+            }
+          }
+        }
+      }
     },
     "Example": {
       "type": "domain",
       "path": "Example",
       "conceptCount": 20
-    },
-    "RBCZ": {
-      "type": "folder",
-      "path": "RBCZ",
-      "children": {
-        "Retail": {
-          "type": "domain",
-          "path": "RBCZ/Retail",
-          "conceptCount": 14
-        },
-        "MIB": {
-          "type": "folder",
-          "path": "RBCZ/MIB",
-          "children": {
-            "Investment": {
-              "type": "domain",
-              "path": "RBCZ/MIB/Investment",
-              "conceptCount": 129
-            },
-            "Allin": {
-              "type": "domain",
-              "path": "RBCZ/MIB/Allin",
-              "conceptCount": 339
-            }
-          }
-        }
-      }
     }
   }
 };

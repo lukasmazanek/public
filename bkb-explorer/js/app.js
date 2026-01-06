@@ -57,15 +57,33 @@ const BKBExplorer = {
         // Set up event listeners
         this.setupEventListeners();
 
-        // Load default domain (first in hierarchy)
-        const firstDomain = Object.keys(window.BKB_DOMAINS.hierarchy)[0];
-        if (firstDomain) {
-            const firstDomainNode = window.BKB_DOMAINS.hierarchy[firstDomain];
-            console.log(`📍 Auto-loading first domain: ${firstDomain} (${firstDomainNode.path})`);
-            await this.selectDomainByPath(firstDomainNode.path);
+        // Load default domain (first actual domain in hierarchy, skip folders)
+        const firstDomainPath = this.findFirstDomain(window.BKB_DOMAINS.hierarchy);
+        if (firstDomainPath) {
+            console.log(`📍 Auto-loading first domain: ${firstDomainPath}`);
+            await this.selectDomainByPath(firstDomainPath);
         }
 
         console.log('✅ BKB Explorer ready');
+    },
+
+    /**
+     * Find first actual domain (type === 'domain') in hierarchy, recursively
+     * @param {Object} hierarchy - Hierarchy object
+     * @returns {string|null} Path to first domain, or null if none found
+     */
+    findFirstDomain(hierarchy) {
+        for (const [name, node] of Object.entries(hierarchy)) {
+            if (node.type === 'domain') {
+                return node.path;
+            }
+            // Recurse into children (folders or domains with subdomains)
+            if (node.children) {
+                const found = this.findFirstDomain(node.children);
+                if (found) return found;
+            }
+        }
+        return null;
     },
 
     /**
@@ -264,7 +282,8 @@ const BKBExplorer = {
 
         // Update sidebar
         if (viewName) {
-            Sidebar.setActiveView(domainName, viewName);
+            // BUG-039 FIX: Pass domainPath for unique identification
+            Sidebar.setActiveView(domainName, viewName, domainPath);
         } else {
             Sidebar.setActive(domainName);
         }

@@ -435,6 +435,8 @@ const Graph = {
                     matchType: matchType,
                     hasFibo: hasDirectFibo,
                     hasSchema: concept.has_schema_mapping || false,
+                    // BUG-037: Pass hierarchy.extends so tooltip can show domain parent
+                    extendsQname: concept.hierarchy?.extends || null,
                     // ADR-067 Phase 3: extends_name deprecated, use subsumptions instead
                     childCount: parentChildCount.get(concept.name) || 0,
                     isHub: isHub,
@@ -462,6 +464,8 @@ const Graph = {
                     source: concept.definition?.source || 'DRAFT',
                     fiboUri: concept.fibo_mapping?.uri || null,
                     fiboLabel: concept.fibo_mapping?.label || null,
+                    // BUG-037: Pass hierarchy.extends so tooltip can show domain parent
+                    extendsQname: concept.hierarchy?.extends || null,
                     isGhost: true,
                     sourceView: sourceView,
                     sourceViewName: sourceViewName
@@ -685,6 +689,14 @@ const Graph = {
         // Track which concepts already have explicit subsumptions (to avoid duplicates)
         const conceptsWithSubsumption = new Set();
 
+        // BUG-036: Build external concept lookup by qname early (needed for domain references)
+        const externalByQname = new Map();
+        externalConcepts.forEach(ext => {
+            if (ext.qname) {
+                externalByQname.set(ext.qname, ext);
+            }
+        });
+
         const subsumptions = domainData.subsumptions || [];
         subsumptions.forEach(sub => {
             // Support both formats:
@@ -705,7 +717,39 @@ const Graph = {
             const externalUri = sub.external_uri || '';
             const isExternalParent = !!externalUri;
 
-            if (isExternalParent) {
+            // BUG-035: Check for domain reference subsumptions (cross-domain inheritance)
+            const parentType = sub.parent_type || '';
+            const parentDomainRef = sub.parent_domain_ref || '';
+            const isDomainReference = parentType === 'domain_reference' && parentDomainRef;
+
+            if (isDomainReference) {
+                // BUG-035: Handle cross-domain subsumptions (e.g., MIB:Account extends RBCZ:Account)
+                // Build the qname for the parent domain concept
+                const domainRefQname = `bkb-${parentDomainRef.toLowerCase()}:${parent}`;
+
+                // Look up in external concepts by qname
+                const extConcept = externalByQname.get(domainRefQname);
+                const externalDisplayName = extConcept?.label || extConcept?.name || parent;
+
+                // Add to referenced externals for node creation
+                referencedExternals.add(domainRefQname);
+
+                if (visibleNames.has(child)) {
+                    const edgeClass = isContext ? 'context-subsumption' : 'subsumption';
+                    edges.push({
+                        data: {
+                            id: `sub-domain-${childQname}-to-${domainRefQname}`,
+                            source: childQname,
+                            target: domainRefQname,
+                            type: 'subsumption',
+                            sourceLabel: label,
+                            targetLabel: '',
+                            isContext: isContext
+                        },
+                        classes: edgeClass
+                    });
+                }
+            } else if (isExternalParent) {
                 // ADR-067/068: Check externalByUri for richer concept data including qname
                 const extConcept = externalByUri.get(externalUri);
                 // ADR-068: Use qname from external concept for node ID
@@ -832,12 +876,7 @@ const Graph = {
 
         // BUG-021: Auto-generate subsumptions from hierarchy.extends for Schema.org mappings
         // For concepts with schema mapping and hierarchy.extends pointing to schema:, create subsumption
-        const externalByQname = new Map();
-        externalConcepts.forEach(ext => {
-            if (ext.qname) {
-                externalByQname.set(ext.qname, ext);
-            }
-        });
+        // Note: externalByQname already built above (BUG-036)
 
         visibleConcepts.forEach(concept => {
             const conceptName = concept.name;
@@ -895,26 +934,38 @@ const Graph = {
             const storedUri = externalRefToUri.get(extRef);
             const extByUri = storedUri ? externalByUri.get(storedUri) : null;
 
+            // BUG-036: Also try lookup by qname (for domain references like bkb-rbcz:Account)
+            const extByQname = externalByQname.get(extRef);
+
             // Then try legacy lookup by prefixed name (backwards compatibility)
-            const ext = extByUri || externalMap.get(extRef);
+            const ext = extByUri || extByQname || externalMap.get(extRef);
 
             if (ext) {
                 // Found in external_concepts[] - use qname as ID (ADR-068)
                 const displayName = ext.label || ext.name;
                 const nodeId = ext.qname || extRef;  // Use qname, fallback to extRef
+
+                // BUG-036: Determine source label based on external type
+                let sourceLabel = 'FIBO';
+                if (ext.type === 'schema.org') sourceLabel = 'Schema.org';
+                else if (ext.type === 'domain') sourceLabel = 'Domain';
+
+                // BUG-036: Use appropriate CSS class for domain externals
+                const nodeClass = ext.type === 'domain' ? 'external domain-external' : 'external';
+
                 nodes.push({
                     data: {
                         id: nodeId,  // ADR-068: qname for uniqueness
                         name: displayName,  // Display name
                         qname: ext.qname || '',  // ADR-068: Store qname for reference
                         definition: ext.definition || '',
-                        source: ext.type === 'schema.org' ? 'Schema.org' : 'FIBO',
+                        source: sourceLabel,
                         fiboUri: ext.uri,
                         fiboLabel: displayName,
                         isExternal: true,
                         externalType: ext.type
                     },
-                    classes: 'external'
+                    classes: nodeClass
                 });
             } else if (extRef.startsWith('FIBO:') || extRef.startsWith('Schema.org:')) {
                 // Legacy format: Create external node from subsumption data (not in external_concepts[])
@@ -941,6 +992,29 @@ const Graph = {
                         externalType: externalType
                     },
                     classes: 'external'
+                });
+            } else if (extRef.startsWith('bkb-')) {
+                // BUG-036: Domain reference qname (e.g., "bkb-rbcz:Account")
+                // This is a fallback if not found in external_concepts[]
+                const colonIdx = extRef.lastIndexOf(':');
+                const localName = extRef.substring(colonIdx + 1);
+                const prefix = extRef.substring(0, colonIdx);
+                // Extract domain from prefix: bkb-rbcz -> RBCZ
+                const domainPart = prefix.replace('bkb-', '').toUpperCase();
+
+                nodes.push({
+                    data: {
+                        id: extRef,
+                        name: localName,
+                        qname: extRef,
+                        definition: '',
+                        source: domainPart,  // Show domain name (e.g., "RBCZ")
+                        fiboUri: '',
+                        fiboLabel: localName,
+                        isExternal: true,
+                        externalType: 'domain'
+                    },
+                    classes: 'external domain-external'
                 });
             } else if (extRef.includes(':')) {
                 // ADR-068: QName format (e.g., "fibo-fnd-dat-fd:Date", "omg-dat:Date")
@@ -1782,7 +1856,7 @@ const Graph = {
         // Manual wheel zoom (in case default doesn't work)
         this.container.addEventListener('wheel', (e) => {
             e.preventDefault();
-            const delta = e.deltaY > 0 ? 0.9 : 1.1;  // Zoom out/in
+            const delta = e.deltaY > 0 ? 0.98 : 1.02;  // Zoom out/in (2% per tick)
             const zoom = this.cy.zoom() * delta;
             const boundedZoom = Math.max(this.cy.minZoom(), Math.min(this.cy.maxZoom(), zoom));
 
@@ -2218,19 +2292,26 @@ const Graph = {
                 return;
             }
 
-            // Handle external nodes (Schema.org/FIBO - ADR-042)
+            // Handle external nodes (Schema.org/FIBO/Domain - ADR-042, BUG-036)
             if (node.hasClass('external')) {
                 const source = node.data('source');
+                const externalType = node.data('externalType');
                 let visible = false;
                 if (source === 'Schema.org') {
                     visible = show.schema;
                 } else if (source === 'FIBO' || source === 'OMG Commons') {
                     // OMG Commons is part of FIBO ecosystem
                     visible = show.fibo;
+                } else if (externalType === 'domain' || node.hasClass('domain-external')) {
+                    // BUG-036: Domain external nodes (cross-domain references like bkb-rbcz:Account)
+                    // Show when domain checkbox is enabled (these are domain parents from other domains)
+                    visible = show.domain;
                 }
                 // Also check view filter for external nodes (ADR-044: inherited sources)
                 // BUG-009: Use qname for view membership check
-                if (visible && activeView) {
+                // BUG-036: Skip view check for domain externals - they're visible if their child is visible
+                const isDomainExternal = externalType === 'domain' || node.hasClass('domain-external');
+                if (visible && activeView && !isDomainExternal) {
                     visible = Views.isConceptInActiveView(node.data('qname') || node.data('name'));
                 }
                 if (visible) {

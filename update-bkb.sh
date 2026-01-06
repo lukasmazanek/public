@@ -39,7 +39,8 @@ rsync -av --delete \
   --exclude='logs' \
   --exclude='test-screenshots' \
   --exclude='.pytest_cache' \
-  --exclude='input' \
+  --exclude='input/' \
+  --exclude='test/' \
   "$SOURCE_DIR/" "$TARGET_DIR/"
 
 echo ""

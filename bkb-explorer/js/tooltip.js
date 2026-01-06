@@ -67,12 +67,27 @@ const Tooltip = {
 
         // Set mapping badge (external alignment) - only if source is different from mapping
         // If source IS FIBO/Schema, don't show redundant mapping badge
+        // BUG-037: Prioritize domain parent over FIBO mapping
         const mappingBadge = document.getElementById('tooltip-badge-mapping');
         const sourceUpper = source.toUpperCase();
         const isFiboSource = sourceUpper === 'FIBO';
         const isSchemaSource = sourceUpper === 'SCHEMA' || sourceUpper === 'SCHEMA.ORG';
 
-        if (data.hasFibo && !isFiboSource) {
+        // BUG-037: Check if concept extends a domain parent (not FIBO/Schema)
+        const extendsQname = data.extendsQname || '';
+        const extendsDomain = extendsQname.startsWith('bkb-') &&
+            !extendsQname.startsWith('bkb-fibo') &&
+            !extendsQname.startsWith('schema:');
+
+        if (extendsDomain) {
+            // BUG-037: Concept extends domain parent - show domain name, not FIBO
+            // Extract domain from qname: "bkb-rbcz:Account" → "RBCZ"
+            const domainPart = extendsQname.replace('bkb-', '').split(':')[0];
+            const domainName = domainPart.toUpperCase();
+            mappingBadge.textContent = domainName;
+            mappingBadge.className = 'tooltip-badge mapping-badge domain';
+            mappingBadge.style.display = 'inline-block';
+        } else if (data.hasFibo && !isFiboSource) {
             // Domain concept mapped to FIBO
             mappingBadge.textContent = '✓FIBO';
             mappingBadge.className = 'tooltip-badge mapping-badge fibo';
@@ -93,7 +108,15 @@ const Tooltip = {
 
         // Set FIBO/external info with clickable link
         const fiboEl = document.getElementById('tooltip-fibo');
-        if (data.isExternal && data.fiboUri) {
+        if (data.isExternal && data.externalType === 'domain') {
+            // BUG-037: Domain external - extract domain name from qname
+            // "bkb-rbcz:Account" → "RBCZ"
+            const qname = data.qname || data.id || '';
+            const domainPart = qname.replace('bkb-', '').split(':')[0];
+            const domainName = domainPart.toUpperCase();
+            fiboEl.textContent = `${domainName}: ${data.name}`;
+            fiboEl.style.display = 'block';
+        } else if (data.isExternal && data.fiboUri) {
             // External node with URI - show clickable link
             const extType = data.externalType === 'fibo' ? 'FIBO' : 'Schema.org';
             const esc = Utils.escapeHtml;

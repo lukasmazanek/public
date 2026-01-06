@@ -27,6 +27,7 @@ INPUT_DIR="input"
 OUTPUT_DIR="output"
 JS_DIR="js"
 MODE="all"
+FORCE="false"
 
 # Show usage
 show_usage() {
@@ -41,6 +42,7 @@ Modes:
   all               Process all domains (default)
 
 Options:
+  -f, --force       Force regeneration even if data is up-to-date
   -i, --input DIR   Input directory (default: input)
   -o, --output DIR  Output directory (default: output)
   -h, --help        Show this help
@@ -64,6 +66,10 @@ while [[ $# -gt 0 ]]; do
     case $1 in
         -h|--help)
             show_usage
+            ;;
+        -f|--force)
+            FORCE="true"
+            shift
             ;;
         domain)
             MODE="domain"
@@ -137,6 +143,16 @@ process_domain() {
     if [ ! -f "$input_file" ]; then
         echo -e "${YELLOW}Warning: Input file not found: $input_file${NC}"
         return 1
+    fi
+
+    # Freshness check - skip if data.js is up-to-date (ADR-071)
+    if [ -f "$js_file" ] && [ "$FORCE" != "true" ]; then
+        local input_mtime=$(stat -f %m "$input_file" 2>/dev/null || echo 0)
+        local output_mtime=$(stat -f %m "$js_file" 2>/dev/null || echo 0)
+        if [ "$output_mtime" -ge "$input_mtime" ]; then
+            echo -e "  ${BLUE}ℹ${NC} data.js is up-to-date (use --force to regenerate)"
+            return 0
+        fi
     fi
 
     # Ensure output and JS directories exist
