@@ -3,41 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0; url=bkb-explorer/">
-    <title>Redirecting to BKB Explorer...</title>
+    <title>Public Projects</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
         .container {
             text-align: center;
+            padding: 2em;
         }
         h1 {
             font-size: 2.5em;
-            margin-bottom: 0.5em;
+            margin-bottom: 1em;
         }
-        p {
-            font-size: 1.2em;
-            opacity: 0.9;
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
         }
         a {
             color: #fff;
-            text-decoration: underline;
+            background: rgba(255,255,255,0.2);
+            padding: 1em 2em;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.2em;
+            transition: background 0.2s;
+        }
+        a:hover {
+            background: rgba(255,255,255,0.3);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>BKB Explorer</h1>
-        <p>Redirecting to <a href="bkb-explorer/">BKB Explorer</a>...</p>
-        <p><small>If not redirected automatically, click the link above.</small></p>
+        <h1>Public Projects</h1>
+        <div class="links">
+            <a href="bkb-explorer/">BKB Explorer</a>
+            <a href="datamesh/">Datamesh Documentation</a>
+        </div>
     </div>
 </body>
 </html>
