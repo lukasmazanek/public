@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOV-DM-002: Data Product Naming Convention</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            color: #1f2328;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: .3em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; border-bottom: none; }
+        h4, h5, h6 { border-bottom: none; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+        code {
+            background: rgba(175,184,193,0.2);
+            padding: .2em .4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+        pre code { background: none; padding: 0; font-size: 100%; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 6px 13px;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background: #f6f8fa; }
+        blockquote {
+            border-left: .25em solid #d1d9e0;
+            margin: 0;
+            padding: 0 1em;
+            color: #656d76;
+        }
+        hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+        ul, ol { padding-left: 2em; }
+        li + li { margin-top: .25em; }
+    </style>
+</head>
+<body>
+<h1>GOV-DM-002: Data Product Naming Convention</h1>
+<blockquote>
+<p><strong>Status:</strong> ACTIVE
+<strong>Effective:</strong> 2026-01-08
+<strong>Owner:</strong> CDO - Lukáš Mazánek
+<strong>Parent:</strong> <a href="GOV-DM-001-data-mesh-governance.md">GOV-DM-001-data-mesh-governance.md</a></p>
+</blockquote>
+<hr>
+<h2>1. Purpose</h2>
+<p>Establish consistent naming conventions for Data Products across RBCZ to ensure:</p>
+<ul>
+<li>Discoverability in catalogs</li>
+<li>Clear ownership identification</li>
+<li>Business value communication</li>
+<li>Technical compatibility</li>
+</ul>
+<hr>
+<h2>2. Three-Level Naming System</h2>
+<p>Every Data Product has three names:</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Purpose</th>
+<th>Audience</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td>Unique technical identifier</td>
+<td>Systems, APIs</td>
+<td><code>rbcz:mib:investment:aum</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td>Short reference name</td>
+<td>Developers, URLs</td>
+<td><code>investment-aum-reporting</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Business-friendly name</td>
+<td>Business users, Catalog</td>
+<td>&quot;Investment AUM Performance Reporting&quot;</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>3. ID (Technical Identifier)</h2>
+<h3>3.1 Format</h3>
+<pre><code>{entity}:{bu}:{domain}:{concept}
+
+Examples:
+- rbcz:mib:investment:customer
+- rbcz:mib:investment:aum
+- rbcz:mib:segments
+- rbcz:ref:countries
+</code></pre>
+<h3>3.2 Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Rule</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID-1</strong></td>
+<td>Colon separator (ADR-010 compliant)</td>
+<td><code>rbcz:mib:investment</code> ✓</td>
+</tr>
+<tr>
+<td><strong>ID-2</strong></td>
+<td>Lowercase only</td>
+<td><code>rbcz:mib</code> ✓, <code>RBCZ:MIB</code> ✗</td>
+</tr>
+<tr>
+<td><strong>ID-3</strong></td>
+<td>No spaces</td>
+<td><code>investment:customer</code> ✓</td>
+</tr>
+<tr>
+<td><strong>ID-4</strong></td>
+<td>Full domain path</td>
+<td><code>rbcz:mib:investment:x</code> ✓, <code>investment:x</code> ✗</td>
+</tr>
+<tr>
+<td><strong>ID-5</strong></td>
+<td>Matches domain hierarchy exactly</td>
+<td>Must exist in ontology</td>
+</tr>
+</tbody></table>
+<h3>3.3 Special Prefixes</h3>
+<table>
+<thead>
+<tr>
+<th>Prefix</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rbcz:ref:</code></td>
+<td>Platform reference data</td>
+<td><code>rbcz:ref:countries</code></td>
+</tr>
+<tr>
+<td><code>rbcz:shared:</code></td>
+<td>Cross-domain shared</td>
+<td><code>rbcz:shared:customer</code></td>
+</tr>
+<tr>
+<td><code>rbi:</code></td>
+<td>RBI Group level</td>
+<td><code>rbi:reporting:consolidated</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>4. Slug (Short Name)</h2>
+<h3>4.1 Format</h3>
+<pre><code>{domain-prefix}-{purpose-description}
+
+Examples:
+- investment-aum-reporting
+- investment-client-overview
+- mib-segmentation
+- ref-countries
+</code></pre>
+<h3>4.2 Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Rule</th>
+<th>Good Example</th>
+<th>Bad Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SLUG-1</strong></td>
+<td>Lowercase only</td>
+<td><code>investment-aum</code></td>
+<td><code>Investment-AUM</code></td>
+</tr>
+<tr>
+<td><strong>SLUG-2</strong></td>
+<td>Hyphen separator</td>
+<td><code>investment-aum</code></td>
+<td><code>investment_aum</code></td>
+</tr>
+<tr>
+<td><strong>SLUG-3</strong></td>
+<td>Domain prefix first</td>
+<td><code>investment-*</code></td>
+<td><code>aum-investment</code></td>
+</tr>
+<tr>
+<td><strong>SLUG-4</strong></td>
+<td>Max 4 words</td>
+<td><code>investment-aum-reporting</code></td>
+<td><code>investment-monthly-aum-performance-reporting-summary</code></td>
+</tr>
+<tr>
+<td><strong>SLUG-5</strong></td>
+<td>No application names</td>
+<td><code>investment-customer</code></td>
+<td><code>edi-customer</code></td>
+</tr>
+<tr>
+<td><strong>SLUG-6</strong></td>
+<td>No abbreviations (except domain)</td>
+<td><code>investment-profitability</code></td>
+<td><code>inv-prof</code></td>
+</tr>
+<tr>
+<td><strong>SLUG-7</strong></td>
+<td>Purpose-oriented</td>
+<td><code>investment-aum-reporting</code></td>
+<td><code>investment-aum-table</code></td>
+</tr>
+</tbody></table>
+<h3>4.3 Domain Prefixes</h3>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Prefix</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Investment</td>
+<td><code>investment-</code></td>
+<td><code>investment-aum-reporting</code></td>
+</tr>
+<tr>
+<td>MIB (BU level)</td>
+<td><code>mib-</code></td>
+<td><code>mib-segmentation</code></td>
+</tr>
+<tr>
+<td>Retail</td>
+<td><code>retail-</code></td>
+<td><code>retail-customer-base</code></td>
+</tr>
+<tr>
+<td>Corporate</td>
+<td><code>corporate-</code></td>
+<td><code>corporate-client-exposure</code></td>
+</tr>
+<tr>
+<td>Finance</td>
+<td><code>finance-</code></td>
+<td><code>finance-profitability</code></td>
+</tr>
+<tr>
+<td>Reference</td>
+<td><code>ref-</code></td>
+<td><code>ref-countries</code></td>
+</tr>
+<tr>
+<td>Shared</td>
+<td><code>shared-</code></td>
+<td><code>shared-customer-master</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>5. Title (Business Name)</h2>
+<h3>5.1 Format</h3>
+<pre><code>{Domain} {Business Value/Purpose} [for {Use Case}]
+
+Examples:
+- &quot;Investment AUM Performance Reporting&quot;
+- &quot;Investment Client Portfolio Overview&quot;
+- &quot;MIB Client Segmentation for Campaign Targeting&quot;
+- &quot;ISO Country Reference for Compliance&quot;
+</code></pre>
+<h3>5.2 Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Rule</th>
+<th>Good Example</th>
+<th>Bad Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>TITLE-1</strong></td>
+<td>Must state business purpose</td>
+<td>&quot;Investment AUM Performance Reporting&quot;</td>
+<td>&quot;Investment AUM&quot;</td>
+</tr>
+<tr>
+<td><strong>TITLE-2</strong></td>
+<td>Can include target use case</td>
+<td>&quot;...for Management Reporting&quot;</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>TITLE-3</strong></td>
+<td>No entity-only names</td>
+<td>&quot;Investment Client Overview&quot;</td>
+<td>&quot;Investment Customer Master&quot;</td>
+</tr>
+<tr>
+<td><strong>TITLE-4</strong></td>
+<td>Human readable (Title Case)</td>
+<td>&quot;Investment AUM&quot;</td>
+<td>&quot;investment-aum&quot;</td>
+</tr>
+<tr>
+<td><strong>TITLE-5</strong></td>
+<td>No technical jargon</td>
+<td>&quot;Client Segmentation&quot;</td>
+<td>&quot;Customer Dimension Table&quot;</td>
+</tr>
+<tr>
+<td><strong>TITLE-6</strong></td>
+<td>No application names</td>
+<td>&quot;Investment Client&quot;</td>
+<td>&quot;EDI Customer&quot;</td>
+</tr>
+</tbody></table>
+<h3>5.3 Purpose Keywords</h3>
+<p>Use these to clarify business value:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Keywords</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Reporting</strong></td>
+<td>Reporting, Analysis, Overview, Summary, Dashboard</td>
+</tr>
+<tr>
+<td><strong>Operations</strong></td>
+<td>Processing, Tracking, Monitoring, Management</td>
+</tr>
+<tr>
+<td><strong>Analytics</strong></td>
+<td>Analytics, Insights, Performance, Trends</td>
+</tr>
+<tr>
+<td><strong>Reference</strong></td>
+<td>Reference, Master, Catalog, Registry</td>
+</tr>
+<tr>
+<td><strong>Compliance</strong></td>
+<td>Compliance, Regulatory, Audit, Governance</td>
+</tr>
+</tbody></table>
+<h3>5.4 Examples: Bad → Good</h3>
+<table>
+<thead>
+<tr>
+<th>Bad (Entity-Only)</th>
+<th>Good (Purpose-Driven)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Investment Customer Master</td>
+<td>Investment Client Portfolio Overview</td>
+</tr>
+<tr>
+<td>EDI AUM</td>
+<td>Investment AUM Performance Reporting</td>
+</tr>
+<tr>
+<td>EDI Sales</td>
+<td>Investment Transaction Volume Analysis</td>
+</tr>
+<tr>
+<td>MIB Segments</td>
+<td>MIB Client Segmentation for Targeting</td>
+</tr>
+<tr>
+<td>Countries Table</td>
+<td>ISO Country Reference</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>6. Anti-Patterns</h2>
+<h3>6.1 Application Names in DP Names</h3>
+<pre><code>❌ FORBIDDEN:
+- edi-customer
+- ams-account
+- siebel-contact
+- dp-edi-aum
+
+✓ CORRECT:
+- investment-customer
+- retail-account
+- crm-contact
+- investment-aum-reporting
+</code></pre>
+<p><strong>Reason:</strong> Data Products should be source-agnostic. If source system changes, name should remain valid.</p>
+<h3>6.2 Technical Terms in Titles</h3>
+<pre><code>❌ FORBIDDEN:
+- &quot;Investment Customer Dimension&quot;
+- &quot;AUM Fact Table&quot;
+- &quot;Segment SCD Type 2&quot;
+
+✓ CORRECT:
+- &quot;Investment Client Overview&quot;
+- &quot;Investment AUM Reporting&quot;
+- &quot;MIB Segment History&quot;
+</code></pre>
+<h3>6.3 Entity-Only Names</h3>
+<pre><code>❌ FORBIDDEN:
+- &quot;Customer Master&quot;
+- &quot;Product Catalog&quot;
+- &quot;Transaction Data&quot;
+
+✓ CORRECT:
+- &quot;Investment Client Portfolio Overview&quot;
+- &quot;Investment Securities Catalog for Trading&quot;
+- &quot;Investment Transaction Analysis&quot;
+</code></pre>
+<hr>
+<h2>7. Complete Examples</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Slug</th>
+<th>Title</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rbcz:mib:investment:customer</code></td>
+<td><code>investment-client-overview</code></td>
+<td>Investment Client Portfolio Overview</td>
+</tr>
+<tr>
+<td><code>rbcz:mib:investment:aum</code></td>
+<td><code>investment-aum-reporting</code></td>
+<td>Investment AUM Performance Reporting</td>
+</tr>
+<tr>
+<td><code>rbcz:mib:investment:profitability</code></td>
+<td><code>investment-profitability</code></td>
+<td>Investment Gross Income Analysis</td>
+</tr>
+<tr>
+<td><code>rbcz:mib:investment:sales</code></td>
+<td><code>investment-sales-volume</code></td>
+<td>Investment Transaction Volume Analysis</td>
+</tr>
+<tr>
+<td><code>rbcz:mib:investment:portfolio</code></td>
+<td><code>investment-portfolio-status</code></td>
+<td>Investment Portfolio Current Status</td>
+</tr>
+<tr>
+<td><code>rbcz:mib:investment:position</code></td>
+<td><code>investment-position-overview</code></td>
+<td>Investment Position Holdings Overview</td>
+</tr>
+<tr>
+<td><code>rbcz:mib:investment:agreement</code></td>
+<td><code>investment-agreement-registry</code></td>
+<td>Investment Agreement Registry</td>
+</tr>
+<tr>
+<td><code>rbcz:mib:investment:campaign-candidates</code></td>
+<td><code>investment-campaign-base</code></td>
+<td>Investment CRM Campaign Candidates</td>
+</tr>
+<tr>
+<td><code>rbcz:mib:segments</code></td>
+<td><code>mib-segmentation</code></td>
+<td>MIB Client Segmentation for Targeting</td>
+</tr>
+<tr>
+<td><code>rbcz:mib:customer</code></td>
+<td><code>mib-client-base</code></td>
+<td>MIB Client Base for Analytics</td>
+</tr>
+<tr>
+<td><code>rbcz:ref:countries</code></td>
+<td><code>ref-countries</code></td>
+<td>ISO Country Reference</td>
+</tr>
+<tr>
+<td><code>rbcz:ref:currencies</code></td>
+<td><code>ref-currencies</code></td>
+<td>ISO Currency Reference</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>8. Migration from Legacy Names</h2>
+<h3>8.1 EDI-Prefixed Products</h3>
+<table>
+<thead>
+<tr>
+<th>Current Name</th>
+<th>New ID</th>
+<th>New Slug</th>
+<th>New Title</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DP_EDI_AUM</td>
+<td><code>rbcz:mib:investment:aum</code></td>
+<td><code>investment-aum-reporting</code></td>
+<td>Investment AUM Performance Reporting</td>
+</tr>
+<tr>
+<td>DP_EDI_AGG_CLIENT</td>
+<td><code>rbcz:mib:investment:client-counts</code></td>
+<td><code>investment-client-counts</code></td>
+<td>Investment Client Acquisition Tracking</td>
+</tr>
+<tr>
+<td>DP_EDI_PROFITABILITY</td>
+<td><code>rbcz:mib:investment:profitability</code></td>
+<td><code>investment-profitability</code></td>
+<td>Investment Gross Income Analysis</td>
+</tr>
+<tr>
+<td>DP_EDI_SALES</td>
+<td><code>rbcz:mib:investment:sales</code></td>
+<td><code>investment-sales-volume</code></td>
+<td>Investment Transaction Volume Analysis</td>
+</tr>
+<tr>
+<td>DP_EDI_APP_USAGE</td>
+<td><code>rbcz:mib:investment:app-usage</code></td>
+<td><code>investment-app-usage</code></td>
+<td>Investment Mobile App Usage Metrics</td>
+</tr>
+<tr>
+<td>EDI Customer</td>
+<td><code>rbcz:mib:investment:customer</code></td>
+<td><code>investment-client-overview</code></td>
+<td>Investment Client Portfolio Overview</td>
+</tr>
+<tr>
+<td>EDI Portfolio</td>
+<td><code>rbcz:mib:investment:portfolio</code></td>
+<td><code>investment-portfolio-status</code></td>
+<td>Investment Portfolio Current Status</td>
+</tr>
+<tr>
+<td>EDI Position</td>
+<td><code>rbcz:mib:investment:position</code></td>
+<td><code>investment-position-overview</code></td>
+<td>Investment Position Holdings Overview</td>
+</tr>
+</tbody></table>
+<h3>8.2 Migration Strategy</h3>
+<ol>
+<li><strong>Add new names</strong> - Keep old names as aliases temporarily</li>
+<li><strong>Update catalog</strong> - New names primary, old as &quot;also known as&quot;</li>
+<li><strong>Notify consumers</strong> - Communication about name changes</li>
+<li><strong>Deprecate old</strong> - Set deprecation date</li>
+<li><strong>Remove old</strong> - After transition period</li>
+</ol>
+<hr>
+<h2>9. Validation Checklist</h2>
+<p>Before publishing a Data Product, verify:</p>
+<ul>
+<li><input disabled="" type="checkbox"> ID follows domain path format (<code>entity:bu:domain:concept</code>)</li>
+<li><input disabled="" type="checkbox"> ID is lowercase with colons only</li>
+<li><input disabled="" type="checkbox"> Slug is lowercase with hyphens only</li>
+<li><input disabled="" type="checkbox"> Slug has domain prefix</li>
+<li><input disabled="" type="checkbox"> Slug is max 4 words</li>
+<li><input disabled="" type="checkbox"> Slug contains no application names</li>
+<li><input disabled="" type="checkbox"> Title states business purpose</li>
+<li><input disabled="" type="checkbox"> Title is in Title Case</li>
+<li><input disabled="" type="checkbox"> Title contains no technical jargon</li>
+<li><input disabled="" type="checkbox"> All three names are consistent (refer to same product)</li>
+</ul>
+<hr>
+<h2>10. Revision History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0</td>
+<td>2026-01-08</td>
+<td>Banking Domain Expert</td>
+<td>Initial version</td>
+</tr>
+</tbody></table>
+
+</body></html>

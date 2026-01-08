@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCC Domain - Data Product Catalog</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            color: #1f2328;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: .3em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; border-bottom: none; }
+        h4, h5, h6 { border-bottom: none; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+        code {
+            background: rgba(175,184,193,0.2);
+            padding: .2em .4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+        pre code { background: none; padding: 0; font-size: 100%; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 6px 13px;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background: #f6f8fa; }
+        blockquote {
+            border-left: .25em solid #d1d9e0;
+            margin: 0;
+            padding: 0 1em;
+            color: #656d76;
+        }
+        hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+        ul, ol { padding-left: 2em; }
+        li + li { margin-top: .25em; }
+    </style>
+</head>
+<body>
+<h1>GCC Domain - Data Product Catalog</h1>
+<blockquote>
+<p><strong>Status:</strong> DRAFT
+<strong>Version:</strong> 3.6
+<strong>Created:</strong> 2026-01-08
+<strong>Owner:</strong> Data Mesh Consultant
+<strong>Source:</strong> MVP2: GCC Storage (Vil Shakirov, 07.01.2026)
+<strong>Based on:</strong> GOV-DM-001, GOV-DM-003, QAR session 2026-01-08</p>
+</blockquote>
+<hr>
+<h2>1. Executive Summary</h2>
+<p>This catalog defines Data Products for <strong>GCC (Group of Connected Clients)</strong> - a subdomain of Corporate BU for identifying and managing connected parties.</p>
+<h3>Design Principles</h3>
+<ol>
+<li><strong>Every DP must have a clear purpose</strong> - no known purpose = no product needed</li>
+<li><strong>Single Source of Truth</strong> - identity data at RBCZ level (concepts), instances in domains</li>
+<li><strong>Every DP must be independently useful</strong> - makes sense even without others</li>
+</ol>
+<h3>Domain Placement</h3>
+<pre><code>RBCZ (Enterprise)
+├── countries                          ← Reference (REUSE)
+├── currencies                         ← Reference (REUSE)
+├── [Concepts: Party, NaturalPerson, LegalEntity, Customer]
+│
+└── Corporate (BU)
+    └── GCC (Subdomain)
+        ├── gcc-natural-persons        ← Natural persons in GCC
+        ├── gcc-legal-entities         ← Legal entities in GCC
+        ├── gcc-members                ← GCC membership (role)
+        ├── gcc-relations              ← Ownership &amp; control
+        ├── gcc-groups                 ← Aggregated structure
+        ├── gcc-requests               ← Request audit trail
+        └── gcc-financials             ← Financial indicators
+</code></pre>
+<h3>Data Product Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Count</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L1 - Shared Reference</td>
+<td>2</td>
+<td>RBCZ (reuse)</td>
+</tr>
+<tr>
+<td>L2 - Domain Master Data</td>
+<td>5</td>
+<td>GCC Product Owner</td>
+</tr>
+<tr>
+<td>L3 - Analytics</td>
+<td>2</td>
+<td>GCC Product Owner</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>9</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3>Relationship Model</h3>
+<pre><code>gcc-natural-persons    gcc-legal-entities
+(WHO they are)         (WHO they are)
+        │                     │
+        └────────┬────────────┘
+                 │ REFERENCES (party_id + party_type)
+                 ▼
+           gcc-members
+           (ROLE in GCC)
+                 │
+                 │ REFERENCES (parent/child member_id)
+                 ▼
+           gcc-relations
+           (HOW they are connected)
+                 │
+                 │ AGGREGATES
+                 ▼
+            gcc-groups
+            (group STRUCTURE)
+</code></pre>
+<hr>
+<h2>2. Reference Data Products (REUSE)</h2>
+<p>These DPs exist at RBCZ level - GCC consumes them.</p>
+<h3>DP-REF-001: countries</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>rbcz:countries</code></td>
+</tr>
+<tr>
+<td><strong>Purpose</strong></td>
+<td><strong>What countries exist?</strong> ISO 3166-1 codes for country_code validation.</td>
+</tr>
+<tr>
+<td><strong>GCC Usage</strong></td>
+<td><code>country_code</code> in gcc-natural-persons, gcc-legal-entities</td>
+</tr>
+</tbody></table>
+<h3>DP-REF-002: currencies</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>rbcz:currencies</code></td>
+</tr>
+<tr>
+<td><strong>Purpose</strong></td>
+<td><strong>What currencies exist?</strong> ISO 4217 codes for ownership deposits.</td>
+</tr>
+<tr>
+<td><strong>GCC Usage</strong></td>
+<td><code>currency</code> in gcc-relations (ownership)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>3. GCC Data Products</h2>
+<p><strong>Owner:</strong> GCC Product Owner (under Corporate BU)
+<strong>Domain Path:</strong> <code>RBCZ:Corporate:GCC</code></p>
+<hr>
+<h3>DP-GCC-001: gcc-natural-persons</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>rbcz:corporate:gcc:natural-persons</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>GCC Natural Persons</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>GCC Product Owner</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>L2 - Domain Master Data</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:NaturalPerson</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> <strong>Which natural persons are in GCC groups?</strong></p>
+<p>Contains identification data of natural persons who are GCC group members. Independently useful for natural person reporting.</p>
+<p><strong>Business Questions:</strong></p>
+<ul>
+<li>Who is this natural person? (name, date of birth)</li>
+<li>Which natural persons are in GCC?</li>
+<li>How many natural persons are in GCC groups?</li>
+</ul>
+<p><strong>Schema:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>natural_person_id</td>
+<td>bigint</td>
+<td>PK</td>
+<td>-</td>
+</tr>
+<tr>
+<td>party_id</td>
+<td>varchar(50)</td>
+<td>Business key (unique)</td>
+<td>fibo-fnd:PartyIdentifier</td>
+</tr>
+<tr>
+<td>first_name</td>
+<td>varchar(50)</td>
+<td>First name</td>
+<td>fibo-fnd:GivenName</td>
+</tr>
+<tr>
+<td>last_name</td>
+<td>varchar(50)</td>
+<td>Last name</td>
+<td>fibo-fnd:FamilyName</td>
+</tr>
+<tr>
+<td>date_of_birth</td>
+<td>date</td>
+<td>Date of birth</td>
+<td>fibo-fnd:DateOfBirth</td>
+</tr>
+<tr>
+<td>country_code</td>
+<td>varchar(50)</td>
+<td>Country (ISO 3166-1)</td>
+<td>fibo-fnd:Country</td>
+</tr>
+<tr>
+<td>address</td>
+<td>text</td>
+<td>Address</td>
+<td>fibo-fnd:Address</td>
+</tr>
+<tr>
+<td>source_id</td>
+<td>varchar(50)</td>
+<td>ID in source system</td>
+<td>-</td>
+</tr>
+<tr>
+<td>source_name</td>
+<td>varchar(50)</td>
+<td>Source name</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>R→ <code>rbcz:countries</code> (country_code validation)</li>
+</ul>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li><code>gcc-members</code> (REFERENCES)</li>
+<li>MS PaaS Application</li>
+</ul>
+<hr>
+<h3>DP-GCC-002: gcc-legal-entities</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>rbcz:corporate:gcc:legal-entities</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>GCC Legal Entities</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>GCC Product Owner</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>L2 - Domain Master Data</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:LegalEntity</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> <strong>Which legal entities are in GCC groups?</strong></p>
+<p>Contains identification data of companies that are GCC group members. Independently useful for legal entity reporting.</p>
+<p><strong>Business Questions:</strong></p>
+<ul>
+<li>Who is this company? (business ID, tax ID, name)</li>
+<li>Which companies are in GCC?</li>
+<li>How many legal entities are in GCC groups?</li>
+</ul>
+<p><strong>Schema:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>legal_entity_id</td>
+<td>bigint</td>
+<td>PK</td>
+<td>-</td>
+</tr>
+<tr>
+<td>party_id</td>
+<td>varchar(50)</td>
+<td>Business key (unique)</td>
+<td>fibo-fnd:PartyIdentifier</td>
+</tr>
+<tr>
+<td>name</td>
+<td>varchar(50)</td>
+<td>Company name</td>
+<td>fibo-fnd:Name</td>
+</tr>
+<tr>
+<td>business_id_number</td>
+<td>varchar(50)</td>
+<td>Business ID (unique)</td>
+<td>fibo-fnd:BusinessIdentifier</td>
+</tr>
+<tr>
+<td>tax_id_number</td>
+<td>varchar(50)</td>
+<td>Tax ID (unique)</td>
+<td>fibo-fnd:TaxIdentificationNumber</td>
+</tr>
+<tr>
+<td>country_code</td>
+<td>varchar(50)</td>
+<td>Country (ISO 3166-1)</td>
+<td>fibo-fnd:Country</td>
+</tr>
+<tr>
+<td>address</td>
+<td>text</td>
+<td>Registered address</td>
+<td>fibo-fnd:Address</td>
+</tr>
+<tr>
+<td>source_id</td>
+<td>varchar(50)</td>
+<td>ID in source system</td>
+<td>-</td>
+</tr>
+<tr>
+<td>source_name</td>
+<td>varchar(50)</td>
+<td>Source name</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<p><strong>Unique Constraints:</strong></p>
+<ul>
+<li><code>party_id</code> (UNIQUE)</li>
+<li><code>business_id_number</code> (UNIQUE)</li>
+<li><code>tax_id_number</code> (UNIQUE)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>R→ <code>rbcz:countries</code> (country_code validation)</li>
+</ul>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li><code>gcc-members</code> (REFERENCES)</li>
+<li>MS PaaS Application</li>
+</ul>
+<hr>
+<h3>DP-GCC-003: gcc-members</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>rbcz:corporate:gcc:members</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>GCC Members</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>GCC Product Owner</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>L2 - Domain Master Data</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>- (GCC-specific)</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> <strong>Who is member of which GCC group and what role do they have?</strong></p>
+<p>Links identities (natural-persons, legal-entities) with GCC groups. Contains GCC-specific attributes (is_head, cribis_id). Unified reference for gcc-relations.</p>
+<p><strong>Business Questions:</strong></p>
+<ul>
+<li>Who is a member of GCC group X?</li>
+<li>Who is the head of the GCC group?</li>
+<li>Who are all GCC members? (UC2: External Account Income Calculator)</li>
+</ul>
+<p><strong>Schema:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>member_id</td>
+<td>bigint</td>
+<td>PK</td>
+</tr>
+<tr>
+<td>party_id</td>
+<td>varchar(50)</td>
+<td>FK → natural-persons OR legal-entities</td>
+</tr>
+<tr>
+<td>party_type</td>
+<td>varchar(20)</td>
+<td>&#39;natural&#39; / &#39;legal&#39; (discriminator)</td>
+</tr>
+<tr>
+<td>is_head_of_gcc</td>
+<td>boolean</td>
+<td>Is head of GCC group?</td>
+</tr>
+<tr>
+<td>cribis_id</td>
+<td>varchar(50)</td>
+<td>CRIBIS identifier</td>
+</tr>
+<tr>
+<td>source_id</td>
+<td>varchar(50)</td>
+<td>ID in source system</td>
+</tr>
+<tr>
+<td>source_name</td>
+<td>varchar(50)</td>
+<td>Source name</td>
+</tr>
+</tbody></table>
+<p><strong>API Operations:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Method</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>POST /subject</code></td>
+<td>upsert_member</td>
+<td>Real-time</td>
+</tr>
+</tbody></table>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>R→ <code>gcc-natural-persons</code> (party_id WHERE party_type = &#39;natural&#39;)</li>
+<li>R→ <code>gcc-legal-entities</code> (party_id WHERE party_type = &#39;legal&#39;)</li>
+</ul>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li><code>gcc-relations</code> (REFERENCES as parent/child)</li>
+<li><code>gcc-groups</code> (AGGREGATES)</li>
+<li>External Account Income Calculator (UC2)</li>
+<li>MS PaaS Application</li>
+</ul>
+<hr>
+<h3>DP-GCC-004: gcc-relations</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>rbcz:corporate:gcc:relations</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>GCC Relations</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>GCC Product Owner</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>L2 - Domain Master Data</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-be:Ownership, fibo-be:Control</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> <strong>What are ownership and control relations between GCC members?</strong></p>
+<p>Ownership (who owns whom, what %) and Control (who controls whom) relations. Foundation for GCC group calculation.</p>
+<p><strong>Business Questions:</strong></p>
+<ul>
+<li>Who owns this company and what %?</li>
+<li>Who controls this person/company?</li>
+<li>What is the ownership chain from head to member?</li>
+<li>Is this relation historical or current?</li>
+</ul>
+<p><strong>Schema:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>relation_id</td>
+<td>bigint</td>
+<td>PK</td>
+</tr>
+<tr>
+<td>parent_member_id</td>
+<td>bigint</td>
+<td>FK → gcc-members (owner/controller)</td>
+</tr>
+<tr>
+<td>child_member_id</td>
+<td>bigint</td>
+<td>FK → gcc-members (owned/controlled)</td>
+</tr>
+<tr>
+<td>relation_type</td>
+<td>varchar(20)</td>
+<td>&#39;ownership&#39; / &#39;control&#39;</td>
+</tr>
+<tr>
+<td>relation_name</td>
+<td>varchar(50)</td>
+<td>Relation description</td>
+</tr>
+<tr>
+<td>relation_start_date</td>
+<td>date</td>
+<td>Relation start date</td>
+</tr>
+<tr>
+<td>historic</td>
+<td>boolean</td>
+<td>Is historical record?</td>
+</tr>
+<tr>
+<td>shares_percentage</td>
+<td>numeric</td>
+<td>Ownership share % (only ownership)</td>
+</tr>
+<tr>
+<td>deposit</td>
+<td>numeric</td>
+<td>Deposit (only ownership)</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>varchar(3)</td>
+<td>Deposit currency ISO 4217 (only ownership)</td>
+</tr>
+<tr>
+<td>reliability_id</td>
+<td>varchar(2)</td>
+<td>Data quality indicator</td>
+</tr>
+<tr>
+<td>request_id</td>
+<td>bigint</td>
+<td>FK → gcc-requests (audit trail)</td>
+</tr>
+<tr>
+<td>source_relation_id</td>
+<td>varchar(50)</td>
+<td>Relation ID in source</td>
+</tr>
+<tr>
+<td>source_name</td>
+<td>varchar(50)</td>
+<td>Source name</td>
+</tr>
+</tbody></table>
+<p><strong>API Operations:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Method</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>POST /relation</code></td>
+<td>upsert_relation</td>
+<td>Real-time</td>
+</tr>
+</tbody></table>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>R→ <code>gcc-members</code> (parent_member_id)</li>
+<li>R→ <code>gcc-members</code> (child_member_id)</li>
+<li>R→ <code>rbcz:currencies</code> (currency)</li>
+<li>R→ <code>gcc-requests</code> (request_id - audit trail)</li>
+</ul>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li><code>gcc-groups</code> (AGGREGATES)</li>
+<li>MS PaaS Application</li>
+</ul>
+<hr>
+<h3>DP-GCC-005: gcc-groups</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>rbcz:corporate:gcc:groups</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>GCC Groups</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>GCC Product Owner</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>L3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>- (GCC-specific)</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> <strong>What is the complete GCC group structure?</strong></p>
+<p>Aggregated view of GCC groups - head, members, depth, total ownership. Derived from gcc-members and gcc-relations.</p>
+<p><strong>Business Questions:</strong></p>
+<ul>
+<li>What is the structure of company X&#39;s GCC group?</li>
+<li>Who is the ultimate beneficial owner (head)?</li>
+<li>How many members does the group have?</li>
+<li>What is the ownership chain depth?</li>
+</ul>
+<p><strong>Derived Schema:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Calculation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>group_id</td>
+<td>bigint</td>
+<td>PK (derived from head)</td>
+</tr>
+<tr>
+<td>head_member_id</td>
+<td>bigint</td>
+<td>Member with is_head_of_gcc = true</td>
+</tr>
+<tr>
+<td>member_count</td>
+<td>integer</td>
+<td>COUNT(DISTINCT members in group)</td>
+</tr>
+<tr>
+<td>natural_person_count</td>
+<td>integer</td>
+<td>COUNT(members WHERE party_type = &#39;natural&#39;)</td>
+</tr>
+<tr>
+<td>legal_entity_count</td>
+<td>integer</td>
+<td>COUNT(members WHERE party_type = &#39;legal&#39;)</td>
+</tr>
+<tr>
+<td>total_ownership_pct</td>
+<td>numeric</td>
+<td>SUM(shares_percentage) from root</td>
+</tr>
+<tr>
+<td>group_depth</td>
+<td>integer</td>
+<td>MAX(path length from head)</td>
+</tr>
+</tbody></table>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>A→ <code>gcc-members</code> (counts, head identification)</li>
+<li>A→ <code>gcc-relations</code> (traverses graph, calculates depth)</li>
+</ul>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li>MS PaaS Application</li>
+<li>External Account Income Calculator (UC2)</li>
+</ul>
+<hr>
+<h3>DP-GCC-006: gcc-requests</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>rbcz:corporate:gcc:requests</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>GCC Requests</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>GCC Product Owner</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>L2 - Domain Master Data</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>- (GCC-specific)</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> <strong>What GCC requests were submitted and what is their status?</strong></p>
+<p>Audit trail of all GCC requests from MS PaaS. Enables payment verification per request and change traceability.</p>
+<p><strong>Business Questions:</strong></p>
+<ul>
+<li>When was this GCC request submitted?</li>
+<li>Which application created the request?</li>
+<li>What changes occurred within this request?</li>
+<li>Was the payment processed correctly for this request?</li>
+</ul>
+<p><strong>Schema:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>request_id</td>
+<td>bigint</td>
+<td>PK</td>
+</tr>
+<tr>
+<td>application_id</td>
+<td>varchar(50)</td>
+<td>Source application</td>
+</tr>
+<tr>
+<td>party_id</td>
+<td>varchar(50)</td>
+<td>Requesting party</td>
+</tr>
+<tr>
+<td>source_name</td>
+<td>varchar(50)</td>
+<td>Source name</td>
+</tr>
+<tr>
+<td>source_id</td>
+<td>varchar(50)</td>
+<td>Request ID in source</td>
+</tr>
+<tr>
+<td>request_date</td>
+<td>date</td>
+<td>Request date</td>
+</tr>
+<tr>
+<td>status</td>
+<td>varchar(20)</td>
+<td>Request status</td>
+</tr>
+</tbody></table>
+<p><strong>API Operations:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Method</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>POST /request</code></td>
+<td>upsert_request</td>
+<td>Real-time</td>
+</tr>
+</tbody></table>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>(none)</li>
+</ul>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li><code>gcc-relations</code> (REFERENCES via request_id)</li>
+<li>MS PaaS Application</li>
+<li>Audit / Compliance</li>
+</ul>
+<hr>
+<h3>DP-GCC-007: gcc-financials</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>rbcz:corporate:gcc:financials</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>GCC Financials</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>GCC Product Owner</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>L3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:FinancialStatement</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> <strong>What are the financial indicators of GCC members?</strong></p>
+<p>Key financial data of legal entities in GCC for client outreach, campaigns, and segmentation.</p>
+<p><strong>Business Questions:</strong></p>
+<ul>
+<li>What is this company&#39;s revenue?</li>
+<li>What is the GCC member&#39;s profit/loss?</li>
+<li>How to segment GCC members by financial indicators?</li>
+<li>Which companies in GCC are suitable for campaign X?</li>
+</ul>
+<p><strong>Schema:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fin_id</td>
+<td>bigint</td>
+<td>PK</td>
+</tr>
+<tr>
+<td>member_id</td>
+<td>bigint</td>
+<td>FK → gcc-members (legal entities only)</td>
+</tr>
+<tr>
+<td>to_date</td>
+<td>date</td>
+<td>Report date</td>
+</tr>
+<tr>
+<td>period</td>
+<td>varchar(50)</td>
+<td>Period (Q1, H1, Y)</td>
+</tr>
+<tr>
+<td>parameter_name</td>
+<td>varchar(50)</td>
+<td>Indicator name (revenue, profit, ...)</td>
+</tr>
+<tr>
+<td>parameter_amount</td>
+<td>numeric</td>
+<td>Value</td>
+</tr>
+</tbody></table>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>R→ <code>gcc-members</code> (member_id, party_type = &#39;legal&#39; only)</li>
+</ul>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li>Corporate Marketing (campaigns, outreach)</li>
+<li>Segmentation Engine</li>
+<li>MS PaaS Application</li>
+</ul>
+<hr>
+<h2>4. Dependency Graph</h2>
+<h3>Legend</h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Relationship</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>R→</strong></td>
+<td>REFERENCES</td>
+<td>FK lookup</td>
+</tr>
+<tr>
+<td><strong>A→</strong></td>
+<td>AGGREGATES</td>
+<td>Summarizes/counts</td>
+</tr>
+</tbody></table>
+<h3>Complete Graph</h3>
+<pre><code>L1 SHARED REFERENCE (RBCZ)
+══════════════════════════
+  rbcz:countries          rbcz:currencies
+        │                       │
+        │ R→                    │ R→
+        ▼                       ▼
+────────────────────────────────────────────────────────────────
+
+L2 DOMAIN MASTER DATA (GCC)
+═══════════════════════════
+
+  gcc-natural-persons     gcc-legal-entities
+  (WHO: physical persons) (WHO: companies)
+        │                       │
+        └───────────┬───────────┘
+                    │ R→ (party_id + party_type)
+                    ▼
+              gcc-members
+              (ROLE: membership in GCC)
+                    │
+        ┌───────────┴───────────┐
+        │ R→                    │ R→
+        ▼                       ▼
+  gcc-relations           gcc-financials
+  (HOW: ownership/control) (WHAT: financial data)
+        │
+        ├──R→ rbcz:currencies
+        └──R→ gcc-requests (audit trail)
+
+────────────────────────────────────────────────────────────────
+
+L3 ANALYTICS (GCC)
+══════════════════
+
+  gcc-relations
+        │
+        │ A→ (aggregates)
+        ▼
+  gcc-groups
+  (RESULT: complete group structure)
+</code></pre>
+<p><strong>Legend:</strong></p>
+<ul>
+<li><code>R→</code> = REFERENCES (FK lookup)</li>
+<li><code>A→</code> = AGGREGATES (calculates from)</li>
+<li>WHO/ROLE/HOW/WHAT/RESULT = semantic purpose</li>
+</ul>
+<hr>
+<h2>5. Summary Table</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>DP ID</th>
+<th>Name</th>
+<th>Purpose</th>
+<th>Contained Concepts</th>
+<th>Referenced Concepts</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><code>rbcz:countries</code></td>
+<td>Countries</td>
+<td>What countries exist?</td>
+<td><code>Country</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>rbcz:currencies</code></td>
+<td>Currencies</td>
+<td>What currencies exist?</td>
+<td><code>Currency</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>rbcz:corporate:gcc:natural-persons</code></td>
+<td>GCC Natural Persons</td>
+<td>Which natural persons are in GCC?</td>
+<td><code>Natural Person</code>, <code>Address</code></td>
+<td><code>Country</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>rbcz:corporate:gcc:legal-entities</code></td>
+<td>GCC Legal Entities</td>
+<td>Which legal entities are in GCC?</td>
+<td><code>Legal Entity</code>, <code>Address</code></td>
+<td><code>Country</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>rbcz:corporate:gcc:members</code></td>
+<td>GCC Members</td>
+<td>Who is member of which GCC group?</td>
+<td><code>GCC Membership</code></td>
+<td><code>Natural Person</code>, <code>Legal Entity</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>rbcz:corporate:gcc:relations</code></td>
+<td>GCC Relations</td>
+<td>What are ownership/control relations?</td>
+<td><code>Ownership</code>, <code>Control Relation</code></td>
+<td><code>GCC Membership</code>, <code>Currency</code>, <code>GCC Request</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>rbcz:corporate:gcc:requests</code></td>
+<td>GCC Requests</td>
+<td>What GCC requests were submitted?</td>
+<td><code>GCC Request</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>rbcz:corporate:gcc:groups</code></td>
+<td>GCC Groups</td>
+<td>What is the GCC group structure?</td>
+<td><code>GCC Group</code></td>
+<td><code>GCC Membership</code>, <code>Ownership</code>, <code>Control Relation</code></td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>rbcz:corporate:gcc:financials</code></td>
+<td>GCC Financials</td>
+<td>What are member financial indicators?</td>
+<td><code>Financial Statement</code></td>
+<td><code>GCC Membership</code></td>
+</tr>
+</tbody></table>
+<h3>Concept Summary</h3>
+<p><strong>Total concepts:</strong> 12</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Concepts</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L1 - Shared Reference</td>
+<td><code>Country</code>, <code>Currency</code></td>
+</tr>
+<tr>
+<td>L2 - Domain Master Data</td>
+<td><code>Natural Person</code>, <code>Legal Entity</code>, <code>Address</code>, <code>GCC Membership</code>, <code>Ownership</code>, <code>Control Relation</code>, <code>GCC Request</code></td>
+</tr>
+<tr>
+<td>L3 - Analytics</td>
+<td><code>GCC Group</code>, <code>Financial Statement</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>6. Consumers</h2>
+<table>
+<thead>
+<tr>
+<th>Consumer</th>
+<th>Use Case</th>
+<th>DPs Used</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MS PaaS Application</strong></td>
+<td>UC1: Store GCC groups</td>
+<td>All (write + read)</td>
+</tr>
+<tr>
+<td><strong>External Account Income Calculator</strong></td>
+<td>UC2: Read member names</td>
+<td>gcc-members, gcc-groups</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>7. Governance Compliance</h2>
+<h3>GOV-DM-001 Compliance</h3>
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Domain Ownership</td>
+<td>✓</td>
+<td>GCC Product Owner under Corporate BU</td>
+</tr>
+<tr>
+<td>Data as Product</td>
+<td>✓</td>
+<td>9 DPs, each with clear purpose</td>
+</tr>
+<tr>
+<td>Self-Serve Platform</td>
+<td>✓</td>
+<td>API for writes, Delta Lake for reads</td>
+</tr>
+<tr>
+<td>Federated Governance</td>
+<td>✓</td>
+<td>Uses RBCZ reference data</td>
+</tr>
+</tbody></table>
+<h3>FIBO Alignment</h3>
+<table>
+<thead>
+<tr>
+<th>DP</th>
+<th>FIBO Mapping</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>gcc-natural-persons</td>
+<td>fibo-fnd:NaturalPerson</td>
+</tr>
+<tr>
+<td>gcc-legal-entities</td>
+<td>fibo-fnd:LegalEntity</td>
+</tr>
+<tr>
+<td>gcc-members</td>
+<td>GCC-specific (membership role)</td>
+</tr>
+<tr>
+<td>gcc-relations</td>
+<td>fibo-be:Ownership, fibo-be:Control</td>
+</tr>
+<tr>
+<td>gcc-groups</td>
+<td>GCC-specific (aggregation)</td>
+</tr>
+<tr>
+<td>gcc-requests</td>
+<td>GCC-specific (audit trail)</td>
+</tr>
+<tr>
+<td>gcc-financials</td>
+<td>fibo-fnd:FinancialStatement</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>8. Implementation Roadmap</h2>
+<h3>Phase 1: Identity</h3>
+<ul>
+<li><input disabled="" type="checkbox"> gcc-natural-persons</li>
+<li><input disabled="" type="checkbox"> gcc-legal-entities</li>
+</ul>
+<h3>Phase 2: Membership</h3>
+<ul>
+<li><input disabled="" type="checkbox"> gcc-members</li>
+</ul>
+<h3>Phase 3: Relations</h3>
+<ul>
+<li><input disabled="" type="checkbox"> gcc-relations</li>
+<li><input disabled="" type="checkbox"> gcc-groups</li>
+</ul>
+<h3>Phase 4: Integration</h3>
+<ul>
+<li><input disabled="" type="checkbox"> API endpoints</li>
+<li><input disabled="" type="checkbox"> MS PaaS integration</li>
+<li><input disabled="" type="checkbox"> External Account Income Calculator integration</li>
+</ul>
+<hr>
+<h2>9. Revision History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td>Initial catalog based on MVP2 GCC Storage</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td>QAR refinement: Domain path, Party REFERENCES (not SPECIALIZES), T+1 batch, limited consumers</td>
+</tr>
+<tr>
+<td>2.1</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td>Fixed reference IDs: <code>rbcz:ref:*</code> → <code>rbcz:*</code></td>
+</tr>
+<tr>
+<td>3.0</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td><strong>Major refactoring:</strong> Removed party-master. Added gcc-natural-persons, gcc-legal-entities under GCC. Clear purpose for each DP. gcc-members = membership role (not identity).</td>
+</tr>
+<tr>
+<td>3.1</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td><strong>Restored gcc-requests and gcc-financials:</strong> gcc-requests = audit trail, payment verification; gcc-financials = financial indicators for campaigns and segmentation. Total: 7 → 9 DPs.</td>
+</tr>
+<tr>
+<td>3.2</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td><strong>Aligned Layer terminology with GOV-DM-001 Section 7.1:</strong> L1 (Shared Reference), L2 (Domain Master Data), L3 (Analytics).</td>
+</tr>
+<tr>
+<td>3.3</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td><strong>Added Concept mapping:</strong> Summary table now includes Contained Concepts and Referenced Concepts. Added Concept Summary (12 concepts total). Renamed GCC Member → GCC Membership, Financial Parameter → Financial Statement.</td>
+</tr>
+<tr>
+<td>3.4</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td><strong>Translated to English:</strong> Full document translation per GOV documentation standards.</td>
+</tr>
+<tr>
+<td>3.5</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td><strong>Review fixes:</strong> Removed remaining Czech text (5 occurrences), fixed DP count (7→9).</td>
+</tr>
+<tr>
+<td>3.6</td>
+<td>2026-01-08</td>
+<td>Principal Architect</td>
+<td><strong>Architect review fixes:</strong> (1) Translated &quot;STRUKTURA skupiny&quot;, (2) Removed week estimates from roadmap, (3) Added <code>request_id</code> FK to gcc-relations for audit trail, (4) Fixed dependency graph direction.</td>
+</tr>
+</tbody></table>
+
+</body></html>

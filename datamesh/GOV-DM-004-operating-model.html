@@ -1,34 +1,98 @@
-# GOV-DM-004: Data Mesh Operating Model
-
-> **Status:** ACTIVE
-> **Effective:** 2026-01-08
-> **Owner:** CDO - Lukáš Mazánek
-> **Parent:** [GOV-DM-001-data-mesh-governance.md](GOV-DM-001-data-mesh-governance.md)
-> **Source:** QAR Session with Senior Data Mesh Consultant
-
----
-
-## 1. Executive Summary
-
-This document defines the operating model for Data Mesh at RBCZ, covering:
-- Federated Governance and decision-making processes
-- Self-Serve Platform and tooling
-- Domain Team autonomy and organization
-- Consumer Experience
-- Data Product Lifecycle
-- Quality & SLA enforcement
-
-**Key Principle:**
-> *Domains/Tribes are E2E independent. CDO owns architecture and governance, not data or decisions.*
-
----
-
-## 2. Federated Governance
-
-### 2.1 Decision Model: Hybrid
-
-```
-DECISION MATRIX:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOV-DM-004: Data Mesh Operating Model</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            color: #1f2328;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: .3em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; border-bottom: none; }
+        h4, h5, h6 { border-bottom: none; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+        code {
+            background: rgba(175,184,193,0.2);
+            padding: .2em .4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+        pre code { background: none; padding: 0; font-size: 100%; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 6px 13px;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background: #f6f8fa; }
+        blockquote {
+            border-left: .25em solid #d1d9e0;
+            margin: 0;
+            padding: 0 1em;
+            color: #656d76;
+        }
+        hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+        ul, ol { padding-left: 2em; }
+        li + li { margin-top: .25em; }
+    </style>
+</head>
+<body>
+<h1>GOV-DM-004: Data Mesh Operating Model</h1>
+<blockquote>
+<p><strong>Status:</strong> ACTIVE
+<strong>Effective:</strong> 2026-01-08
+<strong>Owner:</strong> CDO - Lukáš Mazánek
+<strong>Parent:</strong> <a href="GOV-DM-001-data-mesh-governance.md">GOV-DM-001-data-mesh-governance.md</a>
+<strong>Source:</strong> QAR Session with Senior Data Mesh Consultant</p>
+</blockquote>
+<hr>
+<h2>1. Executive Summary</h2>
+<p>This document defines the operating model for Data Mesh at RBCZ, covering:</p>
+<ul>
+<li>Federated Governance and decision-making processes</li>
+<li>Self-Serve Platform and tooling</li>
+<li>Domain Team autonomy and organization</li>
+<li>Consumer Experience</li>
+<li>Data Product Lifecycle</li>
+<li>Quality &amp; SLA enforcement</li>
+</ul>
+<p><strong>Key Principle:</strong></p>
+<blockquote>
+<p><em>Domains/Tribes are E2E independent. CDO owns architecture and governance, not data or decisions.</em></p>
+</blockquote>
+<hr>
+<h2>2. Federated Governance</h2>
+<h3>2.1 Decision Model: Hybrid</h3>
+<pre><code>DECISION MATRIX:
 
 ┌─────────────────────────────┬─────────────────┬─────────────────┐
 │ Decision Type               │ Who Decides     │ Who Reviews     │
@@ -38,12 +102,9 @@ DECISION MATRIX:
 │ New domain                  │ BU Owner + CDO  │ EA Guild        │
 │ Breaking change in DP       │ Domain Owner    │ Consumers+Guild │
 └─────────────────────────────┴─────────────────┴─────────────────┘
-```
-
-### 2.2 Review Process: Checklist-Based with Escalation
-
-```
-DP CREATION FLOW:
+</code></pre>
+<h3>2.2 Review Process: Checklist-Based with Escalation</h3>
+<pre><code>DP CREATION FLOW:
 
   Domain Owner        Automated           Guild Review
   creates DP     →    Checklist     →     (only if FAIL)
@@ -56,24 +117,54 @@ DP CREATION FLOW:
               ▼                   ▼
          Auto-approve      Escalate to guild
          + notification    (async or meeting)
-```
-
-### 2.3 Checklist Criteria
-
-| Criterion | Auto-validation | Manual Review |
-|-----------|-----------------|---------------|
-| Naming convention (GOV-DM-002) | ✅ Yes | - |
-| Domain path exists | ✅ Yes | - |
-| Data Contract YAML schema | ✅ Yes | - |
-| Owner assigned | ✅ Yes | - |
-| Cross-domain dependency | - | ⚠️ Trigger review |
-| PII/GDPR classification | - | ⚠️ Trigger review |
-| New external authority mapping | - | ⚠️ Trigger review |
-
-### 2.4 Enforcement: Catalog + Pipeline (Shift Left + Gate Right)
-
-```
-DEVELOPMENT                    DEPLOYMENT                    RUNTIME
+</code></pre>
+<h3>2.3 Checklist Criteria</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Auto-validation</th>
+<th>Manual Review</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Naming convention (GOV-DM-002)</td>
+<td>✅ Yes</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Domain path exists</td>
+<td>✅ Yes</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Data Contract YAML schema</td>
+<td>✅ Yes</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Owner assigned</td>
+<td>✅ Yes</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Cross-domain dependency</td>
+<td>-</td>
+<td>⚠️ Trigger review</td>
+</tr>
+<tr>
+<td>PII/GDPR classification</td>
+<td>-</td>
+<td>⚠️ Trigger review</td>
+</tr>
+<tr>
+<td>New external authority mapping</td>
+<td>-</td>
+<td>⚠️ Trigger review</td>
+</tr>
+</tbody></table>
+<h3>2.4 Enforcement: Catalog + Pipeline (Shift Left + Gate Right)</h3>
+<pre><code>DEVELOPMENT                    DEPLOYMENT                    RUNTIME
      │                              │                            │
      ▼                              ▼                            ▼
 ┌─────────────┐              ┌─────────────┐              ┌─────────────┐
@@ -85,35 +176,93 @@ DEVELOPMENT                    DEPLOYMENT                    RUNTIME
   Schema valid?               All checks pass?            Monitoring OK?
   Naming OK?                  Tests green?                SLA met?
   Owner defined?              No breaking change?         Quality score?
-```
-
-| Check | Shift Left (dev) | Gate (deploy) | Runtime (catalog) |
-|-------|------------------|---------------|-------------------|
-| YAML schema | ✅ | ✅ | - |
-| Naming convention | ✅ | ✅ | - |
-| Unit tests pass | - | ✅ | - |
-| Breaking change detection | - | ✅ | - |
-| Maturity score ≥ threshold | - | ✅ | ✅ |
-| SLA compliance | - | - | ✅ |
-| Consumer notification | - | ✅ | - |
-
----
-
-## 3. Self-Serve Platform
-
-### 3.1 Maturity Level: L4 (Full Self-Serve)
-
-| Level | Description | RBCZ Status |
-|-------|-------------|-------------|
-| L1 | Request-based | - |
-| L2 | Partial | - |
-| L3 | Template-based | - |
-| **L4** | **Full self-serve** | ✅ **Current state** |
-
-### 3.2 Domain Team Experience
-
-```
-DOMAIN TEAM EXPERIENCE:
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Shift Left (dev)</th>
+<th>Gate (deploy)</th>
+<th>Runtime (catalog)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YAML schema</td>
+<td>✅</td>
+<td>✅</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Naming convention</td>
+<td>✅</td>
+<td>✅</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Unit tests pass</td>
+<td>-</td>
+<td>✅</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Breaking change detection</td>
+<td>-</td>
+<td>✅</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Maturity score ≥ threshold</td>
+<td>-</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>SLA compliance</td>
+<td>-</td>
+<td>-</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Consumer notification</td>
+<td>-</td>
+<td>✅</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>3. Self-Serve Platform</h2>
+<h3>3.1 Maturity Level: L4 (Full Self-Serve)</h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Description</th>
+<th>RBCZ Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L1</td>
+<td>Request-based</td>
+<td>-</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>Partial</td>
+<td>-</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>Template-based</td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>L4</strong></td>
+<td><strong>Full self-serve</strong></td>
+<td>✅ <strong>Current state</strong></td>
+</tr>
+</tbody></table>
+<h3>3.2 Domain Team Experience</h3>
+<pre><code>DOMAIN TEAM EXPERIENCE:
 
 1. INIT          2. DEVELOP           3. DEPLOY           4. OPERATE
    │                 │                    │                   │
@@ -127,23 +276,45 @@ DOMAIN TEAM EXPERIENCE:
  Template         Local test          Auto-checks         Monitoring
  generated        + validate          + deploy            + alerts
 
-⏱️ Time to first DP: < 1 day
-```
-
-### 3.3 Available Tools
-
-| Tool | Status | Description |
-|------|--------|-------------|
-| DP Template / Scaffold | ✅ | Generator for new DP structure |
-| CLI tool | ✅ | `dp init`, `dp validate`, `dp deploy` |
-| Data Contract Editor | ✅ | UI/IDE plugin for YAML editing |
-| Local testing | ✅ | Ability to test DP locally before deploy |
-| Self-service monitoring | ✅ | Domain Team sets up own alerts |
-
-### 3.4 DP Template Structure
-
-```
-dp-template/
+⏱️ Time to first DP: &lt; 1 day
+</code></pre>
+<h3>3.3 Available Tools</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DP Template / Scaffold</td>
+<td>✅</td>
+<td>Generator for new DP structure</td>
+</tr>
+<tr>
+<td>CLI tool</td>
+<td>✅</td>
+<td><code>dp init</code>, <code>dp validate</code>, <code>dp deploy</code></td>
+</tr>
+<tr>
+<td>Data Contract Editor</td>
+<td>✅</td>
+<td>UI/IDE plugin for YAML editing</td>
+</tr>
+<tr>
+<td>Local testing</td>
+<td>✅</td>
+<td>Ability to test DP locally before deploy</td>
+</tr>
+<tr>
+<td>Self-service monitoring</td>
+<td>✅</td>
+<td>Domain Team sets up own alerts</td>
+</tr>
+</tbody></table>
+<h3>3.4 DP Template Structure</h3>
+<pre><code>dp-template/
 ├── datacontract.yaml      # Schema + metadata
 ├── src/
 │   ├── transformations/   # Business logic
@@ -156,23 +327,18 @@ dp-template/
 ├── .github/
 │   └── workflows/         # CI/CD pipeline
 └── README.md              # Auto-generated docs
-```
-
----
-
-## 4. Domain Team Autonomy
-
-### 4.1 Target State: Tribe E2E Autonomy
-
-```
-CDO TARGET OPERATING MODEL:
+</code></pre>
+<hr>
+<h2>4. Domain Team Autonomy</h2>
+<h3>4.1 Target State: Tribe E2E Autonomy</h3>
+<pre><code>CDO TARGET OPERATING MODEL:
 
 ┌─────────────────────────────────────────────────────────────────┐
 │                         CDO ROLE                                 │
-│                   "Architect & Enabler"                          │
+│                   &quot;Architect &amp; Enabler&quot;                          │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│  DEFINES (rules)             │  DOES NOT (doesn't block)        │
+│  DEFINES (rules)             │  DOES NOT (doesn&#39;t block)        │
 │  ─────────────────           │  ────────────────────            │
 │  • Governance policies       │  • Approve every DP              │
 │  • Naming conventions        │  • Design review every DP        │
@@ -184,8 +350,8 @@ CDO TARGET OPERATING MODEL:
 │  ENABLES (supports)          │  ESCALATION POINT (exceptions)   │
 │  ────────────────            │  ─────────────────────           │
 │  • Self-serve platform       │  • Cross-domain conflicts        │
-│  • Templates & tools         │  • Governance exceptions         │
-│  • Training & enablement     │  • Strategic decisions           │
+│  • Templates &amp; tools         │  • Governance exceptions         │
+│  • Training &amp; enablement     │  • Strategic decisions           │
 │  • Community of practice     │  • Enterprise-wide standards     │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
@@ -204,20 +370,34 @@ CDO TARGET OPERATING MODEL:
    │ = E2E   │            │ = E2E   │            │ = E2E   │
    │ Account.│            │ Account.│            │ Account.│
    └─────────┘            └─────────┘            └─────────┘
-```
-
-### 4.2 Team Transformation
-
-| Aspect | Current State | Target State |
-|--------|---------------|--------------|
-| Team model | Cross-BU shared | MIB-dedicated |
-| Tribe autonomy | Partial | End-to-end |
-| CDO role | - | Architect & Enabler |
-
-### 4.3 Transformation Path (6-12 months)
-
-```
-CURRENT STATE              TRANSITION              TARGET STATE
+</code></pre>
+<h3>4.2 Team Transformation</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Current State</th>
+<th>Target State</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Team model</td>
+<td>Cross-BU shared</td>
+<td>MIB-dedicated</td>
+</tr>
+<tr>
+<td>Tribe autonomy</td>
+<td>Partial</td>
+<td>End-to-end</td>
+</tr>
+<tr>
+<td>CDO role</td>
+<td>-</td>
+<td>Architect &amp; Enabler</td>
+</tr>
+</tbody></table>
+<h3>4.3 Transformation Path (6-12 months)</h3>
+<pre><code>CURRENT STATE              TRANSITION              TARGET STATE
 
 Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  BU-Dedicated
      │                          │                       │
@@ -228,12 +408,9 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
   conflicts                • Clear ownership         ownership
 • Shallow                  • Knowledge transfer    • Deep
   knowledge                                          expertise
-```
-
-### 4.4 Domain Team Structure
-
-```
-DOMAIN TEAM STRUCTURE:
+</code></pre>
+<h3>4.4 Domain Team Structure</h3>
+<pre><code>DOMAIN TEAM STRUCTURE:
 
 ┌─────────────────────────────────────────────────────┐
 │                  DOMAIN OWNER                        │
@@ -250,27 +427,43 @@ DOMAIN TEAM STRUCTURE:
    │Manager  │  │(1-3)     │  │(Business)│
    └─────────┘  └──────────┘  └──────────┘
         │             │             │
-   Prioritization  Build &      Business
+   Prioritization  Build &amp;      Business
    + roadmap       maintain     knowledge
-```
-
-### 4.5 CDO Success Metrics
-
-| Metric | Description | Target |
-|--------|-------------|--------|
-| Time-to-DP | How fast domain creates DP | < 2 weeks |
-| Governance compliance | % DPs meeting standards | > 95% |
-| Cross-domain reuse | Number of shared DPs | Growing trend |
-| Domain satisfaction | NPS platform & governance | > 40 |
-
----
-
-## 5. Consumer Experience
-
-### 5.1 Consumer Journey
-
-```
-CONSUMER JOURNEY:
+</code></pre>
+<h3>4.5 CDO Success Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Time-to-DP</td>
+<td>How fast domain creates DP</td>
+<td>&lt; 2 weeks</td>
+</tr>
+<tr>
+<td>Governance compliance</td>
+<td>% DPs meeting standards</td>
+<td>&gt; 95%</td>
+</tr>
+<tr>
+<td>Cross-domain reuse</td>
+<td>Number of shared DPs</td>
+<td>Growing trend</td>
+</tr>
+<tr>
+<td>Domain satisfaction</td>
+<td>NPS platform &amp; governance</td>
+<td>&gt; 40</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>5. Consumer Experience</h2>
+<h3>5.1 Consumer Journey</h3>
+<pre><code>CONSUMER JOURNEY:
 
 1. DISCOVER          2. EVALUATE           3. ACCESS            4. USE
      │                    │                    │                   │
@@ -286,112 +479,174 @@ CONSUMER JOURNEY:
  • Filters           • Quality score        for public        • Notebook
  • Domain            • Sample rows        • Request for
    browse                                   restricted
-```
-
-### 5.2 Catalog Features
-
-| Feature | Status | Priority |
-|---------|--------|----------|
-| A - Semantic search | ✅ Have | - |
-| B - Sample data preview | ✅ Have | - |
-| C - Data quality score | ✅ Have | - |
-| H - Access workflow | ✅ Have | - |
-| D - Lineage visualization | 🔜 Planned | 🔴 High |
-| G - Usage examples | 🔜 Planned | 🟡 Medium |
-| E - SLA dashboard | 🔜 Planned | 🟡 Medium |
-| F - Consumer registry | 🔜 Planned | 🟢 Low |
-
-### 5.3 Consumer Decision Flow
-
-```
-"I need AUM data"
+</code></pre>
+<h3>5.2 Catalog Features</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A - Semantic search</td>
+<td>✅ Have</td>
+<td>-</td>
+</tr>
+<tr>
+<td>B - Sample data preview</td>
+<td>✅ Have</td>
+<td>-</td>
+</tr>
+<tr>
+<td>C - Data quality score</td>
+<td>✅ Have</td>
+<td>-</td>
+</tr>
+<tr>
+<td>H - Access workflow</td>
+<td>✅ Have</td>
+<td>-</td>
+</tr>
+<tr>
+<td>D - Lineage visualization</td>
+<td>🔜 Planned</td>
+<td>🔴 High</td>
+</tr>
+<tr>
+<td>G - Usage examples</td>
+<td>🔜 Planned</td>
+<td>🟡 Medium</td>
+</tr>
+<tr>
+<td>E - SLA dashboard</td>
+<td>🔜 Planned</td>
+<td>🟡 Medium</td>
+</tr>
+<tr>
+<td>F - Consumer registry</td>
+<td>🔜 Planned</td>
+<td>🟢 Low</td>
+</tr>
+</tbody></table>
+<h3>5.3 Consumer Decision Flow</h3>
+<pre><code>&quot;I need AUM data&quot;
          │
          ▼
-    [A] Search "AUM"
+    [A] Search &quot;AUM&quot;
          │
          ▼
     Find investment-aum-reporting
          │
          ▼
-    [B] Preview samples ────────▶ "Yes, this is what I need"
+    [B] Preview samples ────────▶ &quot;Yes, this is what I need&quot;
          │
          ▼
-    [C] Quality score 85% ──────▶ "I can trust this"
+    [C] Quality score 85% ──────▶ &quot;I can trust this&quot;
          │
          ▼
     [H] Request access ─────────▶ Auto-approved (public DP)
          │
          ▼
     Using within 10 minutes
-```
-
----
-
-## 6. Data Product Lifecycle
-
-### 6.1 Six-Phase Lifecycle
-
-```
-DATA PRODUCT LIFECYCLE:
+</code></pre>
+<hr>
+<h2>6. Data Product Lifecycle</h2>
+<h3>6.1 Six-Phase Lifecycle</h3>
+<pre><code>DATA PRODUCT LIFECYCLE:
 
 ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐
 │ IDEATE  │──▶│ DESIGN  │──▶│  BUILD  │──▶│ PUBLISH │──▶│ OPERATE │──▶│ RETIRE  │
 └─────────┘   └─────────┘   └─────────┘   └─────────┘   └─────────┘   └─────────┘
      │             │             │             │             │             │
      ▼             ▼             ▼             ▼             ▼             ▼
-  Business     Data          Develop &     Register     Monitor &    Deprecate
-  need         Contract      Test          in Catalog   Maintain     & Sunset
+  Business     Data          Develop &amp;     Register     Monitor &amp;    Deprecate
+  need         Contract      Test          in Catalog   Maintain     &amp; Sunset
   identified   defined
 
   Gate:        Gate:         Gate:         Gate:        Gate:        Gate:
   Sponsor      Review        Quality       Maturity     SLA met      Consumers
   approval     approved      tests pass   ≥60%                      migrated
-```
-
-### 6.2 Phases and Responsibilities
-
-| Phase | Owner | Deliverable | Gate Criterion |
-|-------|-------|-------------|----------------|
-| **IDEATE** | Domain Owner | Business case | Sponsor sign-off |
-| **DESIGN** | DPM + Engineer | Data Contract YAML | Contract review passed |
-| **BUILD** | Engineer | Working DP + tests | All tests green |
-| **PUBLISH** | DPM | Catalog entry | Maturity ≥ 60% |
-| **OPERATE** | Engineer | Running DP | SLA compliance |
-| **RETIRE** | Domain Owner | Migration plan | 0 active consumers |
-
-> **Tool:** Use the [DP Discovery Questionnaire](templates/dp-discovery-questionnaire.md) for IDEATE → DESIGN sessions with Domain Owners. Structured QAR format ensures all governance requirements are captured.
-
-### 6.3 RETIRE Phase (Important!)
-
-> Most organizations forget the RETIRE phase → zombie DPs that nobody uses but still run and cost money.
-
-**RETIRE Checklist:**
-- [ ] Identify all consumers
-- [ ] Notify consumers about deprecation (min 3 months ahead)
-- [ ] Provide migration path to alternative DP
-- [ ] Wait for 0 active consumers
-- [ ] Archive data (if regulatory requirement)
-- [ ] Remove from Catalog
-- [ ] Deallocate infrastructure
-
----
-
-## 7. Quality & SLA
-
-### 7.1 Three Layers of Measurement
-
-```
-QUALITY MEASUREMENT LAYERS:
+</code></pre>
+<h3>6.2 Phases and Responsibilities</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Owner</th>
+<th>Deliverable</th>
+<th>Gate Criterion</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>IDEATE</strong></td>
+<td>Domain Owner</td>
+<td>Business case</td>
+<td>Sponsor sign-off</td>
+</tr>
+<tr>
+<td><strong>DESIGN</strong></td>
+<td>DPM + Engineer</td>
+<td>Data Contract YAML</td>
+<td>Contract review passed</td>
+</tr>
+<tr>
+<td><strong>BUILD</strong></td>
+<td>Engineer</td>
+<td>Working DP + tests</td>
+<td>All tests green</td>
+</tr>
+<tr>
+<td><strong>PUBLISH</strong></td>
+<td>DPM</td>
+<td>Catalog entry</td>
+<td>Maturity ≥ 60%</td>
+</tr>
+<tr>
+<td><strong>OPERATE</strong></td>
+<td>Engineer</td>
+<td>Running DP</td>
+<td>SLA compliance</td>
+</tr>
+<tr>
+<td><strong>RETIRE</strong></td>
+<td>Domain Owner</td>
+<td>Migration plan</td>
+<td>0 active consumers</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Tool:</strong> Use the <a href="templates/dp-discovery-questionnaire.md">DP Discovery Questionnaire</a> for IDEATE → DESIGN sessions with Domain Owners. Structured QAR format ensures all governance requirements are captured.</p>
+</blockquote>
+<h3>6.3 RETIRE Phase (Important!)</h3>
+<blockquote>
+<p>Most organizations forget the RETIRE phase → zombie DPs that nobody uses but still run and cost money.</p>
+</blockquote>
+<p><strong>RETIRE Checklist:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Identify all consumers</li>
+<li><input disabled="" type="checkbox"> Notify consumers about deprecation (min 3 months ahead)</li>
+<li><input disabled="" type="checkbox"> Provide migration path to alternative DP</li>
+<li><input disabled="" type="checkbox"> Wait for 0 active consumers</li>
+<li><input disabled="" type="checkbox"> Archive data (if regulatory requirement)</li>
+<li><input disabled="" type="checkbox"> Remove from Catalog</li>
+<li><input disabled="" type="checkbox"> Deallocate infrastructure</li>
+</ul>
+<hr>
+<h2>7. Quality &amp; SLA</h2>
+<h3>7.1 Three Layers of Measurement</h3>
+<pre><code>QUALITY MEASUREMENT LAYERS:
 
 ┌─────────────────────────────────────────────────────────────────┐
 │                    LAYER 1: MATURITY SCORE                       │
 │                    (Production readiness)                        │
 │                                                                  │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────┐│
-│  │  Docs    │ │  Data    │ │   SLA    │ │Governance│ │  Tech  ││
-│  │  20%     │ │ Quality  │ │   20%    │ │   20%    │ │  20%   ││
-│  │          │ │   20%    │ │          │ │          │ │        ││
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └────────┘│
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────┐ │
+│  │  Docs    │ │  Data    │ │   SLA    │ │Governance│ │  Tech  │ │
+│  │  20%     │ │ Quality  │ │   20%    │ │   20%    │ │  20%   │ │
+│  │          │ │   20%    │ │          │ │          │ │        │ │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └────────┘ │
 │                           = MATURITY %                           │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -417,23 +672,41 @@ QUALITY MEASUREMENT LAYERS:
 │                                                                  │
 │  ┌────────────────┐ ┌────────────────┐ ┌────────────────┐       │
 │  │    Uptime      │ │    Latency     │ │   Freshness    │       │
-│  │   99.5%+       │ │   < 5 min      │ │  < 24 hours    │       │
+│  │   99.5%+       │ │   &lt; 5 min      │ │  &lt; 24 hours    │       │
 │  └────────────────┘ └────────────────┘ └────────────────┘       │
 └─────────────────────────────────────────────────────────────────┘
-```
-
-### 7.2 When to Use Which Layer
-
-| Layer | Question | Who Asks | When |
-|-------|----------|----------|------|
-| **Maturity** | "Is DP production-ready?" | Platform, CDO | Publish gate |
-| **Data Quality** | "Can I trust this data?" | Consumer | Before using |
-| **SLA** | "Is DP running correctly?" | Operations, Owner | Runtime |
-
-### 7.3 Enforcement: Tiered Model
-
-```
-QUALITY ENFORCEMENT TIERS:
+</code></pre>
+<h3>7.2 When to Use Which Layer</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Question</th>
+<th>Who Asks</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Maturity</strong></td>
+<td>&quot;Is DP production-ready?&quot;</td>
+<td>Platform, CDO</td>
+<td>Publish gate</td>
+</tr>
+<tr>
+<td><strong>Data Quality</strong></td>
+<td>&quot;Can I trust this data?&quot;</td>
+<td>Consumer</td>
+<td>Before using</td>
+</tr>
+<tr>
+<td><strong>SLA</strong></td>
+<td>&quot;Is DP running correctly?&quot;</td>
+<td>Operations, Owner</td>
+<td>Runtime</td>
+</tr>
+</tbody></table>
+<h3>7.3 Enforcement: Tiered Model</h3>
+<pre><code>QUALITY ENFORCEMENT TIERS:
 
                     ┌─────────────────────────────────────┐
                     │         QUALITY THRESHOLD           │
@@ -453,32 +726,57 @@ QUALITY ENFORCEMENT TIERS:
    │  Deploy   │              │  Owner +  │              │  Only     │
    │  blocked  │              │  Timeline │              │           │
    └───────────┘              └───────────┘              └───────────┘
-```
-
-### 7.4 Enforcement Matrix
-
-| Metric | Critical (Block) | Warning (Notify) | Info (Dashboard) |
-|--------|------------------|------------------|------------------|
-| **Maturity Score** | < 40% | 40-60% | > 60% |
-| **Completeness** | < 80% | 80-95% | > 95% |
-| **Freshness SLA** | > 2× SLA | 1-2× SLA | Within SLA |
-| **Schema validation** | Failed | - | Passed |
-| **PII untagged** | Yes | - | No |
-
-### 7.5 Escalation Timeline
-
-```
-DAY 0          DAY 3           DAY 7           DAY 14
+</code></pre>
+<h3>7.4 Enforcement Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Critical (Block)</th>
+<th>Warning (Notify)</th>
+<th>Info (Dashboard)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Maturity Score</strong></td>
+<td>&lt; 40%</td>
+<td>40-60%</td>
+<td>&gt; 60%</td>
+</tr>
+<tr>
+<td><strong>Completeness</strong></td>
+<td>&lt; 80%</td>
+<td>80-95%</td>
+<td>&gt; 95%</td>
+</tr>
+<tr>
+<td><strong>Freshness SLA</strong></td>
+<td>&gt; 2× SLA</td>
+<td>1-2× SLA</td>
+<td>Within SLA</td>
+</tr>
+<tr>
+<td><strong>Schema validation</strong></td>
+<td>Failed</td>
+<td>-</td>
+<td>Passed</td>
+</tr>
+<tr>
+<td><strong>PII untagged</strong></td>
+<td>Yes</td>
+<td>-</td>
+<td>No</td>
+</tr>
+</tbody></table>
+<h3>7.5 Escalation Timeline</h3>
+<pre><code>DAY 0          DAY 3           DAY 7           DAY 14
   │              │               │                │
   ▼              ▼               ▼                ▼
 Warning      Reminder      Escalate to      Escalate to
 to Owner     to Owner      BU Manager       CDO + Block
-```
-
-### 7.6 Enforcement Roadmap
-
-```
-ENFORCEMENT ROADMAP:
+</code></pre>
+<h3>7.6 Enforcement Roadmap</h3>
+<pre><code>ENFORCEMENT ROADMAP:
 
 Q1                  Q2                  Q3                  Q4
 │                   │                   │                   │
@@ -490,75 +788,219 @@ Q1                  Q2                  Q3                  Q4
 │ Validation  │    │ Compliance  │    │ Score       │    │ Enforcement │
 │             │    │             │    │             │    │             │
 │ • Block     │    │ • Block     │    │ • Block     │    │ • Auto-     │
-│   invalid   │    │   untagged  │    │   < 40%     │    │   notify    │
+│   invalid   │    │   untagged  │    │   &lt; 40%     │    │   notify    │
 │   YAML      │    │   PII       │    │ • Warn      │    │ • Escalate  │
-│             │    │             │    │   < 60%     │    │   on breach │
+│             │    │             │    │   &lt; 60%     │    │   on breach │
 └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
       │                  │                  │                  │
    Quick win         Regulatory         Trust            Operations
    Low risk          Must-have          building         maturity
-```
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Why</th>
+<th>Risk</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Phase 1: Schema</strong></td>
+<td>Objective, automatable</td>
+<td>Low</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Phase 2: PII/GDPR</strong></td>
+<td>Regulatory requirement</td>
+<td>Medium</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Phase 3: Maturity</strong></td>
+<td>Trust building</td>
+<td>Medium</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Phase 4: SLA</strong></td>
+<td>Operations maturity</td>
+<td>High</td>
+<td>High</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>8. Gap Analysis &amp; Roadmap</h2>
+<h3>8.1 Current State vs. Target State</h3>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Current State</th>
+<th>Target State</th>
+<th>Gap</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Federated Governance</td>
+<td>✅ Hybrid + Checklist</td>
+<td>✅</td>
+<td>Documentation</td>
+<td>🟢 Low</td>
+</tr>
+<tr>
+<td>Self-Serve Platform</td>
+<td>✅ L4 Full + All tools</td>
+<td>✅</td>
+<td>None</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Domain Team Autonomy</td>
+<td>Cross-BU shared</td>
+<td>BU-dedicated, E2E</td>
+<td>Organizational change</td>
+<td>🔴 High</td>
+</tr>
+<tr>
+<td>Consumer Experience</td>
+<td>ABCH</td>
+<td>ABCDEFGH</td>
+<td>Lineage, examples</td>
+<td>🟡 Medium</td>
+</tr>
+<tr>
+<td>DP Lifecycle</td>
+<td>✅ Formal</td>
+<td>✅</td>
+<td>RETIRE emphasis</td>
+<td>🟢 Low</td>
+</tr>
+<tr>
+<td>Quality Enforcement</td>
+<td>Dashboard only</td>
+<td>Tiered enforcement</td>
+<td>4-phase roadmap</td>
+<td>🔴 High</td>
+</tr>
+</tbody></table>
+<h3>8.2 Prioritized Roadmap</h3>
+<table>
+<thead>
+<tr>
+<th>Quarter</th>
+<th>Area</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Q1</strong></td>
+<td>Quality</td>
+<td>Phase 1: Schema validation enforcement</td>
+</tr>
+<tr>
+<td><strong>Q1</strong></td>
+<td>Consumer</td>
+<td>Lineage visualization</td>
+</tr>
+<tr>
+<td><strong>Q2</strong></td>
+<td>Quality</td>
+<td>Phase 2: PII/GDPR compliance enforcement</td>
+</tr>
+<tr>
+<td><strong>Q2</strong></td>
+<td>Consumer</td>
+<td>Usage examples</td>
+</tr>
+<tr>
+<td><strong>Q2</strong></td>
+<td>Team</td>
+<td>Start dedicated engineer per BU</td>
+</tr>
+<tr>
+<td><strong>Q3</strong></td>
+<td>Quality</td>
+<td>Phase 3: Maturity score enforcement</td>
+</tr>
+<tr>
+<td><strong>Q3</strong></td>
+<td>Consumer</td>
+<td>SLA dashboard</td>
+</tr>
+<tr>
+<td><strong>Q3</strong></td>
+<td>Team</td>
+<td>Full BU-dedicated teams</td>
+</tr>
+<tr>
+<td><strong>Q4</strong></td>
+<td>Quality</td>
+<td>Phase 4: SLA enforcement</td>
+</tr>
+<tr>
+<td><strong>Q4</strong></td>
+<td>Consumer</td>
+<td>Consumer registry</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>9. Related Documents</h2>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a></td>
+<td>Main Data Mesh Governance</td>
+</tr>
+<tr>
+<td><a href="GOV-DM-002-naming-convention.md">GOV-DM-002</a></td>
+<td>Naming Convention</td>
+</tr>
+<tr>
+<td><a href="GOV-DM-003-domain-hierarchy.md">GOV-DM-003</a></td>
+<td>Domain Hierarchy &amp; Ownership</td>
+</tr>
+<tr>
+<td><a href="templates/dp-discovery-questionnaire.md">DP Discovery Questionnaire</a></td>
+<td>QAR interview guide for Domain Owner sessions</td>
+</tr>
+<tr>
+<td><a href="catalogs/investment-dp-catalog.md">Investment DP Catalog</a></td>
+<td>Investment Domain Products</td>
+</tr>
+<tr>
+<td><a href="review/2026-01-08-domain-composability-framework.md">Composability Framework</a></td>
+<td>DP Layer Classification</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>10. Revision History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0</td>
+<td>2026-01-08</td>
+<td>Senior Data Mesh Consultant</td>
+<td>Initial version from QAR session</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>Source:</strong> QAR Session with Senior Data Mesh Consultant (15+ years banking experience)
+<strong>Method:</strong> Questions → Answers → Recommendations
+<strong>Validated by:</strong> RBCZ CDO</p>
 
-| Phase | Why | Risk | Effort |
-|-------|-----|------|--------|
-| **Phase 1: Schema** | Objective, automatable | Low | Low |
-| **Phase 2: PII/GDPR** | Regulatory requirement | Medium | Medium |
-| **Phase 3: Maturity** | Trust building | Medium | Medium |
-| **Phase 4: SLA** | Operations maturity | High | High |
-
----
-
-## 8. Gap Analysis & Roadmap
-
-### 8.1 Current State vs. Target State
-
-| Area | Current State | Target State | Gap | Priority |
-|------|---------------|--------------|-----|----------|
-| Federated Governance | ✅ Hybrid + Checklist | ✅ | Documentation | 🟢 Low |
-| Self-Serve Platform | ✅ L4 Full + All tools | ✅ | None | - |
-| Domain Team Autonomy | Cross-BU shared | BU-dedicated, E2E | Organizational change | 🔴 High |
-| Consumer Experience | ABCH | ABCDEFGH | Lineage, examples | 🟡 Medium |
-| DP Lifecycle | ✅ Formal | ✅ | RETIRE emphasis | 🟢 Low |
-| Quality Enforcement | Dashboard only | Tiered enforcement | 4-phase roadmap | 🔴 High |
-
-### 8.2 Prioritized Roadmap
-
-| Quarter | Area | Action |
-|---------|------|--------|
-| **Q1** | Quality | Phase 1: Schema validation enforcement |
-| **Q1** | Consumer | Lineage visualization |
-| **Q2** | Quality | Phase 2: PII/GDPR compliance enforcement |
-| **Q2** | Consumer | Usage examples |
-| **Q2** | Team | Start dedicated engineer per BU |
-| **Q3** | Quality | Phase 3: Maturity score enforcement |
-| **Q3** | Consumer | SLA dashboard |
-| **Q3** | Team | Full BU-dedicated teams |
-| **Q4** | Quality | Phase 4: SLA enforcement |
-| **Q4** | Consumer | Consumer registry |
-
----
-
-## 9. Related Documents
-
-| Document | Purpose |
-|----------|---------|
-| [GOV-DM-001](GOV-DM-001-data-mesh-governance.md) | Main Data Mesh Governance |
-| [GOV-DM-002](GOV-DM-002-naming-convention.md) | Naming Convention |
-| [GOV-DM-003](GOV-DM-003-domain-hierarchy.md) | Domain Hierarchy & Ownership |
-| [DP Discovery Questionnaire](templates/dp-discovery-questionnaire.md) | QAR interview guide for Domain Owner sessions |
-| [Investment DP Catalog](catalogs/investment-dp-catalog.md) | Investment Domain Products |
-| [Composability Framework](review/2026-01-08-domain-composability-framework.md) | DP Layer Classification |
-
----
-
-## 10. Revision History
-
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2026-01-08 | Senior Data Mesh Consultant | Initial version from QAR session |
-
----
-
-**Source:** QAR Session with Senior Data Mesh Consultant (15+ years banking experience)
-**Method:** Questions → Answers → Recommendations
-**Validated by:** RBCZ CDO
+</body></html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Product Composability Framework</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            color: #1f2328;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: .3em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; border-bottom: none; }
+        h4, h5, h6 { border-bottom: none; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+        code {
+            background: rgba(175,184,193,0.2);
+            padding: .2em .4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+        pre code { background: none; padding: 0; font-size: 100%; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 6px 13px;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background: #f6f8fa; }
+        blockquote {
+            border-left: .25em solid #d1d9e0;
+            margin: 0;
+            padding: 0 1em;
+            color: #656d76;
+        }
+        hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+        ul, ol { padding-left: 2em; }
+        li + li { margin-top: .25em; }
+    </style>
+</head>
+<body>
+<h1>Data Product Composability Framework</h1>
+<p><strong>Role:</strong> Banking Domain Expert
+<strong>Date:</strong> 2026-01-08
+<strong>Type:</strong> Framework &amp; Governance Guidance
+<strong>Status:</strong> APPROVED
+<strong>Parent:</strong> <a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001-data-mesh-governance.md</a></p>
+<hr>
+<h2>1. Framework: Kdy Embedded vs. Separate DP vs. Shared</h2>
+<table>
+<thead>
+<tr>
+<th>Kritérium</th>
+<th>Embedded (A)</th>
+<th>Separate DP (B)</th>
+<th>Shared/Platform (C)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Reuse</strong></td>
+<td>Žádný</td>
+<td>Uvnitř domény</td>
+<td>Napříč doménami</td>
+</tr>
+<tr>
+<td><strong>Ownership</strong></td>
+<td>Stejný jako parent DP</td>
+<td>Domain Owner</td>
+<td>Platform/MDM</td>
+</tr>
+<tr>
+<td><strong>Lifecycle</strong></td>
+<td>Svázaný s parent</td>
+<td>Nezávislý</td>
+<td>Centrálně řízený</td>
+</tr>
+<tr>
+<td><strong>Změny</strong></td>
+<td>Mění se s parent</td>
+<td>Vlastní versioning</td>
+<td>Strict change mgmt</td>
+</tr>
+<tr>
+<td><strong>Standardizace</strong></td>
+<td>Není potřeba</td>
+<td>Doménový standard</td>
+<td>Enterprise/ISO standard</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>2. Decision Tree</h2>
+<pre><code>                    Je data použita více DP?
+                           │
+              ┌────────────┴────────────┐
+              │ NE                      │ ANO
+              ▼                         ▼
+         EMBEDDED               Je použita napříč doménami?
+                                       │
+                          ┌────────────┴────────────┐
+                          │ NE                      │ ANO
+                          ▼                         ▼
+                    SEPARATE DP              Je ISO/Enterprise standard?
+                   (Domain owns)                    │
+                                      ┌────────────┴────────────┐
+                                      │ NE                      │ ANO
+                                      ▼                         ▼
+                               SEPARATE DP              SHARED REFERENCE
+                              per Domain               (Platform/MDM owns)
+</code></pre>
+<hr>
+<h2>3. Classification Criteria</h2>
+<h3>A) Embedded Pattern</h3>
+<p><strong>Použít když:</strong></p>
+<ul>
+<li>Data jsou pouze kontextuální pro jeden DP</li>
+<li>Žádný potenciál pro reuse</li>
+<li>Těsně svázaný lifecycle s parent DP</li>
+<li>Změny vždy společně s parent</li>
+</ul>
+<p><strong>Příklad:</strong></p>
+<ul>
+<li>Interní lookup tabulky</li>
+<li>DP-specific transformace</li>
+<li>Temporary/staging data</li>
+</ul>
+<h3>B) Separate DP Pattern (Domain owns)</h3>
+<p><strong>Použít když:</strong></p>
+<ul>
+<li>Data jsou použita více DP v JEDNÉ doméně</li>
+<li>Domain-specific business rules</li>
+<li>Vlastní lifecycle (mění se nezávisle)</li>
+<li>Domain Owner má jasnou odpovědnost</li>
+</ul>
+<p><strong>Příklad:</strong></p>
+<ul>
+<li><code>investment-products-catalog</code> - Investment securities (ID: <code>rbcz:mib:investment:products</code>)</li>
+<li><code>mib-segmentation</code> - MIB customer segmentation (ID: <code>rbcz:mib:segments</code>)</li>
+<li><code>retail-channels</code> - Retail channel definitions (ID: <code>rbcz:retail:channels</code>)</li>
+</ul>
+<h3>C) Shared Reference Data Pattern (Platform/MDM owns)</h3>
+<p><strong>Použít když:</strong></p>
+<ul>
+<li>Data jsou použita napříč VÍCE doménami</li>
+<li>ISO nebo enterprise standard</li>
+<li>Velmi stabilní (low change frequency)</li>
+<li>Vyžaduje centrální governance</li>
+</ul>
+<p><strong>Příklad:</strong></p>
+<ul>
+<li><code>ref-countries</code> - ISO 3166-1 (ID: <code>rbcz:ref:countries</code>)</li>
+<li><code>ref-currencies</code> - ISO 4217 (ID: <code>rbcz:ref:currencies</code>)</li>
+<li><code>ref-calendars</code> - Business calendars (ID: <code>rbcz:ref:calendars</code>)</li>
+<li><code>ref-legal-entities</code> - LEI registry (ID: <code>rbcz:ref:legal-entities</code>)</li>
+</ul>
+<hr>
+<h2>4. Reasoning: IDM_* Dimensions Analysis</h2>
+<h3>IDM_COUNTRIES → Shared Reference Data (Platform)</h3>
+<table>
+<thead>
+<tr>
+<th>Faktor</th>
+<th>Hodnota</th>
+<th>Rozhodnutí</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Použití napříč doménami</td>
+<td>ANO (Inv, Retail, Payments, RLCZ)</td>
+<td>→ Shared</td>
+</tr>
+<tr>
+<td>ISO standard</td>
+<td>ANO (ISO 3166-1)</td>
+<td>→ Shared</td>
+</tr>
+<tr>
+<td>Frekvence změn</td>
+<td>Velmi nízká</td>
+<td>→ Shared</td>
+</tr>
+<tr>
+<td><strong>Výsledek</strong></td>
+<td><strong>Platform/MDM owns</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3>IDM_PRODUCTS → Separate DP (Investment Domain)</h3>
+<table>
+<thead>
+<tr>
+<th>Faktor</th>
+<th>Hodnota</th>
+<th>Rozhodnutí</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Použití napříč doménami</td>
+<td>NE (Investment only)</td>
+<td>→ Domain</td>
+</tr>
+<tr>
+<td>Použití více DP v doméně</td>
+<td>ANO (AUM, Sales, Positions)</td>
+<td>→ Separate DP</td>
+</tr>
+<tr>
+<td>Domain-specific rules</td>
+<td>ANO (ISIN, product types)</td>
+<td>→ Domain owns</td>
+</tr>
+<tr>
+<td><strong>Výsledek</strong></td>
+<td><strong>Investment Domain owns</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3>IDM_SEGMENTS → Separate DP (MIB Domain)</h3>
+<table>
+<thead>
+<tr>
+<th>Faktor</th>
+<th>Hodnota</th>
+<th>Rozhodnutí</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Použití napříč doménami</td>
+<td>NE (MIB-specific)</td>
+<td>→ Domain</td>
+</tr>
+<tr>
+<td>Enterprise-wide standard</td>
+<td>NE (MIB má vlastní L0/L1/L2)</td>
+<td>→ Domain</td>
+</tr>
+<tr>
+<td>Použití více DP v doméně</td>
+<td>ANO (AUM, Clients, Profitability)</td>
+<td>→ Separate DP</td>
+</tr>
+<tr>
+<td><strong>Výsledek</strong></td>
+<td><strong>MIB Domain owns</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>5. Composability Model</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│              PLATFORM / SHARED REFERENCE DATA (L1)               │
+│                     (Platform/MDM owns)                          │
+│                                                                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐           │
+│  │ref-countries │  │ref-currencies│  │ref-calendars │           │
+│  │(ISO 3166)    │  │(ISO 4217)    │  │(Business cal)│           │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘           │
+│         │                 │                 │                    │
+└─────────┼─────────────────┼─────────────────┼────────────────────┘
+          │                 │                 │
+          │    consumes     │                 │
+          ▼                 ▼                 ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    MIB DOMAIN (L2 - BU Master)                   │
+│                      (MIB Domain owns)                           │
+│                                                                  │
+│  ┌──────────────────┐  ┌──────────────────┐                     │
+│  │mib-segmentation  │  │mib-client-base   │ ← Domain Master Data│
+│  │(Profitcenter L0-2)│  │(MIB client base) │                     │
+│  └────────┬─────────┘  └────────┬─────────┘                     │
+│           │                     │                                │
+└───────────┼─────────────────────┼────────────────────────────────┘
+            │                     │
+            │    consumes         │
+            ▼                     ▼
+┌─────────────────────────────────────────────────────────────────┐
+│               INVESTMENT DOMAIN (L2/L3 - Domain)                 │
+│                  (Investment Domain owns)                        │
+│                                                                  │
+│  ┌────────────────────────┐                                     │
+│  │investment-products-    │ ← L2 Domain Master Data             │
+│  │catalog (Securities)    │                                     │
+│  └────────┬───────────────┘                                     │
+│           │                                                      │
+│           │ consumes                                             │
+│           ▼                                                      │
+│  ┌─────────────────────┐ ┌─────────────────────┐                │
+│  │investment-aum-      │ │investment-sales-    │ ← L3 Analytics │
+│  │reporting            │ │volume               │                │
+│  └─────────────────────┘ └─────────────────────┘                │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2>6. Dependency Rules</h2>
+<table>
+<thead>
+<tr>
+<th>Pravidlo</th>
+<th>Popis</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>COMP-1</strong></td>
+<td>DP MŮŽE konzumovat Shared Reference Data</td>
+</tr>
+<tr>
+<td><strong>COMP-2</strong></td>
+<td>DP MŮŽE konzumovat Domain Master Data ze STEJNÉ domény</td>
+</tr>
+<tr>
+<td><strong>COMP-3</strong></td>
+<td>DP MŮŽE konzumovat Domain Master Data z PARENT domény</td>
+</tr>
+<tr>
+<td><strong>COMP-4</strong></td>
+<td>DP NESMÍ konzumovat data ze SIBLING domény bez explicitní smlouvy</td>
+</tr>
+<tr>
+<td><strong>COMP-5</strong></td>
+<td>Circular dependencies jsou ZAKÁZÁNY</td>
+</tr>
+<tr>
+<td><strong>COMP-6</strong></td>
+<td>Consumer MUSÍ být registrován v Consumers Catalog</td>
+</tr>
+</tbody></table>
+<h3>Povolené Dependency Patterns</h3>
+<pre><code>✅ investment-aum-reporting → ref-countries          (Shared Reference)
+✅ investment-aum-reporting → mib-segmentation       (Parent Domain)
+✅ investment-aum-reporting → investment-products-catalog (Same Domain)
+
+❌ investment-aum-reporting → retail-channels        (Sibling - needs contract)
+❌ investment-X → investment-Y → investment-X        (Circular)
+</code></pre>
+<hr>
+<h2>7. Data Product Layers</h2>
+<pre><code>LAYER 3: Analytics/Reporting DPs
+         ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
+         │investment-aum-   │ │investment-sales- │ │investment-       │
+         │reporting         │ │volume            │ │profitability     │
+         └────────┬─────────┘ └────────┬─────────┘ └────────┬─────────┘
+                  │                    │                    │
+                  │   consumes         │                    │
+                  ▼                    ▼                    ▼
+LAYER 2: Domain Master Data DPs
+         ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
+         │investment-       │ │mib-segmentation  │ │mib-client-base   │
+         │products-catalog  │ │                  │ │                  │
+         └────────┬─────────┘ └────────┬─────────┘ └────────┬─────────┘
+                  │                    │                    │
+                  │   consumes         │                    │
+                  ▼                    ▼                    ▼
+LAYER 1: Shared Reference Data DPs
+         ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
+         │ref-countries     │ │ref-currencies    │ │ref-calendars     │
+         └──────────────────┘ └──────────────────┘ └──────────────────┘
+</code></pre>
+<hr>
+<h2>8. Summary Table: RBCZ Data Products by Layer</h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Slug</th>
+<th>ID</th>
+<th>Owner</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>L1 - Shared</strong></td>
+<td>ref-countries</td>
+<td><code>rbcz:ref:countries</code></td>
+<td>Platform</td>
+<td>Reference</td>
+</tr>
+<tr>
+<td><strong>L1 - Shared</strong></td>
+<td>ref-currencies</td>
+<td><code>rbcz:ref:currencies</code></td>
+<td>Platform</td>
+<td>Reference</td>
+</tr>
+<tr>
+<td><strong>L1 - Shared</strong></td>
+<td>ref-calendars</td>
+<td><code>rbcz:ref:calendars</code></td>
+<td>Platform</td>
+<td>Reference</td>
+</tr>
+<tr>
+<td><strong>L2 - MIB</strong></td>
+<td>mib-segmentation</td>
+<td><code>rbcz:mib:segments</code></td>
+<td>MIB Domain</td>
+<td>Master</td>
+</tr>
+<tr>
+<td><strong>L2 - MIB</strong></td>
+<td>mib-client-base</td>
+<td><code>rbcz:mib:customer</code></td>
+<td>MIB Domain</td>
+<td>Master</td>
+</tr>
+<tr>
+<td><strong>L2 - Investment</strong></td>
+<td>investment-products-catalog</td>
+<td><code>rbcz:mib:investment:products</code></td>
+<td>Investment Domain</td>
+<td>Master</td>
+</tr>
+<tr>
+<td><strong>L2 - Investment</strong></td>
+<td>investment-client-overview</td>
+<td><code>rbcz:mib:investment:customer</code></td>
+<td>Investment Domain</td>
+<td>Master</td>
+</tr>
+<tr>
+<td><strong>L3 - Investment</strong></td>
+<td>investment-aum-reporting</td>
+<td><code>rbcz:mib:investment:aum</code></td>
+<td>Investment Domain</td>
+<td>Analytics</td>
+</tr>
+<tr>
+<td><strong>L3 - Investment</strong></td>
+<td>investment-sales-volume</td>
+<td><code>rbcz:mib:investment:sales</code></td>
+<td>Investment Domain</td>
+<td>Analytics</td>
+</tr>
+<tr>
+<td><strong>L3 - Investment</strong></td>
+<td>investment-position-overview</td>
+<td><code>rbcz:mib:investment:position</code></td>
+<td>Investment Domain</td>
+<td>Analytics</td>
+</tr>
+<tr>
+<td><strong>L3 - Investment</strong></td>
+<td>investment-profitability</td>
+<td><code>rbcz:mib:investment:profitability</code></td>
+<td>Investment Domain</td>
+<td>Analytics</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Related Documents</h2>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a></td>
+<td>Main Data Mesh Governance</td>
+</tr>
+<tr>
+<td><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a></td>
+<td>Naming Convention</td>
+</tr>
+<tr>
+<td><a href="../GOV-DM-003-domain-hierarchy.md">GOV-DM-003</a></td>
+<td>Domain Hierarchy &amp; Ownership</td>
+</tr>
+<tr>
+<td><a href="../catalogs/investment-dp-catalog.md">Investment DP Catalog</a></td>
+<td>Investment Domain Products</td>
+</tr>
+<tr>
+<td><a href="2026-01-08-domain-dp-edi-aum-analysis.md">2026-01-08-domain-dp-edi-aum-analysis.md</a></td>
+<td>DP EDI AUM detailed analysis</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>Author:</strong> Banking Domain Expert (/domain)
+<strong>Approved by:</strong> User (2026-01-08)</p>
+
+</body></html>

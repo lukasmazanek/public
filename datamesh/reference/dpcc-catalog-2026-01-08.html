@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPCC Catalog Extract</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            color: #1f2328;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: .3em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; border-bottom: none; }
+        h4, h5, h6 { border-bottom: none; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+        code {
+            background: rgba(175,184,193,0.2);
+            padding: .2em .4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+        pre code { background: none; padding: 0; font-size: 100%; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 6px 13px;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background: #f6f8fa; }
+        blockquote {
+            border-left: .25em solid #d1d9e0;
+            margin: 0;
+            padding: 0 1em;
+            color: #656d76;
+        }
+        hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+        ul, ol { padding-left: 2em; }
+        li + li { margin-top: .25em; }
+    </style>
+</head>
+<body>
+<h1>DPCC Catalog Extract</h1>
+<blockquote>
+<p><strong>Source:</strong> Scan 8. 1. 2026 at 11.06.pdf + Scan 8. 1. 2026 at 11.14.pdf (full names)
+<strong>Extracted:</strong> 2026-01-08
+<strong>Records:</strong> 87 Data Products</p>
+</blockquote>
+<hr>
+<h2>Summary by Domain</h2>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Count</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rbcz:ai</code></td>
+<td>7</td>
+<td>AI/ML Data Products</td>
+</tr>
+<tr>
+<td><code>rbcz:it:development:dwh</code></td>
+<td>~55</td>
+<td>Cross-cutting Enterprise DPs</td>
+</tr>
+<tr>
+<td><code>rbcz:mib:investment</code></td>
+<td>9</td>
+<td>EDI Investment DPs</td>
+</tr>
+<tr>
+<td><code>rbcz:retail</code></td>
+<td>3</td>
+<td>Retail general</td>
+</tr>
+<tr>
+<td><code>rbcz:retail:P1%20Segment</code></td>
+<td>5</td>
+<td>Retail P1 Segment</td>
+</tr>
+<tr>
+<td><code>rbcz:retail:Digital%20Bank</code></td>
+<td>1</td>
+<td>Digital Banking</td>
+</tr>
+<tr>
+<td><code>rbcz:retail:Retail%20Loan</code></td>
+<td>1</td>
+<td>Retail Loans</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>AI Domain (<code>rbcz:ai</code>)</h2>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Categorization of responses</td>
+<td>DP_CAT_RESPONSES</td>
+<td>Automatizuje třídění a analýzu reakcí zákazníků pro lepší pochopení jejich potřeb a preferencí. FIBO: Customer Interaction Management</td>
+</tr>
+<tr>
+<td>Compliance</td>
+<td>DP_COMPLIANCE</td>
+<td>Monitoruje a vyhodnocuje dodržování regulačních a interních politik s cílem minimalizovat rizika. FIBO: Compliance and Regulatory Reporting</td>
+</tr>
+<tr>
+<td>Consolidation of client experience data</td>
+<td>DP_CONS_CLIENT_EXP_DATA</td>
+<td>Umožňuje shromažďování, organizaci a analýzu dat o zákaznické zkušenosti pro optimalizaci interakcí a služeb. FIBO: Customer Data Management</td>
+</tr>
+<tr>
+<td>Development of sales skills</td>
+<td>DP_DEV_SALES_SKILLS</td>
+<td>Podporuje identifikaci, sledování a zlepšování klíčových kompetencí obchodních týmů. FIBO: Human Resource Management</td>
+</tr>
+<tr>
+<td>Enriching data with business signals</td>
+<td>DP_ENR_DATA_BUS_SIGNALS</td>
+<td>Poskytuje analýzy a poznatky z obchodních signálů pro zlepšení zákaznických vztahů a cílených strategií. FIBO: Customer Relationship Management</td>
+</tr>
+<tr>
+<td>Facilitation of the customer journey</td>
+<td>DP_FAC_CUST_JOURNEY</td>
+<td>Mapuje a analyzuje interakce zákazníků s cílem zlepšit jejich celkový zážitek a loajalitu. FIBO: Customer Journey</td>
+</tr>
+<tr>
+<td>Process efficiency</td>
+<td>DP_PROCESS_EFF</td>
+<td>Poskytuje metriky a analýzy pro optimalizaci výkonu a efektivity organizačních procesů. FIBO: Business Process Management</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>DWH Domain (<code>rbcz:it:development:dwh</code>)</h2>
+<h3>Accounting &amp; Finance</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Accounting and General Ledger</td>
+<td>DP_ACCOUNTG_GENERAL_LEDGER</td>
+<td>Účetní zápisy a konsolidace. DM_FVR</td>
+<td>Accounting</td>
+</tr>
+<tr>
+<td>Accounting and Regulatory Metrics</td>
+<td>DP_ACCOUNTING_REGULATORY_METRICS</td>
+<td>IFRS metriky, EIR, POCI, interní odpisy. DM_FVR</td>
+<td>Accounting, Financial Instrument</td>
+</tr>
+<tr>
+<td>Annual Tax Reports</td>
+<td>DP_ANNUAL_TAX_REPORTS</td>
+<td>Výstupy pro daňové úřady, compliance reporty. DM_TAXREG</td>
+<td>Compliance</td>
+</tr>
+<tr>
+<td>CRS Tax Residencies</td>
+<td>DP_CRS_TAX_RESIDENCIES</td>
+<td>Evidence daňových domicilů podle CRS</td>
+<td>Taxonomy</td>
+</tr>
+<tr>
+<td>FATCA Tax Residencies</td>
+<td>DP_FATCA_TAX_RESIDENCIES</td>
+<td>Evidence daňových domicilů pro FATCA reporting</td>
+<td>Taxonomy</td>
+</tr>
+<tr>
+<td>Fees and Service Margins</td>
+<td>DP_FEE_SERVICE_MARGINS</td>
+<td>Výpočty poplatků, servisních marží a jejich evidence. DM_TSSM</td>
+<td>Revenue, Financial Instrument</td>
+</tr>
+<tr>
+<td>Financial Reporting and Accounting</td>
+<td>DP_FIN_REP_ACC</td>
+<td>Finanční výkazy, IFRS reporting, účetní metriky. DM_FVR, DM_PROMIS</td>
+<td>Financial Statements</td>
+</tr>
+<tr>
+<td>Statements and Reports</td>
+<td>DP_STATEMENTS_REPORTS</td>
+<td>IFRS a lokální finanční výkazy</td>
+<td>Financial Statements</td>
+</tr>
+<tr>
+<td>Tax Reporting</td>
+<td>DP_TAX_REPORTING</td>
+<td>CRS, FATCA a další daňové reporty. DM_TAXREG, DM_CR:ESIF, DM_CR:RIAD</td>
+<td>Taxonomy, Compliance</td>
+</tr>
+</tbody></table>
+<h3>Client Data</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client Addresses</td>
+<td>DP_CLIENT_ADDRESSES</td>
+<td>Adresní body, trvalé a doručovací adresy klienta</td>
+<td>Person, Customer, Legal Entity, Taxonomy</td>
+</tr>
+<tr>
+<td>Client Contracts and Products</td>
+<td>DP_CLIENT_CONTRACTS_PRODUCTS</td>
+<td>Přehled všech smluv a produktů klienta, jejich historie a stav</td>
+<td>Contract</td>
+</tr>
+<tr>
+<td>Client Profiles</td>
+<td>DP_CLIENT_PROFILES</td>
+<td>Kompletní přehled o klientovi - identita, kontakty, segmentace, daňové informace, GDPR, Souhlasy</td>
+<td>Customer Segment</td>
+</tr>
+<tr>
+<td>Contact Information</td>
+<td>DP_CONTACT_INFROMATION</td>
+<td>Telefony, emaily, faxové kontakty klienta</td>
+<td>Person, Customer, Legal Entity, Taxonomy</td>
+</tr>
+<tr>
+<td>Personal and Contact Information</td>
+<td>DP_PERSONAL_CONTACT_INFORMATION</td>
+<td>Základní identifikace, adresy, telefony, emaily</td>
+<td>Person, Customer, Legal Entity, Taxonomy</td>
+</tr>
+<tr>
+<td>Profil klienta</td>
+<td>DP_PROFIL_KLIENTA</td>
+<td>Daňové domicily, CRS, FATCA, compliance data</td>
+<td>Taxonomy, Legal Entity</td>
+</tr>
+<tr>
+<td>Relationships Between Entities</td>
+<td>DP_RELEATIONSHIPS_BETWEEN_ENTITIES</td>
+<td>Vztahy mezi klienty, skupiny klientů, organizační vazby (GCC)</td>
+<td>Legal Entity</td>
+</tr>
+</tbody></table>
+<h3>Accounts &amp; Transactions</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Accounts and Cards</td>
+<td>DP_ACCOUNTS_AND_CARDS</td>
+<td>Data o účtech a platebních kartách navázaných ke smlouvám</td>
+<td>Account, Financial Instrument</td>
+</tr>
+<tr>
+<td>Accounts and Payment Channels</td>
+<td>DP_ACCOUNTS_PAYMENT_CHANNELS</td>
+<td>Data o běžných účtech, kontokorentech, kartách a přístupech (včetně TK, TD, spořící, TU, envelope, Overdraft)</td>
+<td>Account</td>
+</tr>
+<tr>
+<td>Daily Transactions</td>
+<td>DP_DAILY_TRANSACTIONS</td>
+<td>Detailní záznamy transakcí na účtech a kartách</td>
+<td>Transaction, Payment</td>
+</tr>
+<tr>
+<td>Transaction History and Payments</td>
+<td>DP_TRANSACTION_HISTORY_PAYMENTS</td>
+<td>Kompletní záznamy o všech transakcích a platbách klienta. DM_TSSM, DM_CESOP, Fraud Risk Management</td>
+<td>Transaction, Payment</td>
+</tr>
+</tbody></table>
+<h3>Contracts &amp; Products</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Complete Business Contract Aggregation</td>
+<td>DP_COMPLETE_BUSINESS_CONTRACT_AGGR</td>
+<td>Konsolidovaný pohled na smlouvu sjednocující části z různých systémů</td>
+<td>Contract, Financial Instrument</td>
+</tr>
+<tr>
+<td>Contract Lifecycle and Events</td>
+<td>DP_CONTRACT_LIFECYCLE_EVENTS</td>
+<td>Schválení, čerpání, splátky, změny limitů, prodejní eventy</td>
+<td>Contract Event</td>
+</tr>
+<tr>
+<td>Credit Modules</td>
+<td>DP_CREDIT_MODULES</td>
+<td>Data o úvěrových částech smluv v MIDAS a TS</td>
+<td>Contract</td>
+</tr>
+<tr>
+<td>Lifecycle Events</td>
+<td>DP_LIFECYCLE_EVENTS</td>
+<td>Aktivace, čerpání, splátky, refixace úroků apod.</td>
+<td>Contract Event</td>
+</tr>
+<tr>
+<td>Links to Contracts and Clients</td>
+<td>DP_LINKS_CONTRACTS_CLIENTS</td>
+<td>Propojení zajištění se smlouvami a klienty</td>
+<td>Collateral, Contract</td>
+</tr>
+<tr>
+<td>Product Catalog and Services</td>
+<td>DP_PROD_CATALOG_SERVICES</td>
+<td>Metadata o produktech, službách a jejich životním cyklu</td>
+<td>Financial Instrument, Service</td>
+</tr>
+<tr>
+<td>Sales Events and Rewards</td>
+<td>DP_SALES_EVENTS_AND_REWARDS</td>
+<td>Události spojené s prodejem produktů a výpočtem provizí</td>
+<td>Contract Event</td>
+</tr>
+<tr>
+<td>Technical Contracts</td>
+<td>DP_TECHNICAL_CONTRACTS</td>
+<td>Detailní data o jednotlivých částech smluv v systémech (např. úvěry, účty)</td>
+<td>Contract, Financial Instrument</td>
+</tr>
+</tbody></table>
+<h3>Risk &amp; Compliance</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AML Detection and Risk Assessment</td>
+<td>DP_AML_DETECTION_RISK_ASSESSMENT</td>
+<td>Výpočty AML skóre a detekce podezřelých aktivit. DM_AML</td>
+<td>Compliance, Anti-Money Laundering</td>
+</tr>
+<tr>
+<td>Compliance and AML Monitoring</td>
+<td>DP_COMPL_AML_MONITORING</td>
+<td>Data pro prevenci praní špinavých peněz, regulace a daňové reporty. DM_AML, DM_TAXREG, DM_CR:ESIF, DM_CR:RIAD</td>
+<td>Compliance, Anti-Money Laundering</td>
+</tr>
+<tr>
+<td>Credit and Risk Profile</td>
+<td>DP_CREDIT_RISK_PROFILE</td>
+<td>Hodnocení rizika, scoring, varovné signály a insolvenční data. DM_RWA, DM_EWSRT</td>
+<td>Credit Risk</td>
+</tr>
+<tr>
+<td>Credit Registries</td>
+<td>DP_CREDIT_REGISTRIES</td>
+<td>Data z BRKI, CRÚ a dalších externích registrů. DM_BRKI, DM_EXCR</td>
+<td>Credit Risk, Registry</td>
+</tr>
+<tr>
+<td>Defaults and Restructuring</td>
+<td>DP_DEFAULTS_RESTRUCTURING</td>
+<td>Defaulty, odklady splátek, restrukturalizace</td>
+<td>Credit Risk, Contract</td>
+</tr>
+<tr>
+<td>Early Warning System</td>
+<td>DP_EARLY_WARNING_SYSTEM</td>
+<td>Včasné varování před riziky. DM_EWSRT</td>
+<td>Credit Risk, Risk Assessment</td>
+</tr>
+<tr>
+<td>Fraud Prevention</td>
+<td>DP_FRAUD_PREVENTION</td>
+<td>Detekce a evidence podezřelých transakcí. Fraud Risk Management</td>
+<td>Compliance, Transaction</td>
+</tr>
+<tr>
+<td>Insolvency and Defaults</td>
+<td>DP_INSOLVENCY_DEFAULTS</td>
+<td>Data o insolvenčních řízeních, exekucích, omezeních. DM_IBL, Default box</td>
+<td>Credit Risk, Default</td>
+</tr>
+<tr>
+<td>Insolvency Register and Others</td>
+<td>DP_INSOLVENCY_REG</td>
+<td>Data o insolvenčních řízeních, exekucích, omezeních</td>
+<td>Legal Entity, Registry</td>
+</tr>
+<tr>
+<td>Ratings and Scoring</td>
+<td>DP_RATING_SCORING</td>
+<td>Kreditní skóre a hodnocení rizika. sDM služba spravovaná Riskem</td>
+<td>Credit Risk, Risk Assessment</td>
+</tr>
+</tbody></table>
+<h3>Collateral</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Collateral and Security Interests</td>
+<td>DP_COLLATERAL_SECUIRITY_INTERESTS</td>
+<td>Informace o zajištěních a jejich ocenění. DM_CM</td>
+<td>Collateral, Security Interest</td>
+</tr>
+<tr>
+<td>Types and Valuation of Collateral</td>
+<td>DP_TYPES_VALUATION_COLLATERAL</td>
+<td>Detailní informace o kolaterálech. DM_CM</td>
+<td>Collateral, Security Interest</td>
+</tr>
+</tbody></table>
+<h3>Segmentation &amp; Behavior</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Behavioral Bonus Calculations</td>
+<td>DP_BEHAVIORAL_BONUS_CALCULATIONS</td>
+<td>Výpočty bonusů za řádné splácení a jiné behaviorální ukazatele</td>
+<td>Incentive</td>
+</tr>
+<tr>
+<td>Behavioral Events and Changes</td>
+<td>DP_BEHAVIORAL_EVENTS_CHANGES</td>
+<td>Záznamy o významných událostech a změnách u klientů</td>
+<td>Customer Segment</td>
+</tr>
+<tr>
+<td>Bonus Programs</td>
+<td>DP_BONUS_PROGRAMS</td>
+<td>Bonusové programy</td>
+<td>Contract, Incentive</td>
+</tr>
+<tr>
+<td>Segmentation and Behavior</td>
+<td>DP_SEGMENTATION_AND_BEHAVIOR</td>
+<td>Segmentační atributy, behaviorální data, události na klientech</td>
+<td>Customer Segment</td>
+</tr>
+<tr>
+<td>Segmentation Attributes</td>
+<td>DP_SEGMENTATION_ATTRIBUTES</td>
+<td>Kategorizace klientů dle obchodních pravidel</td>
+<td>Customer Segment</td>
+</tr>
+</tbody></table>
+<h3>Marketing &amp; Campaigns</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Campaigns and Client Responses</td>
+<td>DP_CAMP_CLIENT_RESPONSES</td>
+<td>Informace o kampaních a odpovědích. DM_OCRM</td>
+<td>Marketing Campaign, Customer Engagement</td>
+</tr>
+<tr>
+<td>Marketing Campaigns and Customer Activities</td>
+<td>DP_MRK_CAMP_CUST_ACT</td>
+<td>Data o kampaních, reakcích klientů a věrnostních programech. DM_OCRM, Behaviorální bonus</td>
+<td>Marketing Campaign, Customer Engagement</td>
+</tr>
+</tbody></table>
+<h3>GDPR &amp; Consent</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Consent Records</td>
+<td>DP_CONSENT_RECORDS</td>
+<td>Správa a evidence souhlasů klientů s marketingem a službami</td>
+<td>Compliance</td>
+</tr>
+<tr>
+<td>GDPR and Consents</td>
+<td>DP_GDPR_CONSENTS</td>
+<td>Evidence souhlasů klientů, práva na informace, GDPR reporty</td>
+<td>Compliance</td>
+</tr>
+<tr>
+<td>GDPR Reports</td>
+<td>DP_GDPR_REPORTS</td>
+<td>Reporty pro klienty dle zákona o ochraně osobních údajů</td>
+<td>Compliance</td>
+</tr>
+</tbody></table>
+<h3>External Registries</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Albertina - Register of Economic Entities</td>
+<td>DP_ALBERTINA</td>
+<td>Registr ekonomických subjektů (Creditinfo)</td>
+<td>Legal Entity, Registry</td>
+</tr>
+<tr>
+<td>Cribis - Register of Business Entities</td>
+<td>DP_CRIBIS</td>
+<td>Ekonomický registr podnikatelských subjektů a FO/FOP (Crif)</td>
+<td>Legal Entity, Registry</td>
+</tr>
+<tr>
+<td>External Client Registries - Standalone Data</td>
+<td>DP_EXT_CLIENT_REG</td>
+<td>Data z externích registrů pro doplnění a validaci klientských dat. DM_BRKI, DM_EXCR, Insolvenční rejstřík</td>
+<td>Registry</td>
+</tr>
+<tr>
+<td>RIAD CNB - Debtor Register</td>
+<td>DP_RIAD_CNB</td>
+<td>Registr identifikovaných aktivních dlužníků</td>
+<td>Legal Entity, Registry</td>
+</tr>
+<tr>
+<td>RUIAN - Address Register</td>
+<td>DP_RUIAN</td>
+<td>Adresní body evidované v ČR v registru adres RUIAN</td>
+<td>Location</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Investment Domain (<code>rbcz:mib:investment</code>)</h2>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>EDI Application Asset Under Management Reporting</td>
+<td>DP_EDI_AUM</td>
+<td>Daily balance of Assets under Management (AUM) per product, segment and contracts (EDI, DIP, other). Assets under Management is the volume of deposits in investment accounts.</td>
+</tr>
+<tr>
+<td>EDI Customer</td>
+<td>DP_EDI_CUSTOMER</td>
+<td>EDI customer status within particular network banks that use EDI in local onboarding mode for any particular day.</td>
+</tr>
+<tr>
+<td>EDI Portfolio</td>
+<td>DP_EDI_PORTFOLIO</td>
+<td>EDI portfolio status of all EDI customers within particular network banks that use EDI in local onboarding mode.</td>
+</tr>
+<tr>
+<td>EDI Portfolio Reconsolidation</td>
+<td>DP_EDI_PORTFOLIO_REC</td>
+<td>Results of reconciliation job that is run every night between EDI Portfolio from NWB core system and EDI Portfolio data.</td>
+</tr>
+<tr>
+<td>EDI Position</td>
+<td>DP_EDI_POSITION</td>
+<td>Holding volumes (positions in pieces) aggregated by Network Bank, EDI Portfolio, EDI Customer, their investment instrument (ISIN).</td>
+</tr>
+<tr>
+<td>EDI Position Reconciliation</td>
+<td>DP_EDI_POSITION_REC</td>
+<td>Results of reconciliation job that is run every night between EDI Position from NWB core system and EDI Position data.</td>
+</tr>
+<tr>
+<td>Investment Agreements</td>
+<td>DP_AGREEMENT</td>
+<td>Active investment agreements of customers for CRM. ~175,000 records for contracts (2025/09). Customer conditions apply.</td>
+</tr>
+<tr>
+<td>Investment Customer Exposition</td>
+<td>DP_TRANSACTION</td>
+<td>Aggregated daily balances on BIU investment accounts for EDI and DIP contracts, first date of BIU deposit on DIP contract, number of products.</td>
+</tr>
+<tr>
+<td>Marketing Campaign Candidates</td>
+<td>DP_CUSTOMER</td>
+<td>Investment customers for CRM campaigns. Customer must have marketing consent for outreach and meet additional criteria.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Retail Domain (<code>rbcz:retail:*</code>)</h2>
+<h3>General Retail (<code>rbcz:retail</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Investments</td>
+<td>DP_INVESTMENTS</td>
+<td>Owner TBD (candidate: Marek Podrabsky). DP Consumers: <a href="mailto:mariia.komissarova@rbinternational.com">mariia.komissarova@rbinternational.com</a>, <a href="mailto:antonio.costa@rbinternational.com">antonio.costa@rbinternational.com</a></td>
+</tr>
+<tr>
+<td>Service Products</td>
+<td>DP_SERVICE_PRODUCTS</td>
+<td>Owner TBD. DP Consumers: <a href="mailto:mariia.komissarova@rbinternational.com">mariia.komissarova@rbinternational.com</a>, <a href="mailto:antonio.costa@rbinternational.com">antonio.costa@rbinternational.com</a></td>
+</tr>
+<tr>
+<td>Transactions</td>
+<td>DP_TRANSACTIONS</td>
+<td>Owner TBD. DP Consumers: <a href="mailto:mariia.komissarova@rbinternational.com">mariia.komissarova@rbinternational.com</a>, <a href="mailto:antonio.costa@rbinternational.com">antonio.costa@rbinternational.com</a></td>
+</tr>
+</tbody></table>
+<h3>P1 Segment (<code>rbcz:retail:P1%20Segment</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Account</td>
+<td>DP_ACCOUNT</td>
+<td>Owner TBD (candidate: Vladimir Bures). DP Consumers: <a href="mailto:mariia.komissarova@rbinternational.com">mariia.komissarova@rbinternational.com</a>, <a href="mailto:antonio.costa@rbinternational.com">antonio.costa@rbinternational.com</a></td>
+</tr>
+<tr>
+<td>Bank Assurance</td>
+<td>DP_BANK_ASSURANCE</td>
+<td>Owner TBD (candidate: Jana Flajsarova/Spacilova). DP Consumers: <a href="mailto:mariia.komissarova@rbinternational.com">mariia.komissarova@rbinternational.com</a>, <a href="mailto:antonio.costa@rbinternational.com">antonio.costa@rbinternational.com</a></td>
+</tr>
+<tr>
+<td>Cards</td>
+<td>DP_CARDS</td>
+<td>Owner TBD (candidate: Roman Preucil). DP Consumers: <a href="mailto:mariia.komissarova@rbinternational.com">mariia.komissarova@rbinternational.com</a>, <a href="mailto:antonio.costa@rbinternational.com">antonio.costa@rbinternational.com</a></td>
+</tr>
+<tr>
+<td>CRM Interactions</td>
+<td>DP_CRM_INTERACTIONS</td>
+<td>Poskytuje veškerou CRM komunikaci s klienty a interakce klientů s danými kampaněmi. Řeší jak odeslané kampaně všemi kanály, tak jednotlivé interakce klientů.</td>
+</tr>
+<tr>
+<td>Customer</td>
+<td>DP_CUSTOMER</td>
+<td>Owner TBD (candidate: Jan Figlovsky/Tomas Nemcik). DP Consumers: <a href="mailto:mariia.komissarova@rbinternational.com">mariia.komissarova@rbinternational.com</a>, <a href="mailto:antonio.costa@rbinternational.com">antonio.costa@rbinternational.com</a></td>
+</tr>
+</tbody></table>
+<h3>Digital Banking (<code>rbcz:retail:Digital%20Banking</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Digital Channel Events</td>
+<td>DP_DIGITAL_CHANNEL_EVENT</td>
+<td>Data for monitoring user activity by tracking user logins across individual digital channels. Specifically captures retail user logins to digital banking.</td>
+</tr>
+</tbody></table>
+<h3>Retail Loan (<code>rbcz:retail:Retail%20Loan</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>DataProductTitle</th>
+<th>DataProductName</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Application</td>
+<td>DP_APPLICATION</td>
+<td>Owner TBD (candidate: Ondrej Hak). DP Consumers: <a href="mailto:mariia.komissarova@rbinternational.com">mariia.komissarova@rbinternational.com</a>, <a href="mailto:antonio.costa@rbinternational.com">antonio.costa@rbinternational.com</a></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Key Insights</h2>
+<h3>1. DWH as Enterprise Data Layer</h3>
+<p>The <code>rbcz:it:development:dwh</code> domain serves as a <strong>cross-cutting enterprise data layer</strong> providing:</p>
+<ul>
+<li>Client 360 data (profiles, addresses, contacts)</li>
+<li>Contract master data</li>
+<li>Transaction history</li>
+<li>Risk and compliance data</li>
+<li>External registry integrations</li>
+</ul>
+<h3>2. Domain Consumption Pattern</h3>
+<pre><code>DWH (Enterprise Layer)
+    │
+    ├── rbcz:mib:investment (consumes client, contract, transaction data)
+    ├── rbcz:retail:* (consumes client, product, transaction data)
+    └── rbcz:ai (consumes behavioral, campaign data)
+</code></pre>
+<h3>3. Investment Domain - Complete DP List</h3>
+<table>
+<thead>
+<tr>
+<th>DP</th>
+<th>Purpose</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DP_EDI_AUM</td>
+<td>AUM reporting (daily balance per product/segment/contract)</td>
+<td>Production</td>
+</tr>
+<tr>
+<td>DP_EDI_CUSTOMER</td>
+<td>Customer status per NWB (local onboarding mode)</td>
+<td>Production</td>
+</tr>
+<tr>
+<td>DP_EDI_PORTFOLIO</td>
+<td>Portfolio status per NWB</td>
+<td>Production</td>
+</tr>
+<tr>
+<td>DP_EDI_PORTFOLIO_REC</td>
+<td>Portfolio reconciliation (NWB core vs EDI)</td>
+<td>Production</td>
+</tr>
+<tr>
+<td>DP_EDI_POSITION</td>
+<td>Position volumes (by NWB, portfolio, customer, ISIN)</td>
+<td>Production</td>
+</tr>
+<tr>
+<td>DP_EDI_POSITION_REC</td>
+<td>Position reconciliation (NWB core vs EDI)</td>
+<td>Production</td>
+</tr>
+<tr>
+<td>DP_AGREEMENT</td>
+<td>Investment agreements for CRM (~175k records)</td>
+<td>Production</td>
+</tr>
+<tr>
+<td>DP_TRANSACTION</td>
+<td>BIU balances (EDI/DIP contracts)</td>
+<td>Production</td>
+</tr>
+<tr>
+<td>DP_CUSTOMER</td>
+<td>Campaign candidates (marketing consent required)</td>
+<td>Production</td>
+</tr>
+</tbody></table>
+<p><strong>Note:</strong> DP_EDI_AGG_CLIENT, DP_EDI_PROFITABILITY, DP_EDI_SALES, DP_EDI_APP_USAGE were referenced in previous scan but not visible in current extract - may be planned or renamed.</p>
+<h3>4. FIBO Alignment</h3>
+<p>Most DWH DPs have explicit FIBO mappings documented:</p>
+<ul>
+<li>Accounting → FIBO Accounting</li>
+<li>Compliance → FIBO Compliance</li>
+<li>Customer → FIBO Customer, Person, Legal Entity</li>
+<li>Contracts → FIBO Contract, Financial Instrument</li>
+<li>Risk → FIBO Credit Risk, Risk Assessment</li>
+<li>Collateral → FIBO Collateral, Security Interest</li>
+</ul>
+<hr>
+<h2>Usage Notes</h2>
+<p>This extract serves as reference for:</p>
+<ol>
+<li>Mapping Test domain DPs to production DPCC</li>
+<li>Understanding DWH as upstream data provider</li>
+<li>Identifying FIBO alignments across enterprise</li>
+<li>Planning Investment domain DP coverage</li>
+</ol>
+
+</body></html>

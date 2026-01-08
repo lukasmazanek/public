@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Product Analysis: DP_EDI_AUM</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            color: #1f2328;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: .3em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; border-bottom: none; }
+        h4, h5, h6 { border-bottom: none; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+        code {
+            background: rgba(175,184,193,0.2);
+            padding: .2em .4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+        pre code { background: none; padding: 0; font-size: 100%; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 6px 13px;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background: #f6f8fa; }
+        blockquote {
+            border-left: .25em solid #d1d9e0;
+            margin: 0;
+            padding: 0 1em;
+            color: #656d76;
+        }
+        hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+        ul, ol { padding-left: 2em; }
+        li + li { margin-top: .25em; }
+    </style>
+</head>
+<body>
+<h1>Data Product Analysis: DP_EDI_AUM</h1>
+<p><strong>Role:</strong> Banking Domain Expert
+<strong>Date:</strong> 2026-01-08
+<strong>Domain:</strong> <code>RBCZ:MIB:Investment</code>
+<strong>Type:</strong> Data Product Assessment
+<strong>Verdict:</strong> VALID DATA PRODUCT (needs maturation)</p>
+<hr>
+<h2>1. Basic Identification</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Name</strong></td>
+<td>DP_EDI_AUM</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>EDI Application Asset Under Management Reporting</td>
+</tr>
+<tr>
+<td><strong>Domain Path</strong></td>
+<td>RBCZ:MIB:Investment</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Marek Podrabsky (MIB/Investment)</td>
+</tr>
+<tr>
+<td><strong>Maturity</strong></td>
+<td>20% (proposed)</td>
+</tr>
+<tr>
+<td><strong>Version</strong></td>
+<td>1.0.7</td>
+</tr>
+<tr>
+<td><strong>Source</strong></td>
+<td><code>conceptspeak/input/datacontract/RBCZ/MIB/Investment/dp_edi_aum.yaml</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>2. DATSIS Test - Is it a Data Product?</h2>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Status</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>D</strong>iscoverable</td>
+<td>PASS</td>
+<td>In data catalog (datamesh-rbcz url)</td>
+</tr>
+<tr>
+<td><strong>A</strong>ddressable</td>
+<td>PASS</td>
+<td>URN: <code>urn:businessdomain:rbcz:mib:investment</code>, Databricks schema</td>
+</tr>
+<tr>
+<td><strong>T</strong>rustworthy</td>
+<td>PARTIAL</td>
+<td>SLA defined, but maturity only 20%</td>
+</tr>
+<tr>
+<td><strong>S</strong>elf-describing</td>
+<td>PASS</td>
+<td>Schema + definitions + FIBO links</td>
+</tr>
+<tr>
+<td><strong>I</strong>nteroperable</td>
+<td>PARTIAL</td>
+<td>FIBO alignment has 3 validation errors</td>
+</tr>
+<tr>
+<td><strong>S</strong>ecure</td>
+<td>PASS</td>
+<td>Classification: General, PII: false</td>
+</tr>
+</tbody></table>
+<p><strong>Verdict:</strong> YES, this is a Data Product (but needs to mature)</p>
+<hr>
+<h2>3. Business Value Analysis</h2>
+<h3>Value Proposition</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Consumer</th>
+<th>Business Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Performance Evaluation</strong></td>
+<td>Management</td>
+<td>AUM vs. targets tracking</td>
+</tr>
+<tr>
+<td><strong>Digital Strategy Enhancement</strong></td>
+<td>Digital team</td>
+<td>Channel optimization insights</td>
+</tr>
+<tr>
+<td><strong>Segment Analysis</strong></td>
+<td>Marketing, Sales</td>
+<td>Client distribution by segment</td>
+</tr>
+</tbody></table>
+<h3>Use Cases (3 defined)</h3>
+<table>
+<thead>
+<tr>
+<th>UC</th>
+<th>Description</th>
+<th>Consumer</th>
+<th>Frequency</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>UC1</strong></td>
+<td>AUM performance tracking</td>
+<td>Reporting, Risk</td>
+<td>Daily</td>
+</tr>
+<tr>
+<td><strong>UC2</strong></td>
+<td>Digital channel optimization</td>
+<td>Digital Marketing</td>
+<td>Ad-hoc</td>
+</tr>
+<tr>
+<td><strong>UC3</strong></td>
+<td>Campaign effectiveness</td>
+<td>Marketing, Sales</td>
+<td>Campaign-based</td>
+</tr>
+</tbody></table>
+<p><strong>Assessment:</strong> Clear business value, well-defined use cases</p>
+<hr>
+<h2>4. Product Structure</h2>
+<pre><code>DP_EDI_AUM
+├── EDI_AUM (fact table)
+│   ├── DATUM (Calendar Day)
+│   ├── COUNTRY_CODE → IDM_COUNTRIES
+│   ├── SECINSTR_ISIN_CODE → IDM_PRODUCTS
+│   ├── PROFITCENTER_CODE → IDM_SEGMENTS
+│   ├── SOURCE_CODE (enum: BIU_ALLOC, BIU_DIP, BIU_EDI, GI_ALLOC, GI_DIP)
+│   ├── SOURCE_CODE_DESC
+│   ├── AUM_LCY (local currency)
+│   └── AUM_EUR (EUR)
+│
+├── IDM_COUNTRIES (dimension)
+│   ├── COUNTRY_CODE (PK)
+│   └── COUNTRY_NAME
+│
+├── IDM_PRODUCTS (dimension)
+│   ├── SECINSTR_ISIN_CODE (PK, ISIN)
+│   ├── PRODUCT_NAME
+│   ├── L0_PRODUCT_TYPE
+│   └── L1_PRODUCT_TYPE
+│
+└── IDM_SEGMENTS (dimension)
+    ├── PROFITCENTER_CODE (PK)
+    ├── L0_SEGM_DESC
+    ├── L1_SEGM_DESC
+    └── L2_SEGM_DESC
+</code></pre>
+<p><strong>Pattern:</strong> Star schema (fact + dimensions) - correct pattern for analytics product</p>
+<hr>
+<h2>5. Domain Expert Assessment</h2>
+<h3>What&#39;s Good</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Rating</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>AUM as metric</strong></td>
+<td>Standard wealth management KPI</td>
+</tr>
+<tr>
+<td><strong>ISIN identification</strong></td>
+<td>ISO 6166 standard - correct</td>
+</tr>
+<tr>
+<td><strong>Country code</strong></td>
+<td>ISO 3166-1 alpha-2 - correct</td>
+</tr>
+<tr>
+<td><strong>LCY + EUR</strong></td>
+<td>Dual currency reporting - best practice</td>
+</tr>
+<tr>
+<td><strong>Segment hierarchy</strong></td>
+<td>L0/L1/L2 - flexible</td>
+</tr>
+<tr>
+<td><strong>Owner defined</strong></td>
+<td>Clear accountability</td>
+</tr>
+</tbody></table>
+<h3>Needs Improvement</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Severity</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Maturity 20%</strong></td>
+<td>HIGH</td>
+<td>Define path to 80%+</td>
+</tr>
+<tr>
+<td><strong>&quot;To-Do&quot; in definitions</strong></td>
+<td>HIGH</td>
+<td>Complete business definitions (AUM_LCY, L0/L1 Product Type)</td>
+</tr>
+<tr>
+<td><strong>SOURCE_CODE mapping</strong></td>
+<td>MEDIUM</td>
+<td>Source Code → Income is semantically questionable</td>
+</tr>
+<tr>
+<td><strong>FIBO validation errors</strong></td>
+<td>MEDIUM</td>
+<td>3 errors to fix (see previous review)</td>
+</tr>
+<tr>
+<td><strong>Missing Customer link</strong></td>
+<td>LOW</td>
+<td>Aggregated data - OK for reporting</td>
+</tr>
+</tbody></table>
+<h3>Risks</h3>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Products without ISIN</strong></td>
+<td>Private funds excluded</td>
+<td>Extend with alternative identifiers</td>
+</tr>
+<tr>
+<td><strong>Segment changes</strong></td>
+<td>Historical data &quot;moves&quot;</td>
+<td>SCD Type 2 for segments</td>
+</tr>
+<tr>
+<td><strong>Multi-country products</strong></td>
+<td>One record = one country</td>
+<td>Redesign or document limitation</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>6. FIBO Alignment Summary</h2>
+<p>From previous review (2025-12-31, <code>review/2025-12-31-domain-dp-edi-aum-fibo.md</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+<th>Target</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FIBO Mapped</td>
+<td>72%</td>
+<td>&gt;=50%</td>
+<td>PASS</td>
+</tr>
+<tr>
+<td>Validation Errors</td>
+<td>3</td>
+<td>0</td>
+<td>FAIL</td>
+</tr>
+<tr>
+<td>Definition Coverage</td>
+<td>100%</td>
+<td>100%</td>
+<td>PASS</td>
+</tr>
+</tbody></table>
+<p><strong>Top 3 FIBO Issues:</strong></p>
+<ol>
+<li><code>Country Identifier</code> → missing external_concept</li>
+<li><code>ISIN</code> → missing external_concept</li>
+<li><code>Profitcenter Identifier</code> → missing external_concept</li>
+</ol>
+<hr>
+<h2>7. Data Product Scorecard</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Score</th>
+<th>Max</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Ownership</strong></td>
+<td>5/5</td>
+<td>5</td>
+<td>Clear owner with contact</td>
+</tr>
+<tr>
+<td><strong>Documentation</strong></td>
+<td>3/5</td>
+<td>5</td>
+<td>Some definitions missing</td>
+</tr>
+<tr>
+<td><strong>Discoverability</strong></td>
+<td>4/5</td>
+<td>5</td>
+<td>In catalog, URL available</td>
+</tr>
+<tr>
+<td><strong>Schema Quality</strong></td>
+<td>4/5</td>
+<td>5</td>
+<td>Star schema, but FIBO errors</td>
+</tr>
+<tr>
+<td><strong>SLA</strong></td>
+<td>5/5</td>
+<td>5</td>
+<td>Complete SLA definition</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>4/5</td>
+<td>5</td>
+<td>Classification OK, PII tagged</td>
+</tr>
+<tr>
+<td><strong>Business Value</strong></td>
+<td>5/5</td>
+<td>5</td>
+<td>Clear use cases</td>
+</tr>
+<tr>
+<td><strong>Interoperability</strong></td>
+<td>3/5</td>
+<td>5</td>
+<td>FIBO errors, segment mapping</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td><strong>33/40</strong></td>
+<td>40</td>
+<td><strong>82% - GOOD</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>8. Recommendations</h2>
+<h3>Priority 1: Must fix before production</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Complete missing business definitions (<code>AUM_LCY</code>, <code>L0/L1_PRODUCT_TYPE</code>)</li>
+<li><input disabled="" type="checkbox"> Fix 3 FIBO validation errors</li>
+<li><input disabled="" type="checkbox"> Increase maturity score to min. 60%</li>
+</ul>
+<h3>Priority 2: Before expanding consumers</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Reconsider SOURCE_CODE → Income mapping</li>
+<li><input disabled="" type="checkbox"> Document limitations (no ISIN = excluded)</li>
+<li><input disabled="" type="checkbox"> Add data quality metrics</li>
+</ul>
+<h3>Priority 3: Product evolution</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Customer link for UC2/UC3 enrichment</li>
+<li><input disabled="" type="checkbox"> SCD Type 2 for segments</li>
+<li><input disabled="" type="checkbox"> Real-time variant (currently batch only)</li>
+</ul>
+<hr>
+<h2>9. Conclusion</h2>
+<p><strong>DP_EDI_AUM is a valid Data Product</strong> with clear business value and correct structure.</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Is it a DP?</strong></td>
+<td>YES</td>
+</tr>
+<tr>
+<td><strong>Production ready?</strong></td>
+<td>NO (maturity 20%)</td>
+</tr>
+<tr>
+<td><strong>Correct owner?</strong></td>
+<td>YES (MIB/Investment)</td>
+</tr>
+<tr>
+<td><strong>FIBO aligned?</strong></td>
+<td>PARTIAL (3 errors)</td>
+</tr>
+<tr>
+<td><strong>Business value?</strong></td>
+<td>CLEAR</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Related Documents</h2>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../../conceptspeak/input/datacontract/RBCZ/MIB/Investment/dp_edi_aum.yaml">dp_edi_aum.yaml</a></td>
+<td>Source Data Contract</td>
+</tr>
+<tr>
+<td><a href="../../review/2025-12-31-domain-dp-edi-aum-fibo.md">2025-12-31-domain-dp-edi-aum-fibo.md</a></td>
+<td>Previous FIBO alignment review</td>
+</tr>
+<tr>
+<td><a href="../../policies/GOV-013-data-product-governance.md">GOV-013</a></td>
+<td>Data Product Governance Policy</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>Reviewer:</strong> Banking Domain Expert (/domain)
+<strong>Status:</strong> VALID DATA PRODUCT - NEEDS MATURATION</p>
+
+</body></html>

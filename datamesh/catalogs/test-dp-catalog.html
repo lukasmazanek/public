@@ -1,0 +1,3120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Domain - Data Product Catalog</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            color: #1f2328;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: .3em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; border-bottom: none; }
+        h4, h5, h6 { border-bottom: none; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+        code {
+            background: rgba(175,184,193,0.2);
+            padding: .2em .4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+        pre code { background: none; padding: 0; font-size: 100%; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 6px 13px;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background: #f6f8fa; }
+        blockquote {
+            border-left: .25em solid #d1d9e0;
+            margin: 0;
+            padding: 0 1em;
+            color: #656d76;
+        }
+        hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+        ul, ol { padding-left: 2em; }
+        li + li { margin-top: .25em; }
+    </style>
+</head>
+<body>
+<h1>Test Domain - Data Product Catalog</h1>
+<blockquote>
+<p><strong>Status:</strong> DRAFT
+<strong>Created:</strong> 2026-01-08
+<strong>Owner:</strong> Data Mesh Consultant
+<strong>Based on:</strong> GOV-DM-001, GOV-DM-003, Test domain ontology</p>
+</blockquote>
+<hr>
+<h2>1. Executive Summary</h2>
+<p>This catalog defines Data Products for the <strong>Test</strong> domain hierarchy based on semantic analysis of the ontology. The Test domain serves as a reference implementation demonstrating Data Mesh patterns.</p>
+<h3>Domain Structure</h3>
+<pre><code>Test (root)                          5 DPs (3 concepts + 2 ISO ref) - SHARED REFERENCE
+├── Test:MIB (BU)                   2 DPs (11 concepts)            - BU MASTER DATA
+│   └── Test:MIB:Investment         18 DPs (262 concepts)          - DOMAIN ANALYTICS
+└── Test:Retail (BU)                2 DPs (9 concepts)             - BU MASTER DATA
+</code></pre>
+<h3>Data Product Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Count</th>
+<th>Owner Level</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Layer 1: Shared Reference</td>
+<td>5</td>
+<td>Test (root)</td>
+</tr>
+<tr>
+<td>Layer 2: BU Master Data</td>
+<td>4</td>
+<td>MIB, Retail</td>
+</tr>
+<tr>
+<td>Layer 3: Domain Analytics</td>
+<td>18</td>
+<td>Investment</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>27</strong></td>
+<td></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>GOV-DM-001 Compliance:</strong> All DP names are <strong>purpose-driven</strong> (reflect business value, not just entities).
+<strong>DPCC Alignment:</strong> Catalog aligned with production DPCC (9 Investment DPs mapped).</p>
+</blockquote>
+<h3>DPCC Alignment Table</h3>
+<table>
+<thead>
+<tr>
+<th>DP Slug</th>
+<th>DPCC Equivalent</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>investment-aum-reporting</code></td>
+<td><code>DP_EDI_AUM</code></td>
+<td>AUM performance reporting</td>
+</tr>
+<tr>
+<td><code>investment-client-reporting</code></td>
+<td><code>DP_EDI_AGG_CLIENT</code></td>
+<td>Client acquisition tracking</td>
+</tr>
+<tr>
+<td><code>investment-sales-reporting</code></td>
+<td><code>DP_EDI_SALES</code></td>
+<td>Sales volume reporting</td>
+</tr>
+<tr>
+<td><code>investment-profitability</code></td>
+<td><code>DP_EDI_PROFITABILITY</code></td>
+<td>Fee and income analysis</td>
+</tr>
+<tr>
+<td><code>investment-digital-channels</code></td>
+<td><code>DP_EDI_APP_USAGE</code></td>
+<td>Mobile app usage analytics</td>
+</tr>
+<tr>
+<td><code>investment-portfolios</code></td>
+<td><code>DP_EDI_PORTFOLIO</code></td>
+<td>Portfolio status per NWB</td>
+</tr>
+<tr>
+<td><code>investment-edi-customers</code></td>
+<td><code>DP_EDI_CUSTOMER</code></td>
+<td>EDI customer status per NWB</td>
+</tr>
+<tr>
+<td><code>investment-reconciliation</code></td>
+<td><code>DP_EDI_PORTFOLIO_RI</code>, <code>DP_EDI_POSITION_REC</code></td>
+<td>Portfolio &amp; position reconciliation</td>
+</tr>
+<tr>
+<td><code>investment-agreements</code></td>
+<td><code>DP_AGREEMENT</code></td>
+<td>Investment agreements for CRM</td>
+</tr>
+</tbody></table>
+<h3>DWH Consumption Mapping</h3>
+<p>Investment DPs consume enterprise data from DWH (upstream cross-cutting layer):</p>
+<table>
+<thead>
+<tr>
+<th>Investment DP</th>
+<th>Consumes from DWH</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>investment-suitability-assessment</code></td>
+<td><code>DP_CLIENT_PROFILES</code></td>
+<td>Customer identity, compliance data</td>
+</tr>
+<tr>
+<td><code>investment-customer-contact</code></td>
+<td><code>DP_CLIENT_ADDRESSES</code>, <code>DP_CONTACT_INFROM</code></td>
+<td>Address, phone, email data</td>
+</tr>
+<tr>
+<td><code>investment-contracts</code></td>
+<td><code>DP_CLIENT_CONTRACT</code></td>
+<td>Contract master data</td>
+</tr>
+<tr>
+<td><code>investment-accounts</code></td>
+<td><code>DP_ACCOUNTS_AND_C</code></td>
+<td>Account and card data</td>
+</tr>
+<tr>
+<td><code>investment-positions</code></td>
+<td><code>DP_TRANSACTION_HIS</code></td>
+<td>Transaction history</td>
+</tr>
+<tr>
+<td><code>investment-transactions</code></td>
+<td><code>DP_DAILY_TRANSACTI</code></td>
+<td>Daily transaction records</td>
+</tr>
+<tr>
+<td><code>investment-profitability</code></td>
+<td><code>DP_FEE_SERVICE_MAR</code></td>
+<td>Fee and margin calculations</td>
+</tr>
+<tr>
+<td><code>investment-campaigns</code></td>
+<td><code>DP_CAMP_CLIENT_RES</code></td>
+<td>Campaign and response data</td>
+</tr>
+<tr>
+<td><code>investment-edi-customers</code></td>
+<td><code>DP_CLIENT_PROFILES</code></td>
+<td>Customer base data</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>2. Layer 1: Shared Reference Data</h2>
+<p><strong>Owner:</strong> Test root (CDO equivalent)
+<strong>Consumers:</strong> All BUs and domains</p>
+<h3>2.1 ISO Reference Data</h3>
+<h4>DP-REF-001: countries-reference-master</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:countries</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>countries-reference-master</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Countries Reference Master</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Test root</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>1 - Shared Reference</td>
+</tr>
+<tr>
+<td><strong>Standard</strong></td>
+<td>ISO 3166-1</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Master list of countries with ISO codes for all Test domain consumers.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Country</code> (bkb-test-mib-investment:Country)</li>
+<li><code>Country Identifier</code> (Alpha-2 Identifier)</li>
+<li><code>Country Name</code></li>
+<li><code>IDM Country</code> (reference table)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li>All Investment DPs (country of residence, trading venue)</li>
+<li>Retail DPs (customer address)</li>
+</ul>
+<hr>
+<h4>DP-REF-002: currencies-reference-master</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:currencies</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>currencies-reference-master</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Currencies Reference Master</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Test root</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>1 - Shared Reference</td>
+</tr>
+<tr>
+<td><strong>Standard</strong></td>
+<td>ISO 4217</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Master list of currencies for financial calculations and reporting.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Currency</code> (bkb-test-mib-investment:Currency)</li>
+<li><code>CZK</code> (Czech Koruna)</li>
+<li><code>EUR</code></li>
+<li><code>USD</code></li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li>Investment AUM Reporting (multi-currency)</li>
+<li>All financial DPs</li>
+</ul>
+<hr>
+<h3>2.2 Cross-Domain Business Entities</h3>
+<h4>DP-REF-003: customer-crossdomain-reporting</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:customers</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>customer-crossdomain-reporting</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Customer Base for Cross-Domain Reporting</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Test root (CDO)</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>1 - Shared Reference</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:Customer</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> Unified customer identity enabling cross-BU reporting and analytics. Provides golden record for customer across all business units.</p>
+<p><strong>Business Questions Answered:</strong></p>
+<ul>
+<li>Who is our customer across all BUs?</li>
+<li>How many unique customers do we have enterprise-wide?</li>
+<li>How to link MIB and Retail customer records?</li>
+</ul>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Customer</code> (bkb-test:Customer) → fibo-fnd:Customer</li>
+<li>Core attributes: ID, Name, Status</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li><code>mib-customers</code> (extends)</li>
+<li><code>retail-customers</code> (extends)</li>
+<li>Enterprise reporting</li>
+</ul>
+<hr>
+<h4>DP-REF-004: account-crossdomain-reporting</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:accounts</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>account-crossdomain-reporting</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Account Base for Cross-Domain Reporting</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Test root (CDO)</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>1 - Shared Reference</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fbc:Account</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> Unified account identity enabling cross-BU reporting. Foundation for all account-related analytics.</p>
+<p><strong>Business Questions Answered:</strong></p>
+<ul>
+<li>What accounts exist across all BUs?</li>
+<li>How to aggregate account data for enterprise reporting?</li>
+</ul>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Account</code> (bkb-test:Account) → fibo-fbc:Account</li>
+<li>Core attributes: Account Number, Status, Type</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li><code>investment-accounts</code> (extends)</li>
+<li>Enterprise reporting</li>
+</ul>
+<hr>
+<h4>DP-REF-005: transaction-crossdomain-analytics</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:transactions</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>transaction-crossdomain-analytics</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Transaction Base for Cross-Domain Analytics</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Test root (CDO)</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>1 - Shared Reference</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fbc:Transaction</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> Unified transaction model enabling cross-BU analytics. Foundation for enterprise-wide transaction analysis.</p>
+<p><strong>Business Questions Answered:</strong></p>
+<ul>
+<li>What is total transaction volume across BUs?</li>
+<li>How to compare transaction patterns between MIB and Retail?</li>
+</ul>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Transaction</code> (bkb-test:Transaction) → fibo-fbc:Transaction</li>
+<li>Core attributes: Transaction ID, Date, Amount, Type</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li><code>investment-transactions</code> (extends)</li>
+<li>Enterprise analytics</li>
+</ul>
+<hr>
+<h2>3. Layer 2: BU Master Data</h2>
+<h3>3.1 MIB Business Unit</h3>
+<p><strong>Owner:</strong> MIB BU Owner</p>
+<h4>DP-MIB-001: mib-customers</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:customers</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>mib-customers</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>MIB Customer Master</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>MIB BU</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>2 - BU Master Data</td>
+</tr>
+<tr>
+<td><strong>Specializes</strong></td>
+<td><code>customer-crossdomain-reporting</code></td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:Customer</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Single source of truth for MIB customer data, extended by Investment domain. Extends enterprise customer identity with MIB-specific attributes.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Customer</code> (bkb-test-mib:Customer) → extends Test:Customer</li>
+<li>Core attributes (inherited): ID, Name, Status</li>
+<li>MIB-specific: Risk Profile, Segment</li>
+</ul>
+<p><strong>Specialization by Domain:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Additional Attributes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Investment</td>
+<td>MiFID Class, Risk Profile, Investment Preferences</td>
+</tr>
+<tr>
+<td>(future)</td>
+<td>Segment, Relationship Manager</td>
+</tr>
+</tbody></table>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+<tr>
+<td>CDC</td>
+<td>Kafka</td>
+<td>Near real-time</td>
+</tr>
+</tbody></table>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li>investment-customers (extends)</li>
+<li>investment-positions</li>
+<li>investment-transactions</li>
+</ul>
+<hr>
+<h4>DP-MIB-002: mib-contracts</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:contracts</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>mib-contracts</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>MIB Contract Master</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>MIB BU</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>2 - BU Master Data</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:Contract</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Master data for all MIB contracts, specialized by Investment domain.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Contract</code> (bkb-test-mib:Contract) → extends FIBO:Contract</li>
+<li>Attributes: Contract Number, Date of Creation, Status</li>
+</ul>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li>investment-contracts (extends)</li>
+<li>All Investment analytical DPs</li>
+</ul>
+<hr>
+<h3>3.2 Retail Business Unit</h3>
+<p><strong>Owner:</strong> Retail BU Owner</p>
+<h4>DP-RET-001: retail-products</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:retail:products</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>retail-products</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Retail Financial Products Catalog</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Retail BU</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>2 - BU Master Data</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fbc:FinancialProduct</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Catalog of retail banking products.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Financial Product</code> (bkb-test-retail:Financial Product)</li>
+<li><code>Bank Assurance</code> → fibo:InsuranceService</li>
+<li><code>Card</code></li>
+<li><code>Loan</code></li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<hr>
+<h4>DP-RET-002: retail-customers</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:retail:customers</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>retail-customers</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Retail Customer Master</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Retail BU</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>2 - BU Master Data</td>
+</tr>
+<tr>
+<td><strong>Specializes</strong></td>
+<td><code>customer-crossdomain-reporting</code></td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:Customer</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Retail customer master with channel preferences. Extends enterprise customer identity with Retail-specific attributes.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Customer</code> (bkb-test-retail:Customer) → extends Test:Customer</li>
+<li>Core attributes (inherited): ID, Name, Status</li>
+<li>Retail-specific: <code>Application</code> (product application), Channel preferences</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>4. Layer 3: Investment Domain Analytics</h2>
+<p><strong>Owner:</strong> Investment Domain Owner
+<strong>Parent Domain:</strong> Test:MIB</p>
+<h3>4.1 Master Data (Domain-specific)</h3>
+<h4>DP-INV-001: investment-products-catalog</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:products</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-products-catalog</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Products &amp; Securities Catalog</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>2/3 - Domain Master</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-sec:Security</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Master catalog of investment products and securities with ISIN codes.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Security</code> (bkb-test-mib-investment:Security) → fibo-sec:Security</li>
+<li><code>Product</code> → fibo-fbc:FinancialProduct</li>
+<li><code>ISIN</code> → fibo:InternationalSecuritiesIdentificationNumber</li>
+<li><code>Product Name</code></li>
+<li><code>Trading Venue</code> → fibo-sec:Venue</li>
+</ul>
+<p><strong>Product Types (from ontology):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Level 0</th>
+<th>Level 1</th>
+<th>FIBO Mapping</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Funds</td>
+<td>Funds (RIS), Funds (RCM), ETF, 3rd Party</td>
+<td>fibo-sec:MutualFund, fibo-sec:ExchangeTradedFund</td>
+</tr>
+<tr>
+<td>Bonds</td>
+<td>-</td>
+<td>fibo-sec:Bond</td>
+</tr>
+<tr>
+<td>Equity</td>
+<td>-</td>
+<td>fibo-sec:Equity</td>
+</tr>
+<tr>
+<td>Certificates</td>
+<td>-</td>
+<td>fibo-sec:Certificate</td>
+</tr>
+<tr>
+<td>Other</td>
+<td>IPO, Secondary Market</td>
+<td>fibo-sec:InitialPublicOffering</td>
+</tr>
+</tbody></table>
+<p><strong>Fund Classifications:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>FIBO</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Open Ended</td>
+<td>fibo-sec:Open-End Investment</td>
+</tr>
+<tr>
+<td>Close Ended</td>
+<td>fibo-sec:Closed-End Investment</td>
+</tr>
+</tbody></table>
+<p><strong>Reference Data (EMBEDDED):</strong></p>
+<ul>
+<li><code>IDM Product</code> (internal lookup table)</li>
+<li><code>Level 0 Product Type</code>, <code>Level 1 Product Type</code></li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li>investment-positions</li>
+<li>investment-aum-reporting</li>
+<li>investment-transactions</li>
+</ul>
+<hr>
+<h4>DP-INV-002: investment-suitability-assessment</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:suitability</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-suitability-assessment</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Suitability &amp; Eligibility Assessment</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-sec:MiFIDClassification</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> Enable MiFID compliance decisions - determine whether a customer CAN invest and in WHAT products based on their profile, questionnaire results, and regulatory requirements.</p>
+<p><strong>Business Questions Answered:</strong></p>
+<ul>
+<li>Is this customer eligible to invest?</li>
+<li>What is the customer&#39;s MiFID classification?</li>
+<li>What products can we recommend to this customer?</li>
+<li>Is the customer&#39;s investment questionnaire valid?</li>
+<li>What is the customer&#39;s risk profile?</li>
+</ul>
+<p><strong>Ontology Concepts:</strong></p>
+<p><strong>Eligibility &amp; Classification:</strong></p>
+<ul>
+<li><code>Eligibility Status</code> - can customer invest</li>
+<li><code>New To Bank Customer</code> - first-time bank customer</li>
+<li><code>New To Invest Customer</code> - first-time investor</li>
+<li><code>Digital Customer</code> / <code>Non-digital Customer</code> - channel classification</li>
+<li><code>Prospect</code> → fibo:ProspectiveClient</li>
+</ul>
+<p><strong>Investment Questionnaire (MiFID):</strong></p>
+<ul>
+<li><code>Standardized Investment Questionnaire</code></li>
+<li><code>Standardized Investment Questionnaire Status</code></li>
+<li><code>Question</code>, <code>Question Name</code></li>
+</ul>
+<p><strong>Risk &amp; Care:</strong></p>
+<ul>
+<li><code>Watch List</code> - customers requiring attention</li>
+<li><code>Workout Care</code> - customers in workout</li>
+<li><code>Customer Care</code> - care level assignment</li>
+</ul>
+<p><strong>Customer Identity (from mib-customers):</strong></p>
+<ul>
+<li><code>Customer</code> → extends mib:Customer</li>
+<li><code>Party</code> → fibo-fnd:Party</li>
+<li><code>Party ID</code>, <code>Party Key</code></li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>REFERENCES: <code>mib-customers</code> (customer identity for suitability assessment)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+<tr>
+<td>API</td>
+<td>REST</td>
+<td>Real-time</td>
+</tr>
+</tbody></table>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li>investment-positions (eligibility check)</li>
+<li>investment-transactions (suitability validation)</li>
+<li>Advisory systems (product recommendation)</li>
+<li>Compliance reporting</li>
+</ul>
+<hr>
+<h4>DP-INV-002b: investment-customer-contact</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:contact</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-customer-contact</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Customer Contact Management</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:Contact</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> Enable effective communication with investment customers across all channels - provide accurate, up-to-date contact information with preferences.</p>
+<p><strong>Business Questions Answered:</strong></p>
+<ul>
+<li>How do we reach this customer?</li>
+<li>What is the customer&#39;s preferred contact method?</li>
+<li>What is the customer&#39;s mailing address for statements?</li>
+<li>Is the contact information valid?</li>
+</ul>
+<p><strong>Ontology Concepts:</strong></p>
+<p><strong>Contact Details:</strong></p>
+<ul>
+<li><code>Contact</code> → fibo-fnd:Contact</li>
+<li><code>Preferred Contact Details</code></li>
+<li><code>Other Contact Details</code></li>
+</ul>
+<p><strong>Address:</strong></p>
+<ul>
+<li><code>Address</code> → fibo-fnd:Address</li>
+<li><code>Contact Address</code> - for correspondence</li>
+<li><code>Permanent Address</code> - legal residence</li>
+<li><code>Street</code>, <code>Street Name</code></li>
+<li><code>Building Number</code>, <code>Orientation Street Number</code></li>
+<li><code>City</code> → schema:City</li>
+<li><code>Zip Identifier</code> → fibo:ZipCode</li>
+<li><code>Country</code> → fibo:Country (ref-countries)</li>
+</ul>
+<p><strong>Phone:</strong></p>
+<ul>
+<li><code>Phone Number</code></li>
+<li><code>Telephone Number</code> → fibo:TelephoneNumber</li>
+</ul>
+<p><strong>Email:</strong></p>
+<ul>
+<li><code>Electronic Mail Address</code> → schema:ElectronicMailAddress</li>
+<li><code>Email</code></li>
+</ul>
+<p><strong>Personal Identity (for matching):</strong></p>
+<ul>
+<li><code>First Name</code>, <code>Middle Name</code>, <code>Surname</code></li>
+<li><code>Vocative</code> → fibo:Name (Czech-specific salutation)</li>
+<li><code>Birth Date</code> → fibo:DateOfBirth</li>
+<li><code>Birth Number</code> → fibo:NationalIdentificationNumber</li>
+<li><code>Gender</code>, <code>Citizenship</code></li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>REFERENCES: <code>mib-customers</code> (customer identity for contact management)</li>
+<li>REFERENCES: <code>countries-reference-master</code> (address country validation)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+<tr>
+<td>CDC</td>
+<td>Kafka</td>
+<td>Near real-time</td>
+</tr>
+</tbody></table>
+<p><strong>Consumers:</strong></p>
+<ul>
+<li>investment-campaigns (campaign targeting)</li>
+<li>investment-onboarding (welcome communications)</li>
+<li>Statement generation systems</li>
+<li>CRM systems</li>
+</ul>
+<hr>
+<h4>DP-INV-003: investment-contracts</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:contracts</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-contracts</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Contracts Master</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>2/3 - Domain Master</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:Contract</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Master of investment contracts (EDI, DIP, Custody, Brokerage).</p>
+<p><strong>Ontology Concepts:</strong></p>
+<p><strong>Contract Types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>FIBO Mapping</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>EDI Contract</code></td>
+<td>Domain-specific</td>
+</tr>
+<tr>
+<td><code>DIP Contract</code></td>
+<td>fibo:PensionPlan</td>
+</tr>
+<tr>
+<td><code>Custody Contract</code></td>
+<td>fibo:CustodyAgreement</td>
+</tr>
+<tr>
+<td><code>DEPO Contract</code></td>
+<td>fibo:DepositAccount</td>
+</tr>
+<tr>
+<td><code>Brokerage Contract</code></td>
+<td>Domain-specific</td>
+</tr>
+<tr>
+<td><code>Advisory Investment Contract</code></td>
+<td>Domain-specific</td>
+</tr>
+<tr>
+<td><code>Asset Management Contract</code></td>
+<td>Domain-specific</td>
+</tr>
+<tr>
+<td><code>REPO Contract</code></td>
+<td>fibo:RepurchaseAgreement</td>
+</tr>
+<tr>
+<td><code>GOLD Contract</code></td>
+<td>Domain-specific</td>
+</tr>
+</tbody></table>
+<p><strong>Contract Status:</strong></p>
+<ul>
+<li><code>Active Contract</code></li>
+<li><code>Open Contract</code></li>
+<li><code>Terminated Contract</code></li>
+</ul>
+<p><strong>Attributes:</strong></p>
+<ul>
+<li><code>Contract Number</code></li>
+<li><code>Date Of Creation</code></li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>SPECIALIZES: <code>mib-contracts</code> (Investment Contract IS-A Contract)</li>
+<li>REFERENCES: <code>mib-customers</code> (contract owner)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<hr>
+<h4>DP-INV-004: investment-accounts</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:accounts</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-accounts</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Accounts Master</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>2/3 - Domain Master</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fbc:Account</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Investment and custody accounts.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Account</code> → extends mib:Account → fibo-fbc:Account</li>
+<li><code>Investment Account (BIU)</code> → fibo:InvestmentAccount</li>
+<li><code>Current Account</code> → fibo:DepositAccount</li>
+<li><code>Active Current Account</code></li>
+<li><code>Saving Account</code></li>
+<li><code>Number Of Active Current Accounts</code></li>
+</ul>
+<p><strong>Attributes:</strong></p>
+<ul>
+<li><code>Balance</code> → fibo:Balance</li>
+<li><code>Deposit</code> → fibo:Deposit</li>
+<li><code>End Of Day (EOD) Balance</code></li>
+<li><code>Currency</code> (CZK, EUR, USD)</li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>REFERENCES: <code>currencies-reference-master</code> (account currency)</li>
+<li>REFERENCES: <code>mib-customers</code> (account owner)</li>
+<li>REFERENCES: <code>investment-contracts</code> (account contract)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>4.2 Analytical Data Products</h3>
+<h4>DP-INV-005: investment-positions</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:positions</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-positions</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Positions &amp; Holdings</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fbc:Position</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Customer positions in securities with market valuations.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Position</code> → fibo-fbc:Position</li>
+<li><code>Market Value</code> → fibo:MarketValue</li>
+<li><code>Portfolio</code> → fibo:Portfolio</li>
+<li><code>Sold Position</code></li>
+</ul>
+<p><strong>Temporal Attributes:</strong></p>
+<ul>
+<li><code>Trade Date</code> → fibo:SecuritiesTradeDatePositionReporting</li>
+<li><code>Settlement Date</code> → fibo:SettlementDateRule</li>
+<li><code>Date</code></li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>REFERENCES: <code>investment-products-catalog</code> (security details)</li>
+<li>REFERENCES: <code>mib-customers</code> (position owner)</li>
+<li>REFERENCES: <code>investment-accounts</code> (custody account)</li>
+<li>REFERENCES: <code>currencies-reference-master</code> (valuation currency)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+<tr>
+<td>Snapshot</td>
+<td>Parquet</td>
+<td>EOD</td>
+</tr>
+</tbody></table>
+<hr>
+<h4>DP-INV-006: investment-aum-reporting</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:aum</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-aum-reporting</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment AUM Performance Reporting</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fbc:AssetsUnderManagement</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Assets Under Management reporting with segmentation.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Asset Under Management (AUM)</code> → fibo:AssetsUnderManagement</li>
+<li><code>AUM LCY</code> (local currency)</li>
+<li><code>EDI AUM</code> (EDI-specific aggregate)</li>
+<li><code>Number Of Products</code></li>
+</ul>
+<p><strong>Segmentation (EMBEDDED):</strong></p>
+<ul>
+<li><code>IDM Segment</code> (internal lookup)</li>
+<li><code>Level 0 Segment Description</code></li>
+<li><code>Level 1 Segment Description</code></li>
+<li><code>Level 2 Segment Description</code></li>
+<li><code>Segment</code></li>
+</ul>
+<p><strong>Profitcenter (EMBEDDED):</strong></p>
+<ul>
+<li><code>Profitcenter Identifier</code></li>
+<li><code>Profitcenter Name</code></li>
+<li><code>RBCZ Profitcenter</code>, <code>RBHR Profitcenter</code>, <code>RBRO Profitcenter</code></li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>AGGREGATES: <code>investment-positions</code> (sums position values for AUM)</li>
+<li>REFERENCES: <code>investment-products-catalog</code> (product classification)</li>
+<li>REFERENCES: <code>currencies-reference-master</code> (currency conversion)</li>
+<li>REFERENCES: <code>countries-reference-master</code> (geographic segmentation)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+<tr>
+<td>Report</td>
+<td>Excel/PDF</td>
+<td>Daily 8:00</td>
+</tr>
+</tbody></table>
+<p><strong>DPCC Equivalent:</strong> <code>DP_EDI_AUM</code></p>
+<hr>
+<h4>DP-INV-007: investment-transactions</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:transactions</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-transactions</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Transactions &amp; Orders</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fbc:Transaction</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Investment orders, trades, and payments.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<p><strong>Transaction Hierarchy:</strong></p>
+<ul>
+<li><code>Transaction</code> → fibo-fbc:Transaction<ul>
+<li><code>Trade</code> → fibo-fbc:Trade<ul>
+<li><code>Repo Trade</code></li>
+</ul>
+</li>
+<li><code>Order</code> → fibo-fbc:Order<ul>
+<li><code>Executed Order</code></li>
+<li><code>Placed Order</code></li>
+<li><code>Settled Order</code></li>
+</ul>
+</li>
+<li><code>Payment</code> → fibo-fnd:Payment<ul>
+<li><code>Incoming Payment</code></li>
+<li><code>Outgoing Payment</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Order Types:</strong></p>
+<ul>
+<li><code>Buy</code></li>
+<li><code>Sell</code></li>
+<li><code>Saving Plan (regular Investment)</code></li>
+</ul>
+<p><strong>Frequency:</strong></p>
+<ul>
+<li><code>One-time</code></li>
+<li><code>Regularly</code></li>
+<li><code>Weekly</code></li>
+<li><code>Monthly</code></li>
+</ul>
+<p><strong>Execution:</strong></p>
+<ul>
+<li><code>Manual</code></li>
+<li><code>Automatic</code></li>
+<li><code>Execution</code></li>
+<li><code>Execution Register</code></li>
+</ul>
+<p><strong>Market:</strong></p>
+<ul>
+<li><code>Market Exchange</code> → fibo:Exchange</li>
+<li><code>Stock Market</code></li>
+<li><code>Over The Counter (OTC) Market</code></li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>REFERENCES: <code>investment-positions</code> (affects position)</li>
+<li>REFERENCES: <code>investment-products-catalog</code> (traded security)</li>
+<li>REFERENCES: <code>mib-customers</code> (transaction party)</li>
+<li>REFERENCES: <code>investment-accounts</code> (settlement account)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+<tr>
+<td>Streaming</td>
+<td>Kafka</td>
+<td>Real-time</td>
+</tr>
+</tbody></table>
+<hr>
+<h4>DP-INV-008: investment-profitability</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:profitability</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-profitability</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Income &amp; Profitability</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:Income</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Fee and income analysis for investment products.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<p><strong>Income Types:</strong></p>
+<ul>
+<li><code>Income</code> → fibo-fnd:Income</li>
+<li><code>Gross Income</code></li>
+<li><code>Core Income</code></li>
+<li><code>Allocated Income</code></li>
+<li><code>LAMC Income</code></li>
+<li><code>RIS Group Income</code></li>
+<li><code>Other Income</code></li>
+<li><code>LTV (life Time Value) GI (gross Income)</code></li>
+</ul>
+<p><strong>Fee Types:</strong></p>
+<ul>
+<li><code>Fee</code> → fibo-fbc:Fee</li>
+<li><code>Entry Fee</code></li>
+<li><code>Sales Fee</code></li>
+<li><code>Custody Fee</code></li>
+<li><code>Trailer Fee</code></li>
+<li><code>Kickback Fee</code></li>
+<li><code>Portfolio-based Fee</code></li>
+<li><code>Other Fee</code></li>
+</ul>
+<p><strong>Profitability:</strong></p>
+<ul>
+<li><code>Profitability</code></li>
+<li><code>Liability Margin</code> → fibo:Margin</li>
+<li><code>First Date Of Deposit</code></li>
+</ul>
+<p><strong>Reference (EMBEDDED):</strong></p>
+<ul>
+<li><code>Income Source Type</code></li>
+<li><code>Source Code Description</code></li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>DERIVES: <code>investment-transactions</code> (calculates fees/income from transactions)</li>
+<li>REFERENCES: <code>investment-positions</code> (portfolio values)</li>
+<li>REFERENCES: <code>investment-products-catalog</code> (product fee schedules)</li>
+<li>REFERENCES: <code>investment-suitability-assessment</code> (customer segmentation)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+<tr>
+<td>Report</td>
+<td>Excel</td>
+<td>Monthly</td>
+</tr>
+</tbody></table>
+<p><strong>DPCC Equivalent:</strong> <code>DP_EDI_PROFITABILITY</code></p>
+<hr>
+<h4>DP-INV-008b: investment-client-reporting</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:client-reporting</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-client-reporting</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Client Acquisition &amp; Tracking</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:Customer</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> Track EDI client counts, acquisition performance, and client lifecycle status. Enable performance evaluation against annual targets and digital strategy optimization.</p>
+<p><strong>Business Questions Answered:</strong></p>
+<ul>
+<li>How many EDI clients do we have?</li>
+<li>How is client acquisition performing vs plan?</li>
+<li>Which channels are most effective for acquisition?</li>
+<li>In which segments are clients concentrated?</li>
+<li>What is the client status distribution (new, lost, DIP)?</li>
+</ul>
+<p><strong>Value Proposition:</strong></p>
+<ul>
+<li><strong>Performance Evaluation</strong> - Assessment of client acquisition against annual targets</li>
+<li><strong>Digital Strategy Enhancement</strong> - Insights into digital channel effectiveness</li>
+<li><strong>Segment Analysis</strong> - Client distribution across segments for targeted marketing</li>
+</ul>
+<p><strong>Ontology Concepts:</strong></p>
+<p><strong>Client Counts:</strong></p>
+<ul>
+<li><code>Customer</code> → fibo-fnd:Customer</li>
+<li><code>New To Bank Customer</code></li>
+<li><code>New To Invest Customer</code></li>
+<li><code>Digital Customer</code> / <code>Non-digital Customer</code></li>
+</ul>
+<p><strong>Contract Types:</strong></p>
+<ul>
+<li><code>EDI Contract</code></li>
+<li><code>DIP Contract</code></li>
+<li><code>Contract</code> status (active, terminated)</li>
+</ul>
+<p><strong>Segmentation:</strong></p>
+<ul>
+<li><code>Segment</code></li>
+<li><code>Profitcenter Identifier</code></li>
+<li><code>Level 0/1/2 Segment Description</code></li>
+</ul>
+<p><strong>Onboarding Status:</strong></p>
+<ul>
+<li><code>Customer Onboarding Completion Status</code></li>
+<li><code>Onboarding Status</code></li>
+</ul>
+<p><strong>Use Cases:</strong></p>
+<table>
+<thead>
+<tr>
+<th>UC</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UC1</td>
+<td>EDI client tracking - current counts and trends</td>
+</tr>
+<tr>
+<td>UC2</td>
+<td>Acquisition analysis - by channel and profitcenter</td>
+</tr>
+<tr>
+<td>UC3</td>
+<td>Plan vs actual - performance against targets</td>
+</tr>
+</tbody></table>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>AGGREGATES: <code>mib-customers</code> (counts customers by segment)</li>
+<li>REFERENCES: <code>investment-contracts</code> (contract status)</li>
+<li>REFERENCES: <code>investment-onboarding</code> (onboarding funnel)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>Daily</td>
+</tr>
+<tr>
+<td>Dashboard</td>
+<td>PowerBI</td>
+<td>Real-time</td>
+</tr>
+</tbody></table>
+<p><strong>DPCC Equivalent:</strong> <code>DP_EDI_AGG_CLIENT</code></p>
+<hr>
+<h4>DP-INV-008c: investment-sales-reporting</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:sales</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-sales-reporting</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Sales Volume Reporting</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fbc:Sale</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> Track daily sales volume from investment transactions by product, segment, and country. Enable market opportunity identification and product performance analysis.</p>
+<p><strong>Business Questions Answered:</strong></p>
+<ul>
+<li>What is the daily sales volume per product?</li>
+<li>How do sales differ by segment and country?</li>
+<li>What is the buy/sell/holding distribution?</li>
+<li>How effective is the EDI mobile channel vs other channels?</li>
+</ul>
+<p><strong>Value Proposition:</strong></p>
+<ul>
+<li><strong>Market Opportunity Identification</strong> - Insights into investment transactions</li>
+<li><strong>Product Performance Analysis</strong> - Sales performance per product and segment</li>
+<li><strong>Digital Channel Optimization</strong> - EDI mobile vs other channel comparison</li>
+</ul>
+<p><strong>Ontology Concepts:</strong></p>
+<p><strong>Sales Metrics:</strong></p>
+<ul>
+<li><code>Sales</code> → fibo-fbc:Sale</li>
+<li><code>Buy</code></li>
+<li><code>Sell</code></li>
+<li><code>Sold Position</code> (holding)</li>
+</ul>
+<p><strong>Volume &amp; Value:</strong></p>
+<ul>
+<li><code>Market Value</code> → fibo:MarketValue</li>
+<li>Currency (EUR standard)</li>
+</ul>
+<p><strong>Dimensions:</strong></p>
+<ul>
+<li><code>Product</code> → fibo:FinancialProduct</li>
+<li><code>Segment</code></li>
+<li><code>Country</code> → ref-countries</li>
+<li><code>Channel</code> (EDI mobile vs other)</li>
+</ul>
+<p><strong>Temporal:</strong></p>
+<ul>
+<li><code>Date</code> (daily granularity)</li>
+<li><code>Trade Date</code></li>
+</ul>
+<p><strong>Use Cases:</strong></p>
+<table>
+<thead>
+<tr>
+<th>UC</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UC1</td>
+<td>Digital channel and product portfolio optimization for sales</td>
+</tr>
+</tbody></table>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>AGGREGATES: <code>investment-transactions</code> (sums sales volume)</li>
+<li>REFERENCES: <code>investment-products-catalog</code> (product details)</li>
+<li>REFERENCES: <code>countries-reference-master</code> (country dimension)</li>
+<li>REFERENCES: <code>currencies-reference-master</code> (EUR conversion)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>Daily</td>
+</tr>
+<tr>
+<td>Dashboard</td>
+<td>PowerBI</td>
+<td>T+1</td>
+</tr>
+</tbody></table>
+<p><strong>DPCC Equivalent:</strong> <code>DP_EDI_SALES</code></p>
+<hr>
+<h4>DP-INV-009: investment-campaigns</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:campaigns</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-campaigns</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Marketing Campaigns</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>schema:MarketingAction</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Marketing campaigns and customer consent management.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<p><strong>Campaign:</strong></p>
+<ul>
+<li><code>Campaign</code></li>
+<li><code>Marketing Campaign</code> → schema:MarketingAction</li>
+<li><code>Communication Campaign</code></li>
+<li><code>Campaign Response</code></li>
+<li><code>Campaign Restriction</code></li>
+</ul>
+<p><strong>Offers:</strong></p>
+<ul>
+<li><code>Investment Offers</code></li>
+<li><code>Email Investment Offers</code></li>
+<li><code>Cross Sell (X-sell)</code></li>
+<li><code>Up-sell</code></li>
+</ul>
+<p><strong>Consent:</strong></p>
+<ul>
+<li><code>Consent</code> → schema:ConsentAction</li>
+<li><code>Explicit Consent</code></li>
+<li><code>Legitimate Interest</code></li>
+<li><code>Prohibition Xsell 6M</code></li>
+<li><code>Global Control Group</code></li>
+</ul>
+<p><strong>Channels:</strong></p>
+<ul>
+<li><code>Communication Channel</code> → schema:ServiceChannel</li>
+<li><code>Email</code> → schema:Message</li>
+<li><code>SMS</code></li>
+<li><code>Push Notification</code></li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>REFERENCES: <code>investment-suitability-assessment</code> (eligible campaign targets)</li>
+<li>REFERENCES: <code>investment-products-catalog</code> (promoted products)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>Kafka</td>
+<td>Event-driven</td>
+</tr>
+</tbody></table>
+<hr>
+<h4>DP-INV-010: investment-onboarding</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:onboarding</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-onboarding</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Customer Onboarding</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>schema:JoinAction</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Customer onboarding journey and conversion analytics.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<p><strong>Onboarding:</strong></p>
+<ul>
+<li><code>Customer Onboarding</code> → schema:JoinAction</li>
+<li><code>Onboarding Status</code></li>
+<li><code>Onboarding Completion Date</code></li>
+<li><code>Customer Onboarding Completion Status</code></li>
+<li><code>Customer Onboarding Completion Status Date</code></li>
+</ul>
+<p><strong>Service Models:</strong></p>
+<ul>
+<li><code>EDI Service</code></li>
+<li><code>Central Onboarding (product As A Service)</code> (PAAS)</li>
+<li><code>Local Onboarding (software As A Service)</code></li>
+</ul>
+<p><strong>Status Codes:</strong></p>
+<ul>
+<li><code>CONS</code>, <code>CS01</code>, <code>CS02</code>, <code>CS03</code>, <code>CS11</code></li>
+<li><code>EMPL</code>, <code>PAAS</code></li>
+</ul>
+<p><strong>Channels:</strong></p>
+<ul>
+<li><code>Digital Onboarding Channel</code></li>
+<li><code>Non-digital Onboarding Channel</code></li>
+<li><code>Digital Channel</code></li>
+<li><code>Digital Channel Event</code></li>
+<li><code>Login</code></li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>REFERENCES: <code>mib-customers</code> (customer journey)</li>
+<li>REFERENCES: <code>investment-contracts</code> (contract creation)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>T+1</td>
+</tr>
+<tr>
+<td>Funnel</td>
+<td>Dashboard</td>
+<td>Real-time</td>
+</tr>
+</tbody></table>
+<hr>
+<h4>DP-INV-011: investment-digital-channels</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:digital-channels</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-digital-channels</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Digital Channel &amp; App Usage Analytics</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>schema:ServiceChannel</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> Track EDI mobile application usage statistics. Provide insights into user engagement patterns and support UI/UX strategy decisions.</p>
+<p><strong>Business Questions Answered:</strong></p>
+<ul>
+<li>How many clients use the EDI mobile app?</li>
+<li>What are the usage patterns (daily, weekly, monthly)?</li>
+<li>What is the unique vs non-unique access distribution?</li>
+<li>Where are the peaks in usage?</li>
+</ul>
+<p><strong>Value Proposition:</strong></p>
+<ul>
+<li><strong>User Engagement Insights</strong> - Statistics on unique/non-unique accesses at various granularities</li>
+<li><strong>Strategic Decision Support</strong> - Supports &quot;state of the art UI/UX&quot; success criterion</li>
+</ul>
+<p><strong>Ontology Concepts:</strong></p>
+<p><strong>Channels:</strong></p>
+<ul>
+<li><code>Channel</code> → schema:ServiceChannel</li>
+<li><code>Digital Channel</code></li>
+<li><code>Non-digital Channel</code></li>
+<li><code>Mobile Banking (SPB)</code></li>
+<li><code>Raiffeisen Investing (EDI) Mobile App</code></li>
+<li><code>Siebel CRM</code></li>
+</ul>
+<p><strong>Events:</strong></p>
+<ul>
+<li><code>Digital Channel Event</code></li>
+<li><code>Digital Channel Event Day Time</code></li>
+<li><code>Digital Channel Event Identifier</code></li>
+<li><code>Login</code></li>
+<li><code>Occurrence Kind</code> → schema:OccurrenceKind</li>
+</ul>
+<p><strong>Devices:</strong></p>
+<ul>
+<li><code>Device</code></li>
+<li><code>Device Identifier</code></li>
+<li><code>Platform</code></li>
+</ul>
+<p><strong>Interaction Types:</strong></p>
+<ul>
+<li><code>E2E Pure Digital</code></li>
+<li><code>Human Assisted</code></li>
+<li><code>Remote Assisted</code></li>
+<li><code>Branch Employee</code></li>
+<li><code>CMT</code></li>
+</ul>
+<p><strong>Language:</strong></p>
+<ul>
+<li><code>Language</code> → schema:Language</li>
+<li><code>Language Preference</code></li>
+<li><code>Preferred Language From Siebel</code></li>
+<li><code>Preferred Language From Raiffeisen Investing (EDI) Mobile App</code></li>
+</ul>
+<p><strong>Use Cases:</strong></p>
+<table>
+<thead>
+<tr>
+<th>UC</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UC1</td>
+<td>Mobile app usage monitoring - engagement levels and trends</td>
+</tr>
+</tbody></table>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>REFERENCES: <code>investment-suitability-assessment</code> (customer identity for app usage tracking)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>Daily</td>
+</tr>
+<tr>
+<td>Streaming</td>
+<td>Kafka</td>
+<td>Real-time</td>
+</tr>
+</tbody></table>
+<p><strong>DPCC Equivalent:</strong> <code>DP_EDI_APP_USAGE</code></p>
+<hr>
+<h4>DP-INV-012: investment-network-banks</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:network</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-network-banks</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Network Banks Reference</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>2/3 - Domain Reference</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo:InvestmentBank</td>
+</tr>
+</tbody></table>
+<p><strong>Description:</strong> Reference data for RBI network banks participating in investment services.</p>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Network Bank</code> → fibo:InvestmentBank</li>
+<li><code>RBCZ</code> → fibo:Bank</li>
+<li><code>RBHR</code></li>
+<li><code>RDB Romania</code></li>
+<li><code>Blacklist</code></li>
+<li><code>Registry</code></li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>REFERENCES: <code>countries-reference-master</code> (bank country)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>Weekly</td>
+</tr>
+</tbody></table>
+<hr>
+<h4>DP-INV-013: investment-portfolios</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:portfolios</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-portfolios</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Portfolio Status</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fbc:Portfolio</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> Track EDI portfolio status across all EDI customers within network banks. Provide portfolio-level view for operational monitoring and reporting.</p>
+<p><strong>Business Questions Answered:</strong></p>
+<ul>
+<li>What is the portfolio status for each EDI customer?</li>
+<li>How many portfolios exist per network bank?</li>
+<li>What is the distribution of portfolio types?</li>
+</ul>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Portfolio</code> → fibo-fbc:Portfolio</li>
+<li><code>EDI Contract</code> (portfolio container)</li>
+<li><code>Customer</code> → portfolio owner</li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>REFERENCES: <code>mib-customers</code> (portfolio owner)</li>
+<li>REFERENCES: <code>investment-contracts</code> (EDI contracts)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>Daily</td>
+</tr>
+</tbody></table>
+<p><strong>DPCC Equivalent:</strong> <code>DP_EDI_PORTFOLIO</code></p>
+<hr>
+<h4>DP-INV-014: investment-edi-customers</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:edi-customers</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-edi-customers</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>EDI Customer Status per Network Bank</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:Customer</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> Track EDI customer status within network banks using EDI in local onboarding mode. Enable cross-NWB customer analytics and status monitoring.</p>
+<p><strong>Business Questions Answered:</strong></p>
+<ul>
+<li>What is the EDI customer status per network bank?</li>
+<li>Which network banks have active EDI customers?</li>
+<li>What is the customer distribution across NWBs?</li>
+</ul>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Customer</code> → fibo-fnd:Customer</li>
+<li><code>Network Bank</code> → fibo:InvestmentBank</li>
+<li><code>Onboarding Status</code></li>
+<li><code>EDI Service</code></li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>REFERENCES: <code>mib-customers</code> (customer base)</li>
+<li>REFERENCES: <code>investment-network-banks</code> (NWB reference)</li>
+<li>REFERENCES DWH: <code>DP_CLIENT_PROFILES</code> (customer data)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>Daily</td>
+</tr>
+</tbody></table>
+<p><strong>DPCC Equivalent:</strong> <code>DP_EDI_CUSTOMER</code></p>
+<hr>
+<h4>DP-INV-015: investment-reconciliation</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:reconciliation</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-reconciliation</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Portfolio &amp; Position Reconciliation</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fbc:Reconciliation</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> Results of reconciliation jobs between EDI data from NWB core systems and EDI portfolio/position data. Ensure data consistency and identify discrepancies.</p>
+<p><strong>Business Questions Answered:</strong></p>
+<ul>
+<li>Are portfolios in sync between NWB core and EDI?</li>
+<li>Are positions in sync between NWB core and EDI?</li>
+<li>What discrepancies exist and need resolution?</li>
+</ul>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Portfolio</code> → fibo-fbc:Portfolio (reconciliation target)</li>
+<li><code>Position</code> → fibo-fbc:Position (reconciliation target)</li>
+<li>Reconciliation status, discrepancy records</li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>DERIVES: <code>investment-portfolios</code> (compares/reconciles EDI portfolio data)</li>
+<li>DERIVES: <code>investment-positions</code> (compares/reconciles EDI position data)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>Daily</td>
+</tr>
+<tr>
+<td>Alert</td>
+<td>Kafka</td>
+<td>On discrepancy</td>
+</tr>
+</tbody></table>
+<p><strong>DPCC Equivalent:</strong> <code>DP_EDI_PORTFOLIO_RI</code>, <code>DP_EDI_POSITION_REC</code></p>
+<hr>
+<h4>DP-INV-016: investment-agreements</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>test:mib:investment:agreements</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-agreements</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Agreements for CRM</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>FIBO</strong></td>
+<td>fibo-fnd:Agreement</td>
+</tr>
+</tbody></table>
+<p><strong>Purpose:</strong> Active investment agreements of customers for CRM integration. Enable sales and relationship management activities.</p>
+<p><strong>Business Questions Answered:</strong></p>
+<ul>
+<li>Which customers have active investment agreements?</li>
+<li>What type of agreements exist per customer?</li>
+<li>What is the agreement distribution for CRM targeting?</li>
+</ul>
+<p><strong>Ontology Concepts:</strong></p>
+<ul>
+<li><code>Contract</code> → fibo-fnd:Contract</li>
+<li><code>EDI Contract</code>, <code>DIP Contract</code></li>
+<li><code>Active Contract</code></li>
+<li>Customer-contract relationship</li>
+</ul>
+<p><strong>Dependencies:</strong></p>
+<ul>
+<li>REFERENCES: <code>investment-contracts</code> (contract master)</li>
+<li>REFERENCES: <code>investment-suitability-assessment</code> (customer eligibility)</li>
+</ul>
+<p><strong>Output Ports:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Format</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake</td>
+<td>Daily</td>
+</tr>
+<tr>
+<td>API</td>
+<td>REST</td>
+<td>Real-time (CRM integration)</td>
+</tr>
+</tbody></table>
+<p><strong>DPCC Equivalent:</strong> <code>DP_AGREEMENT</code></p>
+<hr>
+<h2>5. Dependency Graph</h2>
+<h3>5.1 Legend</h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Relationship</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>S→</strong></td>
+<td>SPECIALIZES</td>
+<td>Output IS-A input + new attributes</td>
+</tr>
+<tr>
+<td><strong>R→</strong></td>
+<td>REFERENCES</td>
+<td>Lookup/FK relationship</td>
+</tr>
+<tr>
+<td><strong>A→</strong></td>
+<td>AGGREGATES</td>
+<td>Summarizes/counts data</td>
+</tr>
+<tr>
+<td><strong>D→</strong></td>
+<td>DERIVES</td>
+<td>Transforms/calculates new data</td>
+</tr>
+</tbody></table>
+<h3>5.2 Layer 1 → Layer 2</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│                         LAYER 1: SHARED REFERENCE                    │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌────────────────────┐ │
+│  │countries-ref-mstr│  │currencies-ref-mstr│  │customer-crossdomain│ │
+│  └────────┬─────────┘  └────────┬─────────┘  └─────────┬──────────┘ │
+│           │                     │                      │            │
+│           │ R→                  │ R→                   │ S→         │
+└───────────┼─────────────────────┼──────────────────────┼────────────┘
+            │                     │                      │
+            ▼                     ▼                      ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                         LAYER 2: BU MASTER DATA                      │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌────────────────────┐ │
+│  │   mib-customers  │  │   mib-contracts  │  │  retail-customers  │ │
+│  └────────┬─────────┘  └────────┬─────────┘  └────────────────────┘ │
+└───────────┼─────────────────────┼───────────────────────────────────┘
+            │                     │
+            │ R→                  │ S→
+            ▼                     ▼
+</code></pre>
+<h3>5.3 Layer 2 → Layer 3 (Investment Domain)</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────┐
+│                    LAYER 3: INVESTMENT DOMAIN                        │
+│                                                                      │
+│  ┌─────────────────────────── MASTER DATA ───────────────────────┐  │
+│  │                                                                │  │
+│  │  mib-customers ──R→─┬─→ inv-suitability    inv-products-catalog │  │
+│  │                     ├─→ inv-customer-contact         │         │  │
+│  │                     ├─→ inv-onboarding               │         │  │
+│  │                     └─→ inv-client-reporting (A→)    │         │  │
+│  │                                                      │         │  │
+│  │  mib-contracts ──S→──→ inv-contracts ◄───────────────┘         │  │
+│  │                              │                                 │  │
+│  │                              │ R→                              │  │
+│  │                              ▼                                 │  │
+│  │                        inv-accounts                            │  │
+│  │                              │                                 │  │
+│  └──────────────────────────────┼─────────────────────────────────┘  │
+│                                 │ R→                                 │
+│  ┌─────────────────────── ANALYTICAL ────────────────────────────┐  │
+│  │                              ▼                                 │  │
+│  │  inv-products ──R→──→ inv-positions ◄──R── inv-accounts       │  │
+│  │                              │                                 │  │
+│  │              ┌───────────────┼───────────────┐                 │  │
+│  │              │ A→            │ R→            │ R→              │  │
+│  │              ▼               ▼               ▼                 │  │
+│  │       inv-aum-reporting  inv-transactions  inv-reconciliation │  │
+│  │                              │               (D→ portfolios)   │  │
+│  │              ┌───────────────┼───────────────┐                 │  │
+│  │              │ A→            │ D→            │ A→              │  │
+│  │              ▼               ▼               ▼                 │  │
+│  │    inv-sales-reporting  inv-profitability  inv-client-report  │  │
+│  │                                                                │  │
+│  └────────────────────────────────────────────────────────────────┘  │
+│                                                                      │
+│  ┌─────────────────────── ENGAGEMENT ────────────────────────────┐  │
+│  │                                                                │  │
+│  │  inv-suitability ──R→──→ inv-campaigns                        │  │
+│  │                     └──→ inv-digital-channels                 │  │
+│  │                     └──→ inv-agreements                       │  │
+│  │                                                                │  │
+│  └────────────────────────────────────────────────────────────────┘  │
+│                                                                      │
+│  ┌─────────────────────── EDI NETWORK ───────────────────────────┐  │
+│  │                                                                │  │
+│  │  inv-network-banks ──R→──→ inv-edi-customers                  │  │
+│  │  mib-customers ─────R→────┘       │                           │  │
+│  │                                   │ R→                        │  │
+│  │                                   ▼                           │  │
+│  │                           inv-portfolios                      │  │
+│  │                                                                │  │
+│  └────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>5.4 Dependency Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Typ</th>
+<th>Počet</th>
+<th>DPs</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SPECIALIZES</strong></td>
+<td>3</td>
+<td>mib-customers, retail-customers, inv-contracts</td>
+</tr>
+<tr>
+<td><strong>REFERENCES</strong></td>
+<td>14</td>
+<td>inv-suitability, inv-contact, inv-accounts, inv-positions, ...</td>
+</tr>
+<tr>
+<td><strong>AGGREGATES</strong></td>
+<td>3</td>
+<td>inv-aum-reporting, inv-client-reporting, inv-sales-reporting</td>
+</tr>
+<tr>
+<td><strong>DERIVES</strong></td>
+<td>2</td>
+<td>inv-profitability, inv-reconciliation</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>6. Governance Compliance</h2>
+<h3>6.1 DATSIS Checklist</h3>
+<table>
+<thead>
+<tr>
+<th>DP</th>
+<th>D</th>
+<th>A</th>
+<th>T</th>
+<th>S</th>
+<th>I</th>
+<th>S</th>
+<th>DPCC</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ref-countries</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>-</td>
+</tr>
+<tr>
+<td>ref-currencies</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>-</td>
+</tr>
+<tr>
+<td>mib-customers</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>-</td>
+</tr>
+<tr>
+<td>mib-contracts</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>-</td>
+</tr>
+<tr>
+<td>inv-products</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>-</td>
+</tr>
+<tr>
+<td>inv-suitability</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>-</td>
+</tr>
+<tr>
+<td>inv-contact</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>-</td>
+</tr>
+<tr>
+<td>inv-positions</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>-</td>
+</tr>
+<tr>
+<td>inv-aum</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td><code>DP_EDI_AUM</code></td>
+</tr>
+<tr>
+<td>inv-transactions</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>-</td>
+</tr>
+<tr>
+<td>inv-client-reporting</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td><code>DP_EDI_AGG_CLIENT</code></td>
+</tr>
+<tr>
+<td>inv-sales-reporting</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td><code>DP_EDI_SALES</code></td>
+</tr>
+<tr>
+<td>inv-profitability</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td><code>DP_EDI_PROFITABILITY</code></td>
+</tr>
+<tr>
+<td>inv-campaigns</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>-</td>
+</tr>
+<tr>
+<td>inv-onboarding</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>-</td>
+</tr>
+<tr>
+<td>inv-digital-channels</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td><code>DP_EDI_APP_USAGE</code></td>
+</tr>
+<tr>
+<td>inv-portfolios</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td><code>DP_EDI_PORTFOLIO</code></td>
+</tr>
+<tr>
+<td>inv-edi-customers</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td><code>DP_EDI_CUSTOMER</code></td>
+</tr>
+<tr>
+<td>inv-reconciliation</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td><code>DP_EDI_PORTFOLIO_RI</code></td>
+</tr>
+<tr>
+<td>inv-agreements</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td><code>DP_AGREEMENT</code></td>
+</tr>
+</tbody></table>
+<h3>6.2 Composability Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>COMP-1 (Shared Reference)</td>
+<td>✓</td>
+<td>All DPs can use ref-*</td>
+</tr>
+<tr>
+<td>COMP-2 (Same Domain)</td>
+<td>✓</td>
+<td>Investment DPs interconnected</td>
+</tr>
+<tr>
+<td>COMP-3 (Parent Domain)</td>
+<td>✓</td>
+<td>Investment extends MIB</td>
+</tr>
+<tr>
+<td>COMP-4 (Sibling Contract)</td>
+<td>N/A</td>
+<td>No cross-BU dependencies</td>
+</tr>
+<tr>
+<td>COMP-5 (No Circular)</td>
+<td>✓</td>
+<td>DAG verified</td>
+</tr>
+<tr>
+<td>COMP-6 (Consumer Registration)</td>
+<td>✓</td>
+<td>All consumers listed</td>
+</tr>
+<tr>
+<td>COMP-7 (Cross-Domain via DP)</td>
+<td>✓</td>
+<td>All cross-domain via DP</td>
+</tr>
+</tbody></table>
+<h3>6.3 Ownership Alignment</h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Domain</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>External (FIBO)</td>
+<td>EDMC</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Test (root)</td>
+<td>CDO</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Test:MIB</td>
+<td>MIB BU Owner</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Test:Retail</td>
+<td>Retail BU Owner</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Test:MIB:Investment</td>
+<td>Investment Domain Owner</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>7. Implementation Roadmap</h2>
+<h3>Phase 1: Foundation (Week 1-2)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> ref-countries</li>
+<li><input disabled="" type="checkbox"> ref-currencies</li>
+<li><input disabled="" type="checkbox"> mib-customers</li>
+<li><input disabled="" type="checkbox"> mib-contracts</li>
+</ul>
+<h3>Phase 2: Investment Master (Week 3-4)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> investment-products-catalog</li>
+<li><input disabled="" type="checkbox"> investment-suitability-assessment <em>(MiFID compliance)</em></li>
+<li><input disabled="" type="checkbox"> investment-customer-contact <em>(communication)</em></li>
+<li><input disabled="" type="checkbox"> investment-contracts</li>
+<li><input disabled="" type="checkbox"> investment-accounts</li>
+</ul>
+<h3>Phase 3: Core Analytics - DPCC Aligned (Week 5-8)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> investment-positions</li>
+<li><input disabled="" type="checkbox"> investment-aum-reporting <em>(DPCC: DP_EDI_AUM)</em></li>
+<li><input disabled="" type="checkbox"> investment-transactions</li>
+<li><input disabled="" type="checkbox"> investment-client-reporting <em>(DPCC: DP_EDI_AGG_CLIENT)</em> <strong>NEW</strong></li>
+<li><input disabled="" type="checkbox"> investment-sales-reporting <em>(DPCC: DP_EDI_SALES)</em> <strong>NEW</strong></li>
+<li><input disabled="" type="checkbox"> investment-profitability <em>(DPCC: DP_EDI_PROFITABILITY)</em></li>
+</ul>
+<h3>Phase 4: EDI Network (Week 9-10)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> investment-portfolios <em>(DPCC: DP_EDI_PORTFOLIO)</em> <strong>NEW</strong></li>
+<li><input disabled="" type="checkbox"> investment-edi-customers <em>(DPCC: DP_EDI_CUSTOMER)</em> <strong>NEW</strong></li>
+<li><input disabled="" type="checkbox"> investment-reconciliation <em>(DPCC: DP_EDI_PORTFOLIO_RI, DP_EDI_POSITION_REC)</em> <strong>NEW</strong></li>
+<li><input disabled="" type="checkbox"> investment-agreements <em>(DPCC: DP_AGREEMENT)</em> <strong>NEW</strong></li>
+<li><input disabled="" type="checkbox"> investment-network-banks</li>
+</ul>
+<h3>Phase 5: Engagement (Week 11-12)</h3>
+<ul>
+<li><input disabled="" type="checkbox"> investment-campaigns</li>
+<li><input disabled="" type="checkbox"> investment-onboarding</li>
+<li><input disabled="" type="checkbox"> investment-digital-channels <em>(DPCC: DP_EDI_APP_USAGE)</em></li>
+</ul>
+<hr>
+<h2>8. Revision History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td>Initial catalog based on ontology</td>
+</tr>
+<tr>
+<td>1.1</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td>GOV-DM-001 compliance: Split <code>investment-customers</code> into purpose-driven DPs: <code>investment-suitability-assessment</code> (MiFID) + <code>investment-customer-contact</code> (communication)</td>
+</tr>
+<tr>
+<td>1.2</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td>DPCC alignment: Added <code>investment-client-reporting</code> (DP_EDI_AGG_CLIENT) + <code>investment-sales-reporting</code> (DP_EDI_SALES). Added DPCC equivalent tags to all matching DPs.</td>
+</tr>
+<tr>
+<td>1.3</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td>Fixed reference DP IDs: <code>test:ref:*</code> → <code>test:*</code> (ref subdomain doesn&#39;t exist). Fixed total count: 17 → 21.</td>
+</tr>
+<tr>
+<td>1.4</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td>Full DPCC alignment: Added 4 new DPs (<code>investment-portfolios</code>, <code>investment-edi-customers</code>, <code>investment-reconciliation</code>, <code>investment-agreements</code>). Added DWH consumption mapping. Total: 21 → 24.</td>
+</tr>
+<tr>
+<td>1.5</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td>Added cross-domain business entities at Layer 1: <code>customer-crossdomain-reporting</code>, <code>account-crossdomain-reporting</code>, <code>transaction-crossdomain-analytics</code>. Renamed reference DPs: <code>ref-*</code> → <code>*-reference-master</code>. Total: 24 → 27.</td>
+</tr>
+<tr>
+<td>1.6</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td>Typed dependencies: SPECIALIZES (IS-A), REFERENCES (FK), AGGREGATES (sums), DERIVES (transforms). Replaced generic CONSUMES with specific types across all DPs.</td>
+</tr>
+<tr>
+<td>1.7</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td>Updated dependency graph with typed relationships (S→, R→, A→, D→). Organized by layers and functional areas (Master Data, Analytical, Engagement, EDI Network).</td>
+</tr>
+</tbody></table>
+
+</body></html>

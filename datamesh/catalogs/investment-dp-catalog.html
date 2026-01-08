@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Domain - Data Product Catalog</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            color: #1f2328;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: .3em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; border-bottom: none; }
+        h4, h5, h6 { border-bottom: none; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+        code {
+            background: rgba(175,184,193,0.2);
+            padding: .2em .4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+        pre code { background: none; padding: 0; font-size: 100%; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 6px 13px;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background: #f6f8fa; }
+        blockquote {
+            border-left: .25em solid #d1d9e0;
+            margin: 0;
+            padding: 0 1em;
+            color: #656d76;
+        }
+        hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+        ul, ol { padding-left: 2em; }
+        li + li { margin-top: .25em; }
+    </style>
+</head>
+<body>
+<h1>Investment Domain - Data Product Catalog</h1>
+<blockquote>
+<p><strong>Domain:</strong> <code>rbcz:mib:investment</code>
+<strong>Owner:</strong> Marek Podrabský (RBCZ/MIB/Investment)
+<strong>Last Updated:</strong> 2026-01-08
+<strong>Total DPs:</strong> 14 existing + 4 proposed</p>
+</blockquote>
+<hr>
+<h2>1. Overview</h2>
+<h3>1.1 Domain Context</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Parent Domain</strong></td>
+<td><code>rbcz:mib</code> (MIB Business Unit)</td>
+</tr>
+<tr>
+<td><strong>Business Capabilities</strong></td>
+<td>Trading, Portfolio Management, Reporting, Custody, Advisory</td>
+</tr>
+<tr>
+<td><strong>Primary Systems</strong></td>
+<td>EDI (Easy Digital Investment), AMS (Core Banking), Siebel (CRM)</td>
+</tr>
+<tr>
+<td><strong>Consumers</strong></td>
+<td>Risk, Finance, Marketing, Compliance, Management, Clients, ČNB, RBI Group</td>
+</tr>
+</tbody></table>
+<h3>1.2 DP Summary by Layer</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Count</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>L2 - Master</strong></td>
+<td>4 existing + 4 proposed</td>
+<td>Domain entities</td>
+</tr>
+<tr>
+<td><strong>L3 - Analytics</strong></td>
+<td>10 existing</td>
+<td>Reporting &amp; analytics</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>2. Data Product Layers</h2>
+<h3>2.1 Layer Architecture</h3>
+<pre><code>PLATFORM (L1 - Reference)
+├── ref-countries (ISO 3166)
+├── ref-currencies (ISO 4217)
+└── ref-calendars
+         │
+         │ consumes
+         ▼
+MIB (L2 - BU Master)
+├── mib-segmentation
+├── mib-client-base
+└── mib-profitcenter
+         │
+         │ consumes
+         ▼
+INVESTMENT (L2 - Domain Master)
+├── investment-client-overview
+├── investment-products-catalog
+├── investment-portfolio-status
+├── investment-position-overview
+├── investment-agreement-registry
+├── investment-orders [PROPOSED]
+└── investment-transactions [PROPOSED]
+         │
+         │ consumes
+         ▼
+INVESTMENT (L3 - Analytics)
+├── investment-aum-reporting
+├── investment-client-counts
+├── investment-profitability
+├── investment-sales-volume
+├── investment-app-usage
+├── investment-portfolio-recon
+├── investment-position-recon
+├── investment-customer-exposure
+├── investment-campaign-base
+└── investment-market-sales
+</code></pre>
+<hr>
+<h2>3. L2 - Domain Master Data Products</h2>
+<h3>3.1 Existing (Renamed)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Current Name</th>
+<th>New ID</th>
+<th>New Slug</th>
+<th>New Title</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>EDI Customer</td>
+<td><code>rbcz:mib:investment:customer</code></td>
+<td><code>investment-client-overview</code></td>
+<td>Investment Client Portfolio Overview</td>
+<td>RENAME</td>
+</tr>
+<tr>
+<td>2</td>
+<td>EDI Portfolio</td>
+<td><code>rbcz:mib:investment:portfolio</code></td>
+<td><code>investment-portfolio-status</code></td>
+<td>Investment Portfolio Current Status</td>
+<td>RENAME</td>
+</tr>
+<tr>
+<td>3</td>
+<td>EDI Position</td>
+<td><code>rbcz:mib:investment:position</code></td>
+<td><code>investment-position-overview</code></td>
+<td>Investment Position Holdings Overview</td>
+<td>RENAME</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Investment Agreements</td>
+<td><code>rbcz:mib:investment:agreement</code></td>
+<td><code>investment-agreement-registry</code></td>
+<td>Investment Agreement Registry</td>
+<td>RENAME</td>
+</tr>
+</tbody></table>
+<h3>3.2 Proposed (New)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>ID</th>
+<th>Slug</th>
+<th>Title</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>5</td>
+<td><code>rbcz:mib:investment:products</code></td>
+<td><code>investment-products-catalog</code></td>
+<td>Investment Securities Catalog</td>
+<td>IDM_PRODUCTS should be separate DP</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>rbcz:mib:investment:orders</code></td>
+<td><code>investment-orders-master</code></td>
+<td>Investment Order Management</td>
+<td>Trading capability requires order master</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>rbcz:mib:investment:transactions</code></td>
+<td><code>investment-transactions-master</code></td>
+<td>Investment Transaction Registry</td>
+<td>Transaction master for analytics</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>rbcz:mib:investment:securities</code></td>
+<td><code>investment-securities-master</code></td>
+<td>Investment Securities Master</td>
+<td>ISIN-based securities for custody</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>4. L3 - Analytics Data Products</h2>
+<h3>4.1 Existing (Renamed)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Current Name</th>
+<th>New ID</th>
+<th>New Slug</th>
+<th>New Title</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>DP_EDI_AUM</td>
+<td><code>rbcz:mib:investment:aum</code></td>
+<td><code>investment-aum-reporting</code></td>
+<td>Investment AUM Performance Reporting</td>
+</tr>
+<tr>
+<td>2</td>
+<td>DP_EDI_AGG_CLIENT</td>
+<td><code>rbcz:mib:investment:client-counts</code></td>
+<td><code>investment-client-counts</code></td>
+<td>Investment Client Acquisition Tracking</td>
+</tr>
+<tr>
+<td>3</td>
+<td>DP_EDI_PROFITABILITY</td>
+<td><code>rbcz:mib:investment:profitability</code></td>
+<td><code>investment-profitability</code></td>
+<td>Investment Gross Income Analysis</td>
+</tr>
+<tr>
+<td>4</td>
+<td>DP_EDI_SALES</td>
+<td><code>rbcz:mib:investment:sales</code></td>
+<td><code>investment-sales-volume</code></td>
+<td>Investment Transaction Volume Analysis</td>
+</tr>
+<tr>
+<td>5</td>
+<td>DP_EDI_APP_USAGE</td>
+<td><code>rbcz:mib:investment:app-usage</code></td>
+<td><code>investment-app-usage</code></td>
+<td>Investment Mobile App Usage Metrics</td>
+</tr>
+<tr>
+<td>6</td>
+<td>EDI Portfolio Reconsolidation</td>
+<td><code>rbcz:mib:investment:portfolio-recon</code></td>
+<td><code>investment-portfolio-recon</code></td>
+<td>Investment Portfolio Reconciliation Report</td>
+</tr>
+<tr>
+<td>7</td>
+<td>EDI Position Reconsolidation</td>
+<td><code>rbcz:mib:investment:position-recon</code></td>
+<td><code>investment-position-recon</code></td>
+<td>Investment Position Reconciliation Report</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Investment Customer Exposition</td>
+<td><code>rbcz:mib:investment:customer-exposure</code></td>
+<td><code>investment-customer-exposure</code></td>
+<td>Investment Client Credit Exposure Analysis</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Marketing Campaign Candidates</td>
+<td><code>rbcz:mib:investment:campaign-candidates</code></td>
+<td><code>investment-campaign-base</code></td>
+<td>Investment CRM Campaign Candidates</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Market Sales</td>
+<td><code>rbcz:mib:investment:market-sales</code></td>
+<td><code>investment-market-sales</code></td>
+<td>Investment Market Sales Performance</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>5. Detailed Product Cards</h2>
+<h3>5.1 investment-aum-reporting</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>rbcz:mib:investment:aum</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-aum-reporting</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment AUM Performance Reporting</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>L3 - Analytics</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Marek Podrabský</td>
+</tr>
+<tr>
+<td><strong>Maturity</strong></td>
+<td>20%</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Daily balance of Assets under Management (AUM) per product, segment and contracts</td>
+</tr>
+</tbody></table>
+<p><strong>Consumes:</strong></p>
+<ul>
+<li><code>rbcz:ref:countries</code> (Platform)</li>
+<li><code>rbcz:mib:segments</code> (MIB)</li>
+<li><code>rbcz:mib:investment:products</code> (Investment)</li>
+</ul>
+<p><strong>Use Cases:</strong></p>
+<ol>
+<li>UC1 - AUM performance tracking</li>
+<li>UC2 - Digital channel optimization for AUM growth</li>
+<li>UC3 - Campaign effectiveness by segment</li>
+</ol>
+<p><strong>Data Contract:</strong> <code>conceptspeak/input/datacontract/RBCZ/MIB/Investment/dp_edi_aum.yaml</code></p>
+<hr>
+<h3>5.2 investment-client-overview</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>rbcz:mib:investment:customer</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-client-overview</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Client Portfolio Overview</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>L2 - Master</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Marek Podrabský</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Master data for investment clients including portfolio composition</td>
+</tr>
+</tbody></table>
+<p><strong>Consumes:</strong></p>
+<ul>
+<li><code>rbcz:mib:customer</code> (MIB - parent)</li>
+<li><code>rbcz:ref:countries</code> (Platform)</li>
+</ul>
+<p><strong>Consumed By:</strong></p>
+<ul>
+<li>All L3 Analytics products in Investment domain</li>
+</ul>
+<p><strong>Domain Mapping:</strong></p>
+<ul>
+<li>extends <code>rbcz:mib:customer</code></li>
+<li>extends (transitive) <code>fibo-fbc:Customer</code></li>
+<li>adds: <code>mifidClass</code>, <code>investmentPreference</code>, <code>riskProfile</code></li>
+</ul>
+<hr>
+<h3>5.3 investment-products-catalog</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td><code>rbcz:mib:investment:products</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td><code>investment-products-catalog</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Investment Securities Catalog</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>L2 - Master</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Marek Podrabský</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>PROPOSED (currently embedded in AUM as IDM_PRODUCTS)</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Master catalog of investment products (securities) with ISIN codes</td>
+</tr>
+</tbody></table>
+<p><strong>Rationale for Separation:</strong></p>
+<ul>
+<li>Currently embedded in DP_EDI_AUM as <code>IDM_PRODUCTS</code></li>
+<li>Used by multiple DPs (AUM, Sales, Positions, Portfolio)</li>
+<li>Should be separate L2 Master DP per Composability Framework</li>
+</ul>
+<p><strong>Domain Mapping:</strong></p>
+<ul>
+<li>maps to <code>fibo-fnd:Product</code></li>
+<li>maps to <code>fibo-sec:Security</code></li>
+<li>ISIN maps to <code>fibo-sec:InternationalSecuritiesIdentificationNumber</code></li>
+</ul>
+<hr>
+<h2>6. Dependencies Matrix</h2>
+<h3>6.1 L3 → L2 Dependencies</h3>
+<table>
+<thead>
+<tr>
+<th>L3 Analytics DP</th>
+<th>Depends On (L2 Master)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>investment-aum-reporting</td>
+<td>products, segments</td>
+</tr>
+<tr>
+<td>investment-client-counts</td>
+<td>customer</td>
+</tr>
+<tr>
+<td>investment-profitability</td>
+<td>customer, products</td>
+</tr>
+<tr>
+<td>investment-sales-volume</td>
+<td>customer, products</td>
+</tr>
+<tr>
+<td>investment-portfolio-recon</td>
+<td>portfolio, position</td>
+</tr>
+<tr>
+<td>investment-position-recon</td>
+<td>position, products</td>
+</tr>
+<tr>
+<td>investment-customer-exposure</td>
+<td>customer</td>
+</tr>
+<tr>
+<td>investment-campaign-base</td>
+<td>customer, segments</td>
+</tr>
+<tr>
+<td>investment-market-sales</td>
+<td>products</td>
+</tr>
+</tbody></table>
+<h3>6.2 L2 → L1 Dependencies</h3>
+<table>
+<thead>
+<tr>
+<th>L2 Master DP</th>
+<th>Depends On (L1 Reference / Parent)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>investment-client-overview</td>
+<td>rbcz:mib:customer, ref-countries</td>
+</tr>
+<tr>
+<td>investment-products-catalog</td>
+<td>ref-currencies</td>
+</tr>
+<tr>
+<td>investment-portfolio-status</td>
+<td>ref-currencies</td>
+</tr>
+<tr>
+<td>investment-agreement-registry</td>
+<td>ref-countries</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>7. Migration Plan</h2>
+<h3>7.1 Phase 1: Rename (Low Risk)</h3>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Action</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Add new names as aliases</td>
+<td>None</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Update DPCC Catalog</td>
+<td>Catalog only</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Update Data Contracts</td>
+<td>Metadata only</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Notify consumers</td>
+<td>Communication</td>
+</tr>
+</tbody></table>
+<h3>7.2 Phase 2: Restructure (Medium Risk)</h3>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Action</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Extract IDM_PRODUCTS to separate DP</td>
+<td>Schema change</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Extract IDM_SEGMENTS to MIB level</td>
+<td>Cross-domain</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Update dependencies</td>
+<td>Pipeline changes</td>
+</tr>
+</tbody></table>
+<h3>7.3 Phase 3: New Products (Planned)</h3>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>New DP</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>investment-orders-master</td>
+<td>Trading capability</td>
+</tr>
+<tr>
+<td>2</td>
+<td>investment-transactions-master</td>
+<td>Transaction analytics</td>
+</tr>
+<tr>
+<td>3</td>
+<td>investment-securities-master</td>
+<td>Custody integration</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>8. Quality Metrics</h2>
+<h3>8.1 Current Maturity Scores</h3>
+<table>
+<thead>
+<tr>
+<th>DP</th>
+<th>Current</th>
+<th>Target</th>
+<th>Gap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>investment-aum-reporting</td>
+<td>20%</td>
+<td>80%</td>
+<td>60%</td>
+</tr>
+<tr>
+<td>investment-campaign-base</td>
+<td>80%</td>
+<td>80%</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Others</td>
+<td>TBD</td>
+<td>60%</td>
+<td>TBD</td>
+</tr>
+</tbody></table>
+<h3>8.2 Coverage Targets</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Current</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L2 Master Products</td>
+<td>4</td>
+<td>8</td>
+</tr>
+<tr>
+<td>L3 Analytics Products</td>
+<td>10</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Maturity ≥ 60%</td>
+<td>1</td>
+<td>ALL</td>
+</tr>
+<tr>
+<td>Domain Mapping Complete</td>
+<td>~70%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>External Authority Mapped</td>
+<td>~50%</td>
+<td>80%</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>9. Related Documents</h2>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a></td>
+<td>Main governance</td>
+</tr>
+<tr>
+<td><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a></td>
+<td>Naming convention</td>
+</tr>
+<tr>
+<td><a href="../GOV-DM-003-domain-hierarchy.md">GOV-DM-003</a></td>
+<td>Domain hierarchy</td>
+</tr>
+<tr>
+<td><a href="../review/2026-01-08-domain-composability-framework.md">Composability Framework</a></td>
+<td>DP layers &amp; dependencies</td>
+</tr>
+<tr>
+<td><a href="../review/2026-01-08-domain-dp-edi-aum-analysis.md">DP EDI AUM Analysis</a></td>
+<td>Detailed AUM review</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>10. Revision History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0</td>
+<td>2026-01-08</td>
+<td>Banking Domain Expert</td>
+<td>Initial catalog</td>
+</tr>
+</tbody></table>
+
+</body></html>

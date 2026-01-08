@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOV-DM-001: Data Mesh Governance</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            color: #1f2328;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: .3em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; border-bottom: none; }
+        h4, h5, h6 { border-bottom: none; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+        code {
+            background: rgba(175,184,193,0.2);
+            padding: .2em .4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+        pre code { background: none; padding: 0; font-size: 100%; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 6px 13px;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background: #f6f8fa; }
+        blockquote {
+            border-left: .25em solid #d1d9e0;
+            margin: 0;
+            padding: 0 1em;
+            color: #656d76;
+        }
+        hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+        ul, ol { padding-left: 2em; }
+        li + li { margin-top: .25em; }
+    </style>
+</head>
+<body>
+<h1>GOV-DM-001: Data Mesh Governance</h1>
+<blockquote>
+<p><strong>Status:</strong> ACTIVE
+<strong>Effective:</strong> 2026-01-08
+<strong>Owner:</strong> CDO - Lukáš Mazánek (RBCZ/IT/Data Management)
+<strong>Review Cycle:</strong> Quarterly</p>
+</blockquote>
+<hr>
+<h2>1. Purpose</h2>
+<p>This document establishes the governance framework for Data Products and Data Mesh at RBCZ, covering:</p>
+<ul>
+<li>Data Product definition and mandatory features</li>
+<li>Domain hierarchy and ownership model</li>
+<li>Interoperability through federated ontology</li>
+<li>Composability rules for DP dependencies</li>
+<li>Naming conventions</li>
+</ul>
+<hr>
+<h2>2. Scope</h2>
+<p>This policy applies to:</p>
+<ul>
+<li>All Data Products within RBCZ and subsidiary entities (RLCZ, etc.)</li>
+<li>All business domains (MIB, Retail, Corporate, Payments, Finance)</li>
+<li>Platform/shared reference data</li>
+<li>Cross-entity data sharing within RBI Group</li>
+</ul>
+<hr>
+<h2>3. Core Principles</h2>
+<h3>3.1 Data Mesh Principles (Dehghani)</h3>
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>RBCZ Implementation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Domain Ownership</strong></td>
+<td>Domain Path = Ownership</td>
+</tr>
+<tr>
+<td><strong>Data as a Product</strong></td>
+<td>DATSIS characteristics mandatory</td>
+</tr>
+<tr>
+<td><strong>Self-Serve Platform</strong></td>
+<td>Databricks + DPCC Catalog</td>
+</tr>
+<tr>
+<td><strong>Federated Governance</strong></td>
+<td>This document + Guild structure</td>
+</tr>
+</tbody></table>
+<h3>3.2 RBCZ-Specific Principles</h3>
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Domain-First</strong></td>
+<td>RBCZ domain ontology is primary authority</td>
+</tr>
+<tr>
+<td><strong>Specialization without Contradiction</strong></td>
+<td>Child domain can extend, not contradict parent</td>
+</tr>
+<tr>
+<td><strong>Transitive Mapping</strong></td>
+<td>External authority mapping inherited through hierarchy</td>
+</tr>
+<tr>
+<td><strong>Purpose-Driven Products</strong></td>
+<td>DP names reflect business value, not just entities</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>4. Data Product Definition</h2>
+<h3>4.1 DATSIS Characteristics</h3>
+<p>Every Data Product MUST satisfy:</p>
+<table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Requirement</th>
+<th>Verification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>D</strong>iscoverable</td>
+<td>Listed in DPCC Catalog</td>
+<td>Catalog entry exists</td>
+</tr>
+<tr>
+<td><strong>A</strong>ddressable</td>
+<td>Has unique ID (domain path)</td>
+<td>ID assigned</td>
+</tr>
+<tr>
+<td><strong>T</strong>rustworthy</td>
+<td>Maturity Score ≥ threshold</td>
+<td>Score calculated</td>
+</tr>
+<tr>
+<td><strong>S</strong>elf-describing</td>
+<td>Data Contract exists</td>
+<td>YAML validated</td>
+</tr>
+<tr>
+<td><strong>I</strong>nteroperable</td>
+<td>Domain mapping defined</td>
+<td>Ontology linked</td>
+</tr>
+<tr>
+<td><strong>S</strong>ecure</td>
+<td>Classification assigned</td>
+<td>PII/GDPR tagged</td>
+</tr>
+</tbody></table>
+<h3>4.2 Mandatory Technical Features</h3>
+<p>Per RBCZ Governance (existing):</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Immutability</strong></td>
+<td>Only INSERT allowed</td>
+<td>No UPDATE/DELETE/TRUNCATE</td>
+</tr>
+<tr>
+<td><strong>Bitemporality</strong></td>
+<td>Two timestamps per record</td>
+<td><code>DP_ACTUAL_DATE</code>, <code>DP_RECORD_DATE</code></td>
+</tr>
+<tr>
+<td><strong>Read Only</strong></td>
+<td>Consumers have SELECT only</td>
+<td>Separate database/schema</td>
+</tr>
+<tr>
+<td><strong>Multimodality</strong></td>
+<td>Multiple output interfaces</td>
+<td>Batch, micro-batch, streaming</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>5. Domain Hierarchy</h2>
+<h3>5.1 Structure</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                    EXTERNAL AUTHORITIES                          │
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌──────────┐  │
+│  │    FIBO    │  │ Schema.org │  │    ČNB     │  │   ISO    │  │
+│  └────────────┘  └────────────┘  └────────────┘  └──────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                       extends/maps
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                         RBI GROUP                                │
+│                    (Group-level standards)                       │
+│                              │                                   │
+│  ┌───────────────────────────┴───────────────────────────┐      │
+│  │                    RBCZ GROUP                          │      │
+│  │              (Czech Republic entities)                 │      │
+│  │                                                        │      │
+│  │  ┌─────────────────────┐    ┌─────────────────────┐   │      │
+│  │  │        RBCZ         │    │        RLCZ         │   │      │
+│  │  │  (Raiffeisen Bank)  │    │ (Raiffeisen Leasing)│   │      │
+│  │  │                     │    │                     │   │      │
+│  │  │  ┌───┐ ┌───┐ ┌───┐ │    │  ┌───┐              │   │      │
+│  │  │  │fin│ │mib│ │ret│ │    │  │fin│              │   │      │
+│  │  │  └───┘ └─┬─┘ └───┘ │    │  └───┘              │   │      │
+│  │  │          │         │    │                     │   │      │
+│  │  │     investment     │    │                     │   │      │
+│  │  └─────────────────────┘    └─────────────────────┘   │      │
+│  │                                                        │      │
+│  │  ┌─────────────────────┐    ┌─────────────────────┐   │      │
+│  │  │        RSTS         │    │     Other NWUs      │   │      │
+│  │  │ (Stavební spoř.)    │    │     (RIS, ...)      │   │      │
+│  │  └─────────────────────┘    └─────────────────────┘   │      │
+│  └────────────────────────────────────────────────────────┘      │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>5.2 Domain Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Examples</th>
+<th>Characteristics</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>External</strong></td>
+<td>FIBO, ČNB, ISO</td>
+<td>Standards, regulatory requirements</td>
+</tr>
+<tr>
+<td><strong>Group</strong></td>
+<td>RBI</td>
+<td>Group-wide policies</td>
+</tr>
+<tr>
+<td><strong>Entity</strong></td>
+<td>RBCZ, RLCZ</td>
+<td>Legal entities, own data</td>
+</tr>
+<tr>
+<td><strong>BU</strong></td>
+<td>fin, mib, retail</td>
+<td>Business Units</td>
+</tr>
+<tr>
+<td><strong>Domain</strong></td>
+<td>investment</td>
+<td>Specific business domain</td>
+</tr>
+</tbody></table>
+<h3>5.3 Ownership Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>OWN-1</strong></td>
+<td>Domain Path = Ownership</td>
+<td>Who defines concept at given level = owner</td>
+</tr>
+<tr>
+<td><strong>OWN-2</strong></td>
+<td>Specialization Allowed</td>
+<td>Child can ADD attributes</td>
+</tr>
+<tr>
+<td><strong>OWN-3</strong></td>
+<td>Contradiction Forbidden</td>
+<td>Child CANNOT change parent constraints</td>
+</tr>
+<tr>
+<td><strong>OWN-4</strong></td>
+<td>Parent Rules Respected</td>
+<td>Child inherits all parent rules</td>
+</tr>
+</tbody></table>
+<h4>Example: Customer Ownership</h4>
+<pre><code>RBCZ:Customer (Enterprise - CDO owns)
+├── Core attributes: ID, Name, Status
+│
+├── extends → RBCZ:MIB:Customer (MIB owns)
+│              └── + RiskProfile, + Segment
+│
+└── extends → RBCZ:MIB:Investment:Customer (Investment owns)
+               └── + MiFIDClass, + InvestmentPreferences
+</code></pre>
+<hr>
+<h2>6. Interoperability Model</h2>
+<h3>6.1 Federated Ontology</h3>
+<pre><code>PRIMÁRNÍ AUTORITA = RBCZ Doménová Ontologie
+                         │
+                         │ optional alignment
+                         ▼
+            ┌────────────────────────┐
+            │   External Authorities │
+            │   (FIBO, Schema.org,   │
+            │    ISO, ČNB, ...)      │
+            └────────────────────────┘
+</code></pre>
+<h3>6.2 Mapping Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MAP-1</strong></td>
+<td>Domain Mapping Required</td>
+<td>Every concept MUST map to parent domain</td>
+</tr>
+<tr>
+<td><strong>MAP-2</strong></td>
+<td>Transitive External Mapping</td>
+<td>Parent&#39;s external mapping is inherited</td>
+</tr>
+<tr>
+<td><strong>MAP-3</strong></td>
+<td>New Concepts Need External</td>
+<td>Concepts without parent SHOULD have external mapping</td>
+</tr>
+<tr>
+<td><strong>MAP-4</strong></td>
+<td>Domain-Specific Allowed</td>
+<td>Bank-specific concepts without external match are OK</td>
+</tr>
+<tr>
+<td><strong>MAP-5</strong></td>
+<td>Direct External = Validation</td>
+<td>Direct external mapping at subdomain level is for validation</td>
+</tr>
+</tbody></table>
+<h4>Transitive Mapping Example</h4>
+<pre><code>Scenario 1: Concept EXISTS in parent
+─────────────────────────────────────
+investment:Customer
+       │ extends
+       ▼
+   rbcz:Customer ───→ fibo:Customer
+
+Result: investment:Customer → fibo:Customer is INHERITED
+
+Scenario 2: Concept is NEW (no parent)
+──────────────────────────────────────
+investment:MiFIDClass (new in investment)
+       │ extends
+       ▼
+   rbcz:??? ─── DOES NOT EXIST
+
+Result: External mapping (fibo-sec:MiFIDClassification) is IMPORTANT
+</code></pre>
+<hr>
+<h2>7. Composability</h2>
+<h3>7.1 Data Product Layers</h3>
+<pre><code>LAYER 3: Analytics/Reporting DPs (Domain owns)
+         ├── Purpose: Answer business questions
+         └── Examples: investment-aum-reporting, investment-profitability
+
+LAYER 2: Domain/BU Master Data DPs (Domain/BU owns)
+         ├── Purpose: Single source of truth for domain entities
+         └── Examples: investment-products-catalog, mib-segmentation
+
+LAYER 1: Shared Reference Data DPs (CDO/RBCZ root owns)
+         ├── Purpose: Cross-BU standards
+         └── Examples: ref-countries (ISO 3166), ref-currencies (ISO 4217)
+</code></pre>
+<h3>7.2 Classification Criteria</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Embedded</th>
+<th>Separate DP</th>
+<th>Shared (RBCZ root)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Reuse</strong></td>
+<td>None</td>
+<td>Within domain/BU</td>
+<td>Cross-BU (all)</td>
+</tr>
+<tr>
+<td><strong>Ownership</strong></td>
+<td>Same as parent DP</td>
+<td>Domain/BU Owner</td>
+<td>CDO (RBCZ root)</td>
+</tr>
+<tr>
+<td><strong>Lifecycle</strong></td>
+<td>Tied to parent</td>
+<td>Independent</td>
+<td>Centrally managed</td>
+</tr>
+<tr>
+<td><strong>Standardization</strong></td>
+<td>Not needed</td>
+<td>Domain standard</td>
+<td>ISO/Enterprise</td>
+</tr>
+</tbody></table>
+<h4>A) Embedded Pattern</h4>
+<p><strong>When to use:</strong> Data that no one else needs</p>
+<pre><code>┌─────────────────────────────────────────┐
+│         investment-aum-reporting         │
+│                                          │
+│  ┌────────────────────────────────────┐ │
+│  │  Lookup table for AUM calculation  │ │  ← EMBEDDED
+│  │  (no one else uses it)             │ │
+│  └────────────────────────────────────┘ │
+│                                          │
+│  Business logic, transformations...     │
+└─────────────────────────────────────────┘
+</code></pre>
+<p><strong>Examples:</strong> Helper calculation tables, staging data, DP-specific constants</p>
+<h4>B) Separate DP Pattern (Domain owns)</h4>
+<p><strong>When to use:</strong> Data used by multiple DPs within the SAME domain</p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    INVESTMENT DOMAIN                         │
+│                                                              │
+│  ┌──────────────────────────────────────┐                   │
+│  │   investment-products-catalog        │ ← SEPARATE DP     │
+│  │   (ISIN, name, product type)         │                   │
+│  └──────────────────┬───────────────────┘                   │
+│                     │                                        │
+│         ┌───────────┼───────────┐                           │
+│         ▼           ▼           ▼                           │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐                    │
+│  │   AUM    │ │  Sales   │ │ Position │  ← all use         │
+│  │ Reporting│ │  Volume  │ │ Overview │    products-catalog │
+│  └──────────┘ └──────────┘ └──────────┘                    │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Examples:</strong> <code>investment-products-catalog</code>, <code>mib-segmentation</code>, <code>retail-channels</code></p>
+<h4>C) Shared Reference Pattern (RBCZ root owns)</h4>
+<p><strong>When to use:</strong> Data used by ALL BUs and domains</p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    RBCZ (root domain)                        │
+│                      CDO owns                                │
+│                                                              │
+│  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐         │
+│  │ref-countries │ │ref-currencies│ │ref-calendars │         │
+│  │  (ISO 3166)  │ │  (ISO 4217)  │ │              │         │
+│  └──────┬───────┘ └──────┬───────┘ └──────┬───────┘         │
+│         │                │                │                  │
+│         ▼                ▼                ▼                  │
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐             │
+│  │    MIB     │  │   Retail   │  │  Corporate │             │
+│  │  (+ inv.)  │  │            │  │            │             │
+│  └────────────┘  └────────────┘  └────────────┘             │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Examples:</strong> <code>rbcz:ref:countries</code> (ISO 3166), <code>rbcz:ref:currencies</code> (ISO 4217), <code>rbcz:ref:legal-entities</code> (LEI)</p>
+<p><strong>Principle:</strong> RBCZ as root domain owns all shared data. CDO is owner of RBCZ level.</p>
+<h4>Decision Tree</h4>
+<pre><code>                    Used by more than one DP?
+                              │
+               ┌──────────────┴──────────────┐
+               │ NO                          │ YES
+               ▼                             ▼
+           EMBEDDED                 Used by multiple BUs/domains?
+                                            │
+                         ┌──────────────────┴──────────────────┐
+                         │ NO (within BU only)                 │ YES (cross-BU)
+                         ▼                                     ▼
+                   SEPARATE DP                          Is it ISO/standard?
+                  (Domain/BU owns)                             │
+                                            ┌──────────────────┴──────────────┐
+                                            │ NO                              │ YES
+                                            ▼                                 ▼
+                                     SEPARATE DP                      SHARED (RBCZ root)
+                                     per BU                            (CDO owns)
+</code></pre>
+<h4>Example: Classifying IDM_* from DP EDI AUM</h4>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Reuse</th>
+<th>Cross-BU?</th>
+<th>ISO?</th>
+<th>→ Pattern</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IDM_COUNTRIES</td>
+<td>Yes</td>
+<td>Yes (everyone)</td>
+<td>Yes (ISO 3166)</td>
+<td><strong>Shared</strong></td>
+<td>CDO (RBCZ root)</td>
+</tr>
+<tr>
+<td>IDM_PRODUCTS</td>
+<td>Yes</td>
+<td>No (Investment only)</td>
+<td>No</td>
+<td><strong>Separate DP</strong></td>
+<td>Investment Domain</td>
+</tr>
+<tr>
+<td>IDM_SEGMENTS</td>
+<td>Yes</td>
+<td>No (MIB only)</td>
+<td>No</td>
+<td><strong>Separate DP</strong></td>
+<td>MIB BU</td>
+</tr>
+<tr>
+<td>Helper lookup</td>
+<td>No</td>
+<td>-</td>
+<td>-</td>
+<td><strong>Embedded</strong></td>
+<td>Parent DP</td>
+</tr>
+</tbody></table>
+<h3>7.3 Dependency Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>COMP-1</strong></td>
+<td>Shared Reference Allowed</td>
+<td>DP can consume RBCZ root reference data (ref-*)</td>
+</tr>
+<tr>
+<td><strong>COMP-2</strong></td>
+<td>Same Domain Allowed</td>
+<td>DP can consume from same domain</td>
+</tr>
+<tr>
+<td><strong>COMP-3</strong></td>
+<td>Parent Domain Allowed</td>
+<td>DP can consume from parent domain/BU</td>
+</tr>
+<tr>
+<td><strong>COMP-4</strong></td>
+<td>Sibling Needs Contract</td>
+<td>Cross-BU consumption requires explicit contract</td>
+</tr>
+<tr>
+<td><strong>COMP-5</strong></td>
+<td>No Circular Dependencies</td>
+<td>A→B→A is forbidden</td>
+</tr>
+<tr>
+<td><strong>COMP-6</strong></td>
+<td>Consumer Registration</td>
+<td>Consumer MUST be in Consumers Catalog</td>
+</tr>
+<tr>
+<td><strong>COMP-7</strong></td>
+<td>Cross-Domain via DP Only</td>
+<td>Production data exchange across domain boundary requires DP + Contract</td>
+</tr>
+</tbody></table>
+<h4>COMP-7: Cross-Domain Data Exchange (Detail)</h4>
+<p><strong>Rule:</strong> Any PRODUCTION exchange of analytical data across domain boundary MUST be realized through a published Data Product with a valid Data Contract.</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                    DOMAIN BOUNDARY                               │
+│                         │                                        │
+│     INVESTMENT          │              MIB                       │
+│                         │                                        │
+│  ┌─────────────┐        │        ┌─────────────┐                │
+│  │ Internal    │        │        │ Internal    │                │
+│  │ processing  │        │        │ processing  │                │
+│  └──────┬──────┘        │        └──────┬──────┘                │
+│         │               │               ▲                        │
+│         ▼               │               │                        │
+│  ┌─────────────┐        │        ┌──────┴──────┐                │
+│  │     DP      │────────┼───────▶│  Consumer   │                │
+│  │ + Contract  │        │        │  registers  │                │
+│  └─────────────┘        │        └─────────────┘                │
+│                         │                                        │
+│                   DATA CONTRACT                                  │
+│                   enforced here                                  │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Rule Applicability:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Exchange Type</th>
+<th>Require DP?</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Production consumption</td>
+<td>✅ Yes, always</td>
+<td>Core use case</td>
+</tr>
+<tr>
+<td>Ad-hoc exploration (sandbox)</td>
+<td>⚠️ Not necessarily</td>
+<td>Max 30 days, discovery purposes</td>
+</tr>
+<tr>
+<td>Same BU, different domain</td>
+<td>✅ Yes</td>
+<td>Still cross-domain</td>
+</tr>
+<tr>
+<td>Same domain, different DP</td>
+<td>❌ No</td>
+<td>Internal implementation</td>
+</tr>
+</tbody></table>
+<p><strong>Enforcement:</strong></p>
+<ul>
+<li>Without registered DP, no access to production data of another domain</li>
+<li>Consumer MUST be registered in Consumer Catalog</li>
+<li>Breaking changes require notification of all registered consumers</li>
+</ul>
+<h3>7.4 Design Guidance: Embedded vs. Separate DP</h3>
+<p>Key question during design: <em>&quot;How do I know if data will be used by more than one DP?&quot;</em></p>
+<p><strong>Short answer:</strong> You don&#39;t know for sure. But you have signals.</p>
+<h4>Signals for Reuse</h4>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Example</th>
+<th>Reuse Probability</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>It&#39;s an entity (noun)</strong></td>
+<td>Customer, Product, Account</td>
+<td>🔴 High</td>
+</tr>
+<tr>
+<td><strong>It&#39;s a classification/codelist</strong></td>
+<td>Segment, Status, Type</td>
+<td>🔴 High</td>
+</tr>
+<tr>
+<td><strong>Someone else is already asking</strong></td>
+<td>&quot;Where can I find products?&quot;</td>
+<td>🔴 High</td>
+</tr>
+<tr>
+<td><strong>Exists in source system as master</strong></td>
+<td>IDM_PRODUCTS in EDI</td>
+<td>🟡 Medium</td>
+</tr>
+<tr>
+<td><strong>It&#39;s a dimension for reporting</strong></td>
+<td>Time, Geography, Channel</td>
+<td>🔴 High</td>
+</tr>
+<tr>
+<td><strong>It&#39;s a calculation/metric</strong></td>
+<td>AUM balance, Risk score</td>
+<td>🟢 Low (often DP-specific)</td>
+</tr>
+<tr>
+<td><strong>It&#39;s a fact/transaction</strong></td>
+<td>Order, Payment, Trade</td>
+<td>🟡 Medium</td>
+</tr>
+</tbody></table>
+<h4>Evolution Pattern: Start Small, Promote When Needed</h4>
+<pre><code>EVOLUTION PATTERN:
+
+Time 0: Don&#39;t know if anyone will need it
+       │
+       ▼
+┌─────────────────────────────────────┐
+│  Start as EMBEDDED in DP            │
+│  (simplest, fastest)                │
+└─────────────────────────────────────┘
+       │
+       │  Second consumer appears
+       ▼
+┌─────────────────────────────────────┐
+│  REFACTOR → SEPARATE DP             │
+│  (extract, publish, contract)       │
+└─────────────────────────────────────┘
+       │
+       │  Cross-BU consumer appears
+       ▼
+┌─────────────────────────────────────┐
+│  PROMOTE → RBCZ root / higher level │
+│  (governance decision)              │
+└─────────────────────────────────────┘
+</code></pre>
+<p><strong>Key insight:</strong> Refactoring is cheap, over-engineering is expensive.</p>
+<h4>Decision Questions During Design</h4>
+<pre><code>1. &quot;Is this an ENTITY or a CALCULATION?&quot;
+   │
+   ├── ENTITY (Customer, Product) → probably SEPARATE DP
+   │
+   └── CALCULATION (AUM per segment) → probably EMBEDDED
+
+2. &quot;Does this exist in source system as a standalone table/API?&quot;
+   │
+   ├── YES (IDM_PRODUCTS) → consider SEPARATE DP
+   │
+   └── NO (helper calculation) → EMBEDDED
+
+3. &quot;Can I imagine someone else wanting this?&quot;
+   │
+   ├── YES, easily → SEPARATE DP
+   │
+   └── NO, it&#39;s specific to my use case → EMBEDDED
+
+4. &quot;Does this change independently of my DP?&quot;
+   │
+   ├── YES (products added independently of AUM report) → SEPARATE DP
+   │
+   └── NO (always changes together) → EMBEDDED
+</code></pre>
+<h4>Updated Decision Tree</h4>
+<pre><code>                    Is it an ENTITY or CLASSIFICATION?
+                              │
+               ┌──────────────┴──────────────┐
+               │ YES                         │ NO (calculation/metric)
+               ▼                             ▼
+      Probably will be               Probably EMBEDDED
+      reused → SEPARATE DP           (can promote later)
+               │
+               ▼
+      Used by multiple BUs?
+               │
+    ┌──────────┴──────────┐
+    │ YES                 │ NO
+    ▼                     ▼
+SHARED (RBCZ root)    SEPARATE DP
+                      (Domain/BU)
+</code></pre>
+<h4>Examples from Investment Domain</h4>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Type</th>
+<th>Signal</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Products (ISIN)</strong></td>
+<td>Entity</td>
+<td>Exists in EDI as master, AUM and Sales both need it</td>
+<td>→ SEPARATE DP from start</td>
+</tr>
+<tr>
+<td><strong>Segments</strong></td>
+<td>Classification</td>
+<td>MIB-wide codelist, all MIB DPs need it</td>
+<td>→ SEPARATE DP (MIB level)</td>
+</tr>
+<tr>
+<td><strong>AUM per product per day</strong></td>
+<td>Calculation</td>
+<td>Specific to AUM reporting</td>
+<td>→ EMBEDDED (in aum-reporting)</td>
+</tr>
+<tr>
+<td><strong>Countries</strong></td>
+<td>Classification</td>
+<td>ISO standard, everyone needs it</td>
+<td>→ SHARED (RBCZ root)</td>
+</tr>
+<tr>
+<td><strong>Fee calculation lookup</strong></td>
+<td>Helper table</td>
+<td>Only for profitability calculation</td>
+<td>→ EMBEDDED</td>
+</tr>
+</tbody></table>
+<h4>Practical Rule</h4>
+<blockquote>
+<p><strong>&quot;When in doubt, start embedded. First duplicate request = signal to extract.&quot;</strong></p>
+</blockquote>
+<p><strong>Why?</strong></p>
+<ul>
+<li>Embedded → Separate is an easy refactor</li>
+<li>Separate → Embedded is hard (consumers depend on it)</li>
+<li>Premature abstraction costs more than late extraction</li>
+</ul>
+<hr>
+<h2>8. Naming Convention</h2>
+<h3>8.1 Three-Level Naming</h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Purpose</th>
+<th>Format</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ID</strong></td>
+<td>Technical identifier</td>
+<td>Domain path (colon)</td>
+<td><code>rbcz:mib:investment:aum</code></td>
+</tr>
+<tr>
+<td><strong>Slug</strong></td>
+<td>Short reference</td>
+<td>lowercase-hyphen</td>
+<td><code>investment-aum-reporting</code></td>
+</tr>
+<tr>
+<td><strong>Title</strong></td>
+<td>Business name</td>
+<td>Human readable</td>
+<td>&quot;Investment AUM Performance Reporting&quot;</td>
+</tr>
+</tbody></table>
+<h3>8.2 Rules</h3>
+<p>See <a href="GOV-DM-002-naming-convention.md">GOV-DM-002-naming-convention.md</a> for detailed rules.</p>
+<p><strong>Key Principles:</strong></p>
+<ul>
+<li><strong>Purpose-Driven</strong>: Title reflects business value, not just entity</li>
+<li><strong>No Application Names</strong>: Use domain names, not system names (EDI, AMS)</li>
+<li><strong>Domain Prefix</strong>: Slug starts with domain identifier</li>
+</ul>
+<hr>
+<h2>9. Maturity Score</h2>
+<p>Maturity Score indicates production-readiness (per existing RBCZ Governance):</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Documentation completeness</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>Data quality measures</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>SLA definitions</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>Governance compliance</td>
+<td>20%</td>
+</tr>
+<tr>
+<td>Technical implementation</td>
+<td>20%</td>
+</tr>
+</tbody></table>
+<p><strong>Thresholds:</strong></p>
+<ul>
+<li>≥ 80%: Production ready</li>
+<li>60-79%: Development complete, validation pending</li>
+<li>&lt; 60%: In development</li>
+</ul>
+<hr>
+<h2>10. Federated Governance - Guild</h2>
+<table>
+<thead>
+<tr>
+<th>Guild</th>
+<th>Responsibilities</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Enterprise Architecture</strong></td>
+<td>Technical standards, platform decisions</td>
+</tr>
+<tr>
+<td><strong>Data Products &amp; Data Mesh</strong></td>
+<td>This governance, DP lifecycle</td>
+</tr>
+<tr>
+<td><strong>Finance &amp; Risk &amp; Controlling</strong></td>
+<td>Financial data quality, regulatory</td>
+</tr>
+<tr>
+<td><strong>Development &amp; Operations &amp; Support</strong></td>
+<td>Implementation, operations</td>
+</tr>
+<tr>
+<td><strong>GDPR &amp; PII &amp; Data Classification</strong></td>
+<td>Privacy, classification</td>
+</tr>
+<tr>
+<td><strong>Cyber Security</strong></td>
+<td>Security standards</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>11. Related Documents</h2>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="GOV-DM-002-naming-convention.md">GOV-DM-002-naming-convention.md</a></td>
+<td>Detailed naming rules</td>
+</tr>
+<tr>
+<td><a href="GOV-DM-003-domain-hierarchy.md">GOV-DM-003-domain-hierarchy.md</a></td>
+<td>Domain hierarchy &amp; ownership</td>
+</tr>
+<tr>
+<td><a href="GOV-DM-004-operating-model.md">GOV-DM-004-operating-model.md</a></td>
+<td>Operating model, lifecycle, quality</td>
+</tr>
+<tr>
+<td><a href="review/2026-01-08-domain-composability-framework.md">Composability Framework</a></td>
+<td>Composability patterns</td>
+</tr>
+<tr>
+<td><a href="catalogs/investment-dp-catalog.md">Investment DP Catalog</a></td>
+<td>Investment domain DPs</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>12. Revision History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0</td>
+<td>2026-01-08</td>
+<td>Banking Domain Expert</td>
+<td>Initial version based on QAR session</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Appendix A: Quick Reference</h2>
+<h3>Data Product Checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Unique ID assigned (domain path)</li>
+<li><input disabled="" type="checkbox"> Slug defined (lowercase-hyphen)</li>
+<li><input disabled="" type="checkbox"> Purpose-driven Title</li>
+<li><input disabled="" type="checkbox"> Data Contract YAML exists</li>
+<li><input disabled="" type="checkbox"> Domain mapping defined</li>
+<li><input disabled="" type="checkbox"> External authority mapped (if new concept)</li>
+<li><input disabled="" type="checkbox"> Maturity Score calculated</li>
+<li><input disabled="" type="checkbox"> Listed in DPCC Catalog</li>
+<li><input disabled="" type="checkbox"> Owner assigned</li>
+<li><input disabled="" type="checkbox"> Consumers documented</li>
+</ul>
+<h3>Governance Decision Tree</h3>
+<pre><code>New Data Product?
+       │
+       ▼
+Does parent domain concept exist?
+       │
+   ┌───┴───┐
+   YES     NO
+   │       │
+   ▼       ▼
+Extend   Define new +
+parent   map to external
+   │     authority
+   ▼       │
+Both: Register in Catalog
+      Define Data Contract
+      Calculate Maturity
+</code></pre>
+
+</body></html>

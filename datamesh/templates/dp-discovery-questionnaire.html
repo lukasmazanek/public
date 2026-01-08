@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Product Discovery Questionnaire</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            color: #1f2328;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: .3em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; border-bottom: none; }
+        h4, h5, h6 { border-bottom: none; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+        code {
+            background: rgba(175,184,193,0.2);
+            padding: .2em .4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+        pre code { background: none; padding: 0; font-size: 100%; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 6px 13px;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background: #f6f8fa; }
+        blockquote {
+            border-left: .25em solid #d1d9e0;
+            margin: 0;
+            padding: 0 1em;
+            color: #656d76;
+        }
+        hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+        ul, ol { padding-left: 2em; }
+        li + li { margin-top: .25em; }
+    </style>
+</head>
+<body>
+<h1>Data Product Discovery Questionnaire</h1>
+<blockquote>
+<p><strong>Purpose:</strong> Structured interview guide for Domain Owner sessions
+<strong>Participants:</strong> Domain Owner, Architect, Business Analyst
+<strong>Method:</strong> QAR (Question → Alternatives → Explanation → Recommendation)
+<strong>Output:</strong> Data Product Catalog entry ready for implementation
+<strong>Version:</strong> 1.8
+<strong>Date:</strong> 2026-01-08</p>
+</blockquote>
+<hr>
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="#how-to-use-this-guide">How to Use This Guide</a></li>
+<li><a href="#section-1-domain--ownership">Section 1: Domain &amp; Ownership</a><ul>
+<li><a href="#q11-domain-placement">Q1.1: Domain Placement</a></li>
+<li><a href="#q12-domain-owner-assignment">Q1.2: Domain Owner Assignment</a></li>
+<li><a href="#q13-existing-concepts-check">Q1.3: Existing Concepts Check</a></li>
+</ul>
+</li>
+<li><a href="#section-2-purpose--business-value">Section 2: Purpose &amp; Business Value</a><ul>
+<li><a href="#q21-business-question">Q2.1: Business Question</a></li>
+<li><a href="#q22-independent-usefulness">Q2.2: Independent Usefulness</a></li>
+<li><a href="#q23-known-consumers">Q2.3: Known Consumers</a></li>
+</ul>
+</li>
+<li><a href="#section-3-data-product-classification">Section 3: Data Product Classification</a><ul>
+<li><a href="#q31-layer-classification">Q3.1: Layer Classification</a></li>
+<li><a href="#q32-composability-pattern">Q3.2: Composability Pattern</a></li>
+<li><a href="#q33-reference-data-decision">Q3.3: Reference Data Decision</a></li>
+</ul>
+</li>
+<li><a href="#section-4-naming">Section 4: Naming</a><ul>
+<li><a href="#q41-technical-id">Q4.1: Technical ID</a></li>
+<li><a href="#q42-slug-short-name">Q4.2: Slug (Short Name)</a></li>
+<li><a href="#q43-business-title">Q4.3: Business Title</a></li>
+</ul>
+</li>
+<li><a href="#section-5-schema--concepts">Section 5: Schema &amp; Concepts</a><ul>
+<li><a href="#q51-aggregation-level">Q5.1: Aggregation Level</a> <em>(NEW)</em></li>
+<li><a href="#q52-core-entities">Q5.2: Core Entities</a></li>
+<li><a href="#q53-key-attributes">Q5.3: Key Attributes</a></li>
+<li><a href="#q54-fibo-alignment">Q5.4: FIBO Alignment</a></li>
+</ul>
+</li>
+<li><a href="#section-6-data-sources--dependencies">Section 6: Data Sources &amp; Dependencies</a><ul>
+<li><a href="#q61-data-sources">Q6.1: Data Sources</a> <em>(NEW)</em></li>
+<li><a href="#q62-reference-data-dependencies">Q6.2: Reference Data Dependencies</a></li>
+<li><a href="#q63-domain-dependencies">Q6.3: Domain Dependencies</a></li>
+<li><a href="#q64-cross-domain-dependencies">Q6.4: Cross-Domain Dependencies</a></li>
+</ul>
+</li>
+<li><a href="#section-7-outputs--sla">Section 7: Outputs &amp; SLA</a><ul>
+<li><a href="#q71-output-ports">Q7.1: Output Ports</a></li>
+<li><a href="#q72-freshness-sla">Q7.2: Freshness SLA</a></li>
+<li><a href="#q73-data-period--temporality">Q7.3: Data Period &amp; Temporality</a> <em>(NEW)</em></li>
+<li><a href="#q74-quality-expectations">Q7.4: Quality Expectations</a></li>
+</ul>
+</li>
+<li><a href="#section-8-security--compliance">Section 8: Security &amp; Compliance</a><ul>
+<li><a href="#q81-data-classification">Q8.1: Data Classification</a></li>
+<li><a href="#q82-pii-identification">Q8.2: PII Identification</a></li>
+</ul>
+</li>
+<li><a href="#section-9-lifecycle">Section 9: Lifecycle</a><ul>
+<li><a href="#q91-initial-maturity">Q9.1: Initial Maturity</a></li>
+<li><a href="#q92-retirement-planning">Q9.2: Retirement Planning</a></li>
+</ul>
+</li>
+<li><a href="#section-10-summary--validation">Section 10: Summary &amp; Validation</a><ul>
+<li><a href="#q101-datsis-checklist">Q10.1: DATSIS Checklist</a></li>
+<li><a href="#q102-naming-validation">Q10.2: Naming Validation</a></li>
+<li><a href="#q103-dependency-graph-validation">Q10.3: Dependency Graph Validation</a></li>
+</ul>
+</li>
+<li><a href="#appendix-a-quick-reference-card">Appendix A: Quick Reference Card</a></li>
+<li><a href="#appendix-b-session-output-template">Appendix B: Session Output Template</a></li>
+<li><a href="#related-documents">Related Documents</a></li>
+</ol>
+<hr>
+<h2>How to Use This Guide</h2>
+<ol>
+<li><strong>Before session:</strong> Architect reviews existing domain context, related DPs</li>
+<li><strong>During session:</strong> BA leads questions, Architect validates technical feasibility</li>
+<li><strong>After session:</strong> BA drafts DP catalog entry, Architect reviews compliance</li>
+<li><strong>Each question:</strong> Follow QAR format - explore alternatives, explain governance context</li>
+</ol>
+<p><strong>Time estimate:</strong> 60-90 minutes per Data Product</p>
+<hr>
+<h2>Section 1: Domain &amp; Ownership</h2>
+<h3>Q1.1: Domain Placement</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Where does this Data Product belong in the domain hierarchy?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Path</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td><code>rbcz:{bu}:{domain}</code></td>
+<td>Domain-specific (e.g., <code>rbcz:corporate:gcc</code>)</td>
+</tr>
+<tr>
+<td>B</td>
+<td><code>rbcz:{bu}</code></td>
+<td>BU-wide shared (e.g., <code>rbcz:mib</code>)</td>
+</tr>
+<tr>
+<td>C</td>
+<td><code>rbcz</code></td>
+<td>Enterprise-wide shared</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li>Domain path determines ownership (<a href="../GOV-DM-003-domain-hierarchy.md">GOV-DM-003</a> OWN-1)</li>
+<li>Child domains inherit parent concepts but cannot modify them</li>
+<li>Incorrect placement causes governance conflicts later</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Start at lowest specific level (domain)</li>
+<li>Promote to higher level only when cross-domain reuse proven</li>
+<li>Per <a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a> Section 7.4: &quot;Start embedded, extract when needed&quot;</li>
+</ul>
+<hr>
+<h3>Q1.2: Domain Owner Assignment</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Who is accountable for this Data Product?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Responsibility</th>
+<th>Decision Rights</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Domain Owner</td>
+<td>Business accountability, definition quality</td>
+<td>Approve changes, deprecate, delete</td>
+</tr>
+<tr>
+<td>Data Product Manager</td>
+<td>Prioritization, roadmap</td>
+<td>Day-to-day decisions</td>
+</tr>
+<tr>
+<td>Data Engineer</td>
+<td>Build &amp; maintain</td>
+<td>Technical implementation</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../../policies/GOV-004-data-ownership.md">GOV-004</a> requires single accountable owner</li>
+<li>Owner must respond to change requests within 5 business days</li>
+<li>Owner responsible for FIBO mapping validation</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Assign Domain Owner (business role) - not technical lead</li>
+<li>Document contact: <code>{role}@rbcz.cz</code></li>
+<li>Verify owner has authority for this domain level</li>
+</ul>
+<hr>
+<h3>Q1.3: Existing Concepts Check</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Do concepts that this DP uses already exist in parent domain?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A - Concept exists in parent</td>
+<td>EXTEND parent concept, add domain-specific attributes</td>
+</tr>
+<tr>
+<td>B - Concept is new</td>
+<td>CREATE new concept, map to FIBO/Schema.org</td>
+</tr>
+<tr>
+<td>C - Concept exists but different meaning</td>
+<td>CREATE homonym with qualified name</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-003-domain-hierarchy.md">GOV-DM-003</a> Section 3.3: Child can ADD attributes, cannot CHANGE parent</li>
+<li>Liskov Substitution: Child must work wherever parent is expected</li>
+<li>Homonyms are allowed if meaning is genuinely different</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Always check parent domain first (<code>rbcz</code>, <code>rbcz:{bu}</code>)</li>
+<li>If extending, only add NEW attributes</li>
+<li>If homonym, document distinction clearly</li>
+</ul>
+<hr>
+<h2>Section 2: Purpose &amp; Business Value</h2>
+<h3>Q2.1: Business Question</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What business question does this Data Product answer?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Example</th>
+<th>Indicators</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A - Who/What question</td>
+<td>&quot;Who are our GCC members?&quot;</td>
+<td>Identity, master data</td>
+</tr>
+<tr>
+<td>B - How much/many question</td>
+<td>&quot;What is our AUM?&quot;</td>
+<td>Metrics, aggregations</td>
+</tr>
+<tr>
+<td>C - Why/How question</td>
+<td>&quot;Why did customer churn?&quot;</td>
+<td>Analytics, insights</td>
+</tr>
+<tr>
+<td>D - What happened question</td>
+<td>&quot;What transactions occurred?&quot;</td>
+<td>Events, audit trail</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a> <a href="../GOV-DM-002-naming-convention.md#52-rules">TITLE-1</a>: Must state business purpose</li>
+<li>Purpose-driven naming prevents &quot;data dump&quot; products</li>
+<li>Clear purpose helps consumers evaluate relevance</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Formulate as question the DP answers</li>
+<li>Use format: &quot;What/Who/How [specific business need]?&quot;</li>
+<li>Document 2-4 business questions per DP</li>
+</ul>
+<hr>
+<h3>Q2.2: Independent Usefulness</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Is this Data Product useful on its own, without other DPs?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Answer</th>
+<th>Implication</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A - Yes, fully independent</td>
+<td>Good DP boundary</td>
+</tr>
+<tr>
+<td>B - Partially, needs reference data</td>
+<td>OK - reference DPs are expected dependencies</td>
+</tr>
+<tr>
+<td>C - No, only makes sense with other DPs</td>
+<td>Consider merging or redesigning</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li>Design principle: &quot;Every DP must be independently useful&quot;</li>
+<li>Prevents tight coupling and cascade failures</li>
+<li>Enables incremental adoption</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>If answer is C, reconsider DP boundary</li>
+<li>Dependencies on reference data (L1) are acceptable</li>
+<li>Dependencies on other domain DPs should be minimized</li>
+</ul>
+<hr>
+<h3>Q2.3: Known Consumers</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Who will use this Data Product?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Consumer Type</th>
+<th>Example</th>
+<th>Registration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A - Known application</td>
+<td>MS PaaS, Reporting</td>
+<td>Mandatory (<a href="../GOV-DM-001-data-mesh-governance.md">COMP-6</a>)</td>
+</tr>
+<tr>
+<td>B - Known team</td>
+<td>Marketing, Risk</td>
+<td>Mandatory</td>
+</tr>
+<tr>
+<td>C - Unknown/hypothetical</td>
+<td>&quot;Maybe someone&quot;</td>
+<td>WARNING: Build for known need</td>
+</tr>
+<tr>
+<td>D - Internal processing only</td>
+<td>Intermediate step</td>
+<td>Consider: Is this really a DP?</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a> <a href="../GOV-DM-001-data-mesh-governance.md">COMP-6</a>: Consumer MUST be registered</li>
+<li>Anti-pattern: &quot;Build it and they will come&quot;</li>
+<li>No consumers = no Data Product needed</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>List specific consumers by name</li>
+<li>If no known consumer, question whether DP is needed</li>
+<li>Document use case for each consumer</li>
+</ul>
+<hr>
+<h2>Section 3: Data Product Classification</h2>
+<h3>Q3.1: Layer Classification</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Which layer does this Data Product belong to?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Purpose</th>
+<th>Ownership</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>L1 - Shared Reference</strong></td>
+<td>Cross-BU standards</td>
+<td>CDO</td>
+<td>countries, currencies</td>
+</tr>
+<tr>
+<td><strong>L2 - Domain Master Data</strong></td>
+<td>Single source of truth for domain</td>
+<td>Domain Owner</td>
+<td>gcc-members, investment-products</td>
+</tr>
+<tr>
+<td><strong>L3 - Analytics</strong></td>
+<td>Answer business questions</td>
+<td>Domain Owner</td>
+<td>gcc-groups, aum-reporting</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a> Section 7.1 defines three layers</li>
+<li>L1 is owned by CDO, not domain</li>
+<li>L3 typically aggregates L2 data</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Most new DPs are L2 (master data) or L3 (analytics)</li>
+<li>L1 requires CDO approval (enterprise-wide impact)</li>
+<li>Layer determines governance intensity</li>
+</ul>
+<hr>
+<h3>Q3.2: Composability Pattern</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>How does this DP relate to other DPs in the domain?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>When</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A - REFERENCES (R→)</td>
+<td>FK lookup to another DP</td>
+<td>gcc-members → gcc-natural-persons</td>
+</tr>
+<tr>
+<td>B - AGGREGATES (A→)</td>
+<td>Summarizes/counts from another DP</td>
+<td>gcc-groups → gcc-relations</td>
+</tr>
+<tr>
+<td>C - STANDALONE</td>
+<td>No dependencies within domain</td>
+<td>gcc-requests</td>
+</tr>
+<tr>
+<td>D - EMBEDDED</td>
+<td>Data only used by this DP</td>
+<td>Helper lookup table</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a> Section 7.3 defines dependency rules</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-5</a>: No circular dependencies</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-7</a>: Cross-domain requires contract</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Draw dependency graph before implementation</li>
+<li>Prefer STANDALONE when possible (reduces coupling)</li>
+<li>EMBEDDED is OK for truly internal data</li>
+</ul>
+<hr>
+<h3>Q3.3: Reference Data Decision</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Does this DP contain reference data that could be shared?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Reuse Probability</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A - Entity/classification</td>
+<td>HIGH</td>
+<td>Consider separate DP</td>
+</tr>
+<tr>
+<td>B - Calculation/metric</td>
+<td>LOW</td>
+<td>Keep embedded</td>
+</tr>
+<tr>
+<td>C - Someone else already asking</td>
+<td>HIGH</td>
+<td>Definitely separate</td>
+</tr>
+<tr>
+<td>D - Changes independently</td>
+<td>MEDIUM</td>
+<td>Consider separate</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a> Section 7.4: Decision tree for embedded vs separate</li>
+<li>&quot;When in doubt, start embedded. First duplicate request = signal to extract.&quot;</li>
+<li>Refactoring is cheap, over-engineering is expensive</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Use decision tree: Entity? → Probably separate</li>
+<li>Check if data exists in source as master table</li>
+<li>Ask: &quot;Can I imagine someone else wanting this?&quot;</li>
+</ul>
+<hr>
+<h2>Section 4: Naming</h2>
+<h3>Q4.1: Technical ID</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What will be the technical identifier (ID) for this Data Product?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<p>Format: <code>{entity}:{bu}:{domain}:{concept}</code></p>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Validity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rbcz:corporate:gcc:members</code></td>
+<td>CORRECT</td>
+</tr>
+<tr>
+<td><code>gcc:members</code></td>
+<td>WRONG - missing full path</td>
+</tr>
+<tr>
+<td><code>RBCZ:Corporate:GCC:Members</code></td>
+<td>WRONG - must be lowercase</td>
+</tr>
+<tr>
+<td><code>rbcz:corporate:gcc-members</code></td>
+<td>WRONG - use colon, not hyphen</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a> ID rules: lowercase, colon separator, full path</li>
+<li><a href="../../decisions/ADR-010-domain-path-notation.md">ADR-010</a> mandates colon notation</li>
+<li>ID must match domain hierarchy exactly</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Always include full path from <code>rbcz</code></li>
+<li>Use colon separator (not slash, not hyphen)</li>
+<li>Validate against domain hierarchy</li>
+</ul>
+<hr>
+<h3>Q4.2: Slug (Short Name)</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What will be the short name (slug) for URLs and references?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<p>Format: <code>{domain-prefix}-{purpose-description}</code></p>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Validity</th>
+<th>Issue</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>gcc-members</code></td>
+<td>CORRECT</td>
+<td>Domain prefix + purpose</td>
+</tr>
+<tr>
+<td><code>members</code></td>
+<td>WRONG</td>
+<td>Missing domain prefix</td>
+</tr>
+<tr>
+<td><code>gcc_members</code></td>
+<td>WRONG</td>
+<td>Use hyphen, not underscore</td>
+</tr>
+<tr>
+<td><code>ms-paas-gcc-storage</code></td>
+<td>WRONG</td>
+<td>No application names</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a> SLUG rules: lowercase, hyphen, domain prefix, max 4 words</li>
+<li><a href="../GOV-DM-002-naming-convention.md#42-rules">SLUG-5</a>: No application names (EDI, AMS, Siebel)</li>
+<li>Purpose-oriented, not entity-only</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Start with domain prefix: <code>gcc-</code>, <code>investment-</code>, <code>mib-</code></li>
+<li>Describe purpose, not just entity</li>
+<li>Keep under 4 words</li>
+</ul>
+<hr>
+<h3>Q4.3: Business Title</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What will be the business name (Title) for the catalog?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Bad (Entity-Only)</th>
+<th>Good (Purpose-Driven)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&quot;GCC Members&quot;</td>
+<td>&quot;GCC Group Membership Registry&quot;</td>
+</tr>
+<tr>
+<td>&quot;EDI AUM&quot;</td>
+<td>&quot;Investment AUM Performance Reporting&quot;</td>
+</tr>
+<tr>
+<td>&quot;Customer Master&quot;</td>
+<td>&quot;Investment Client Portfolio Overview&quot;</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a> <a href="../GOV-DM-002-naming-convention.md#52-rules">TITLE-1</a>: Must state business purpose</li>
+<li><a href="../GOV-DM-002-naming-convention.md#52-rules">TITLE-5</a>: No technical jargon</li>
+<li><a href="../GOV-DM-002-naming-convention.md#52-rules">TITLE-6</a>: No application names</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Format: &quot;{Domain} {Business Value/Purpose} [for {Use Case}]&quot;</li>
+<li>Use purpose keywords: Reporting, Overview, Registry, Analysis</li>
+<li>Human readable, Title Case</li>
+</ul>
+<hr>
+<h2>Section 5: Schema &amp; Concepts</h2>
+<h3>Q5.1: Aggregation Level</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>At what level of granularity/aggregation is the data?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Transaction</strong></td>
+<td>Individual events/records</td>
+<td>Single order, payment, login</td>
+</tr>
+<tr>
+<td><strong>Daily</strong></td>
+<td>Aggregated per day</td>
+<td>Daily balances, daily totals</td>
+</tr>
+<tr>
+<td><strong>Customer</strong></td>
+<td>Aggregated per customer</td>
+<td>Customer profile, portfolio summary</td>
+</tr>
+<tr>
+<td><strong>Segment</strong></td>
+<td>Aggregated per segment/group</td>
+<td>Segment metrics, cohort analysis</td>
+</tr>
+<tr>
+<td><strong>Period</strong></td>
+<td>Monthly/quarterly/yearly snapshots</td>
+<td>Monthly closing, annual reports</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li>Aggregation level determines what questions the DP can answer</li>
+<li>Lower granularity = more flexibility but larger data volume</li>
+<li>Higher aggregation = faster queries but less detail</li>
+<li>Regulatory reporting often requires specific granularity (CNB, BCBS 239)</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Document the grain explicitly in schema</li>
+<li>If multiple levels needed, consider separate DPs (raw vs aggregated)</li>
+<li>Match granularity to consumer use cases</li>
+<li>Consider regulatory requirements (some require transaction-level)</li>
+</ul>
+<hr>
+<h3>Q5.2: Core Entities</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What core business entities (concepts) does this DP contain?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Example</th>
+<th>CST Section</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A - Business entity</td>
+<td>Natural Person, Legal Entity, Order</td>
+<td><code># Concepts</code></td>
+</tr>
+<tr>
+<td>B - Relationship</td>
+<td>Ownership, Control, Membership</td>
+<td><code># Binary Verb Concepts</code></td>
+</tr>
+<tr>
+<td>C - Classification</td>
+<td>Country, Currency, Status</td>
+<td>Reference DP or <code># Property Types</code></td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../../policies/GOV-013-data-product-governance.md">GOV-013</a> Rule DP-001: Property types MUST NOT appear in concepts</li>
+<li>Concepts = business entities/nouns</li>
+<li>Property Types = types of attributes</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>List only business entities as concepts</li>
+<li>Relationships go to Binary Verb Concepts</li>
+<li>Classifications may be separate reference DPs</li>
+</ul>
+<hr>
+<h3>Q5.3: Key Attributes</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What are the key attributes for each concept?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute Type</th>
+<th>Example</th>
+<th>FIBO Mapping</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Identifier</td>
+<td>party_id, member_id</td>
+<td>fibo-fnd:PartyIdentifier</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>first_name, company_name</td>
+<td>fibo-fnd:GivenName</td>
+</tr>
+<tr>
+<td>Classification</td>
+<td>country_code, status</td>
+<td>Reference to codelist</td>
+</tr>
+<tr>
+<td>Relationship FK</td>
+<td>parent_member_id</td>
+<td>Reference to other DP</td>
+</tr>
+<tr>
+<td>Metric</td>
+<td>shares_percentage</td>
+<td>Domain-specific</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li>Every attribute needs semantic type (<a href="../../policies/GOV-010-semantic-typing.md">GOV-010</a>)</li>
+<li>Primitives: String, Integer, Number, Boolean, Date, Datetime</li>
+<li>Custom types need definition in Property Types</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Identify primary key for each entity</li>
+<li>Identify foreign keys to other DPs</li>
+<li>Map standard attributes to FIBO where possible</li>
+</ul>
+<hr>
+<h3>Q5.4: FIBO Alignment</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>How do concepts map to FIBO ontology?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>FIBO Mapping</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A - FIBO equivalent exists</td>
+<td>fibo-fnd:NaturalPerson</td>
+<td>Map directly</td>
+</tr>
+<tr>
+<td>B - FIBO similar exists</td>
+<td>fibo-fnd:Party (broader)</td>
+<td>Map to closest + document</td>
+</tr>
+<tr>
+<td>C - Domain-specific, no FIBO</td>
+<td>GCC Membership</td>
+<td>Mark as domain-only</td>
+</tr>
+<tr>
+<td>D - Inherited from parent</td>
+<td>Parent already mapped</td>
+<td>Mapping inherited</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../../decisions/ADR-017-domain-first-fibo-aligned.md">ADR-017</a>: Domain-First, FIBO-Aligned</li>
+<li>FIBO provides semantic interoperability</li>
+<li>Not everything maps to FIBO - domain-specific is OK</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Check FIBO-FND first (foundational)</li>
+<li>Check FIBO-BE for business entities</li>
+<li>Document &quot;domain-only&quot; for bank-specific concepts</li>
+</ul>
+<hr>
+<h2>Section 6: Data Sources &amp; Dependencies</h2>
+<h3>Q6.1: Data Sources</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Who/what provides the source data for this DP?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Source Type</th>
+<th>Examples</th>
+<th>Considerations</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Source System</strong></td>
+<td>Core Banking, CRM, Trading Platform</td>
+<td>System stability, data quality at source</td>
+</tr>
+<tr>
+<td><strong>Internal Domain</strong></td>
+<td>Another DP within RBCZ</td>
+<td>Cross-domain contract needed</td>
+</tr>
+<tr>
+<td><strong>External Provider</strong></td>
+<td>Market data, Credit bureau, Regulators</td>
+<td>SLA, costs, data format</td>
+</tr>
+<tr>
+<td><strong>Manual Input</strong></td>
+<td>Excel uploads, User entry</td>
+<td>Quality risks, audit trail</td>
+</tr>
+<tr>
+<td><strong>Derived/Calculated</strong></td>
+<td>Aggregations from other DPs</td>
+<td>Lineage documentation</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li>Source identification is critical for data lineage (BCBS 239)</li>
+<li>Source quality directly impacts DP quality</li>
+<li>External sources may have licensing/cost implications</li>
+<li>Multiple sources require reconciliation strategy</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>List ALL source systems explicitly</li>
+<li>Document source system owners/contacts</li>
+<li>Identify data extraction method (API, batch, CDC)</li>
+<li>Note any transformation at source vs in DP</li>
+<li>Per <a href="../../decisions/ADR-066-fix-at-source.md">ADR-066</a>: Fix quality issues at source, not downstream</li>
+</ul>
+<hr>
+<h3>Q6.2: Reference Data Dependencies</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What reference data (L1) does this DP require?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Reference DP</th>
+<th>Usage</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rbcz:countries</code></td>
+<td>Country code validation</td>
+<td><code>country_code</code> field</td>
+</tr>
+<tr>
+<td><code>rbcz:currencies</code></td>
+<td>Currency code validation</td>
+<td><code>currency</code> field</td>
+</tr>
+<tr>
+<td><code>rbcz:calendars</code></td>
+<td>Business day calculation</td>
+<td>Date fields</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-1</a>: Shared reference consumption is always allowed</li>
+<li>Reference DPs owned by CDO</li>
+<li>Standard ISO codelists</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Always validate country/currency against reference DPs</li>
+<li>Reference DPs provide semantic enrichment</li>
+<li>Document dependency in catalog</li>
+</ul>
+<hr>
+<h3>Q6.3: Domain Dependencies</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What other DPs within the domain does this DP depend on?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Dependency Type</th>
+<th>Notation</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>R→ REFERENCES</td>
+<td>FK lookup</td>
+<td>gcc-members → gcc-natural-persons</td>
+</tr>
+<tr>
+<td>A→ AGGREGATES</td>
+<td>Summarizes</td>
+<td>gcc-groups → gcc-relations</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-2</a>: Same domain allowed</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-3</a>: Parent domain allowed</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-5</a>: No circular dependencies</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Draw dependency graph</li>
+<li>Verify no cycles exist</li>
+<li>Document each dependency with reason</li>
+</ul>
+<hr>
+<h3>Q6.4: Cross-Domain Dependencies</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Does this DP need data from another domain?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Rule</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A - No cross-domain</td>
+<td>OK</td>
+<td>Proceed</td>
+</tr>
+<tr>
+<td>B - Parent domain</td>
+<td><a href="../GOV-DM-001-data-mesh-governance.md">COMP-3</a> allowed</td>
+<td>Document</td>
+</tr>
+<tr>
+<td>C - Sibling domain</td>
+<td><a href="../GOV-DM-001-data-mesh-governance.md">COMP-4</a>: Requires contract</td>
+<td>Escalate to Guild</td>
+</tr>
+<tr>
+<td>D - Different BU</td>
+<td><a href="../GOV-DM-001-data-mesh-governance.md">COMP-7</a>: Requires DP + Contract</td>
+<td>Formal agreement</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li>Cross-domain is allowed but requires explicit contract</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-7</a>: Production exchange across domain boundary requires DP + Contract</li>
+<li>Prevents hidden dependencies</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Prefer same-domain or parent-domain dependencies</li>
+<li>If cross-domain needed, create formal contract</li>
+<li>Register as consumer in source DP</li>
+</ul>
+<hr>
+<h2>Section 7: Outputs &amp; SLA</h2>
+<h3>Q7.1: Output Ports</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What output ports does this DP provide?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Port Type</th>
+<th>Format</th>
+<th>Typical SLA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch</td>
+<td>Delta Lake, Parquet</td>
+<td>T+1</td>
+</tr>
+<tr>
+<td>Micro-batch</td>
+<td>Delta Lake</td>
+<td>T+1h</td>
+</tr>
+<tr>
+<td>Real-time API</td>
+<td>REST, GraphQL</td>
+<td>&lt; 100ms</td>
+</tr>
+<tr>
+<td>Streaming</td>
+<td>Kafka</td>
+<td>Near real-time</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a>: Multimodality is mandatory feature</li>
+<li>Different consumers need different formats</li>
+<li>SLA per port, not per DP</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Start with Batch (T+1) - simplest</li>
+<li>Add real-time only if business need proven</li>
+<li>Document SLA for each port</li>
+</ul>
+<hr>
+<h3>Q7.2: Freshness SLA</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>How fresh must the data be?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>SLA</th>
+<th>Meaning</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>T+1</td>
+<td>Data from yesterday</td>
+<td>Reporting, analytics</td>
+</tr>
+<tr>
+<td>T+1h</td>
+<td>Data up to 1 hour old</td>
+<td>Operational dashboards</td>
+</tr>
+<tr>
+<td>Real-time</td>
+<td>&lt; 5 min delay</td>
+<td>Transaction processing</td>
+</tr>
+<tr>
+<td>Event-driven</td>
+<td>Immediate</td>
+<td>Notifications, alerts</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a> Section 7.3: Freshness is SLA metric</li>
+<li>Stricter SLA = higher operational cost</li>
+<li>Mismatch causes consumer disappointment</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Start with T+1 (covers 80% of use cases)</li>
+<li>Real-time only for proven operational need</li>
+<li>Document consumer expectations explicitly</li>
+</ul>
+<hr>
+<h3>Q7.3: Data Period &amp; Temporality</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What time period does the data cover and how is it structured temporally?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Period Type</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Snapshot</strong></td>
+<td>Point-in-time state</td>
+<td>Current balances, today&#39;s positions</td>
+</tr>
+<tr>
+<td><strong>Daily</strong></td>
+<td>Daily records/changes</td>
+<td>Daily closing balances, daily transactions</td>
+</tr>
+<tr>
+<td><strong>Monthly Closing</strong></td>
+<td>Month-end snapshots</td>
+<td>Monthly financial statements, regulatory reports</td>
+</tr>
+<tr>
+<td><strong>Quarterly/Annual</strong></td>
+<td>Period-end aggregations</td>
+<td>Quarterly results, annual reports</td>
+</tr>
+<tr>
+<td><strong>Historical</strong></td>
+<td>Full history preserved</td>
+<td>Transaction history, audit trail</td>
+</tr>
+<tr>
+<td><strong>Rolling Window</strong></td>
+<td>Last N days/months</td>
+<td>Last 12 months, trailing 30 days</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li>Period type affects storage, query patterns, and retention</li>
+<li>Regulatory reporting often requires specific periods (CNB monthly, annual)</li>
+<li>Historical data needed for trend analysis and audit</li>
+<li>Rolling windows balance storage vs analytical needs</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Document the business calendar (fiscal year, reporting periods)</li>
+<li>Specify retention policy per period type</li>
+<li>Consider regulatory requirements (CNB, BCBS 239)</li>
+<li>If multiple periods needed, document each separately</li>
+</ul>
+<hr>
+<h3>Q7.4: Quality Expectations</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What are the data quality expectations?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Question</th>
+<th>Threshold</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Completeness</td>
+<td>% non-null values</td>
+<td>&gt; 95%</td>
+</tr>
+<tr>
+<td>Accuracy</td>
+<td>% valid values</td>
+<td>&gt; 99%</td>
+</tr>
+<tr>
+<td>Uniqueness</td>
+<td>No duplicates</td>
+<td>100% for PK</td>
+</tr>
+<tr>
+<td>Timeliness</td>
+<td>Meets freshness SLA</td>
+<td>&gt; 99.5%</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a> Section 7.1: Three quality layers (Maturity, Data Quality, SLA)</li>
+<li>Quality dimensions from DAMA-DMBOK</li>
+<li>Thresholds enforceable via pipeline</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Define thresholds per dimension</li>
+<li>Critical &lt; 80% = block deployment</li>
+<li>Warning 80-95% = notify owner</li>
+</ul>
+<hr>
+<h2>Section 8: Security &amp; Compliance</h2>
+<h3>Q8.1: Data Classification</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What is the data classification for this DP?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Classification</th>
+<th>Examples</th>
+<th>Access Control</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Public</td>
+<td>ISO codes, product catalog</td>
+<td>Open</td>
+</tr>
+<tr>
+<td>Internal</td>
+<td>Aggregated metrics</td>
+<td>RBCZ employees</td>
+</tr>
+<tr>
+<td>Confidential</td>
+<td>Customer details</td>
+<td>Need-to-know</td>
+</tr>
+<tr>
+<td>Restricted</td>
+<td>PII, financial details</td>
+<td>Explicit approval</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li>DATSIS &#39;S&#39; = Secure (classification assigned) - see <a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a> Section 4</li>
+<li><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a>: PII/GDPR compliance is Phase 2 enforcement</li>
+<li>Untagged PII is CRITICAL violation</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Default to most restrictive if unsure</li>
+<li>PII requires explicit tagging</li>
+<li>Document GDPR basis if personal data</li>
+</ul>
+<hr>
+<h3>Q8.2: PII Identification</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Does this DP contain personal data (PII)?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>PII Type</th>
+<th>Examples</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Direct identifiers</td>
+<td>Name, birth date, address</td>
+<td>Must tag, GDPR basis</td>
+</tr>
+<tr>
+<td>Indirect identifiers</td>
+<td>Customer ID, account number</td>
+<td>Must tag, access control</td>
+</tr>
+<tr>
+<td>Sensitive PII</td>
+<td>Health, political, religious</td>
+<td>Requires DPO approval</td>
+</tr>
+<tr>
+<td>No PII</td>
+<td>Reference data, aggregates</td>
+<td>Document as &quot;No PII&quot;</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li>GDPR requires legal basis for processing</li>
+<li>PII must be tagged in schema</li>
+<li><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a>: Untagged PII blocks deployment</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Identify all PII fields explicitly</li>
+<li>Document GDPR legal basis per field</li>
+<li>Consider pseudonymization for analytics</li>
+</ul>
+<hr>
+<h2>Section 9: Lifecycle</h2>
+<h3>Q9.1: Initial Maturity</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>What lifecycle phase is this DP starting in?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Gate</th>
+<th>Deliverable</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IDEATE</td>
+<td>Sponsor approval</td>
+<td>Business case</td>
+</tr>
+<tr>
+<td>DESIGN</td>
+<td>Contract review</td>
+<td>Data Contract YAML</td>
+</tr>
+<tr>
+<td>BUILD</td>
+<td>Tests green</td>
+<td>Working DP</td>
+</tr>
+<tr>
+<td>PUBLISH</td>
+<td>Maturity ≥ 60%</td>
+<td>Catalog entry</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a> Section 6: Six-phase lifecycle</li>
+<li>Maturity Score determines production readiness</li>
+<li>&lt; 40% = blocked, 40-60% = warning, &gt; 60% = publish</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>New DP starts at IDEATE (this session)</li>
+<li>Exit this session with DESIGN deliverable</li>
+<li>Target PUBLISH within sprint cycle</li>
+</ul>
+<hr>
+<h3>Q9.2: Retirement Planning</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Is there a plan for retiring this DP?</p>
+</blockquote>
+<p><strong>Alternatives:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A - Indefinite</td>
+<td>Document as &quot;ongoing&quot; - review annually</td>
+</tr>
+<tr>
+<td>B - Project-bound</td>
+<td>Document end date, migration path</td>
+</tr>
+<tr>
+<td>C - Replacing existing</td>
+<td>Document deprecation of predecessor</td>
+</tr>
+</tbody></table>
+<p><strong>Explanation:</strong></p>
+<ul>
+<li><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a> Section 6.3: RETIRE phase often forgotten</li>
+<li>Zombie DPs cost money and create confusion</li>
+<li>Consumers need 3-month deprecation notice</li>
+</ul>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Even &quot;indefinite&quot; needs annual review</li>
+<li>If replacing existing, plan migration</li>
+<li>Document predecessor DP if applicable</li>
+</ul>
+<hr>
+<h2>Section 10: Summary &amp; Validation</h2>
+<h3>Q10.1: DATSIS Checklist</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Does the DP meet all DATSIS characteristics?</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Question</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>D</strong>iscoverable</td>
+<td>Will be in DPCC Catalog?</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td><strong>A</strong>ddressable</td>
+<td>Has unique ID (domain path)?</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td><strong>T</strong>rustworthy</td>
+<td>Maturity Score defined?</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td><strong>S</strong>elf-describing</td>
+<td>Data Contract exists?</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td><strong>I</strong>nteroperable</td>
+<td>Domain mapping + FIBO?</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td><strong>S</strong>ecure</td>
+<td>Classification assigned?</td>
+<td>[ ]</td>
+</tr>
+</tbody></table>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>All must be checked before PUBLISH</li>
+<li>Missing = block at gate</li>
+<li>This is minimum for production DP</li>
+</ul>
+<hr>
+<h3>Q10.2: Naming Validation</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Are all three names consistent and valid?</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Value</th>
+<th>Valid?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ID</td>
+<td><code>rbcz:...</code></td>
+<td>[ ] Lowercase, colons, full path</td>
+</tr>
+<tr>
+<td>Slug</td>
+<td><code>domain-purpose</code></td>
+<td>[ ] Lowercase, hyphens, domain prefix</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>&quot;Domain Purpose Description&quot;</td>
+<td>[ ] Title Case, purpose-driven</td>
+</tr>
+</tbody></table>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>All three must refer to same product</li>
+<li>No application names in any</li>
+<li>Use <a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a> validation checklist</li>
+</ul>
+<hr>
+<h3>Q10.3: Dependency Graph Validation</h3>
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Is the dependency graph complete and cycle-free?</p>
+</blockquote>
+<pre><code>Check:
+[ ] All R→ dependencies documented
+[ ] All A→ dependencies documented
+[ ] No circular dependencies ([COMP-5](../GOV-DM-001-data-mesh-governance.md))
+[ ] Cross-domain has contract ([COMP-7](../GOV-DM-001-data-mesh-governance.md))
+[ ] All consumers registered ([COMP-6](../GOV-DM-001-data-mesh-governance.md))
+</code></pre>
+<p><strong>Recommendation:</strong></p>
+<ul>
+<li>Draw graph before implementation</li>
+<li>Validate with Architect</li>
+<li>Update when dependencies change</li>
+</ul>
+<hr>
+<h2>Appendix A: Quick Reference Card</h2>
+<pre><code>DATA PRODUCT DISCOVERY - QUICK CHECKLIST (31 Questions)
+
+DOMAIN &amp; OWNERSHIP
+[ ] Domain path determined (Q1.1)
+[ ] Owner assigned (Q1.2)
+[ ] Parent concepts checked (Q1.3)
+
+PURPOSE &amp; VALUE
+[ ] Business question defined (Q2.1)
+[ ] Independent usefulness verified (Q2.2)
+[ ] Consumers identified (Q2.3)
+
+CLASSIFICATION
+[ ] Layer assigned L1/L2/L3 (Q3.1)
+[ ] Composability pattern defined (Q3.2)
+[ ] Reference data decision made (Q3.3)
+
+NAMING ([GOV-DM-002](../GOV-DM-002-naming-convention.md))
+[ ] ID: rbcz:bu:domain:concept (Q4.1)
+[ ] Slug: domain-purpose (Q4.2)
+[ ] Title: &quot;Domain Purpose Description&quot; (Q4.3)
+
+SCHEMA
+[ ] Aggregation level defined (Q5.1)        ← NEW
+[ ] Concepts listed (Q5.2)
+[ ] Key attributes defined (Q5.3)
+[ ] FIBO mappings identified (Q5.4)
+
+DATA SOURCES &amp; DEPENDENCIES
+[ ] Source systems identified (Q6.1)        ← NEW
+[ ] Reference DPs listed (Q6.2)
+[ ] Domain dependencies mapped (Q6.3)
+[ ] Cross-domain validated (Q6.4)
+
+OUTPUTS &amp; SLA
+[ ] Output ports defined (Q7.1)
+[ ] Freshness SLA set (Q7.2)
+[ ] Data period/temporality defined (Q7.3)  ← NEW
+[ ] Quality thresholds defined (Q7.4)
+
+SECURITY
+[ ] Classification assigned (Q8.1)
+[ ] PII fields tagged (Q8.2)
+
+LIFECYCLE
+[ ] Initial phase determined (Q9.1)
+[ ] Retirement considered (Q9.2)
+
+FINAL VALIDATION
+[ ] DATSIS complete (Q10.1)
+[ ] Naming valid (Q10.2)
+[ ] Dependencies valid (Q10.3)
+</code></pre>
+<hr>
+<h2>Appendix B: Session Output Template</h2>
+<p>After completing discovery session, produce:</p>
+<pre><code class="language-markdown"># Data Product: {Title}
+
+## Summary
+| Field | Value |
+|-------|-------|
+| ID | `rbcz:...` |
+| Slug | `domain-purpose` |
+| Title | &quot;...&quot; |
+| Owner | ... |
+| Layer | L1/L2/L3 |
+| Status | DRAFT |
+
+## Purpose
+{Business question this DP answers}
+
+## Business Questions
+1. ...
+2. ...
+
+## Schema
+| Concept | FIBO | Key Attributes |
+|---------|------|----------------|
+| ... | ... | ... |
+
+**Aggregation Level:** {transaction/daily/customer/segment/period}
+
+## Data Sources
+| Source System | Type | Extraction |
+|---------------|------|------------|
+| ... | ... | API/Batch/CDC |
+
+## Dependencies
+- R→ `...` (reason)
+- A→ `...` (reason)
+
+## Consumers
+| Consumer | Use Case |
+|----------|----------|
+| ... | ... |
+
+## SLA
+| Port | Format | Freshness |
+|------|--------|-----------|
+| Batch | Delta Lake | T+1 |
+
+**Data Period:** {snapshot/daily/monthly/quarterly/historical/rolling}
+
+## Security
+| Classification | PII |
+|----------------|-----|
+| ... | Yes/No |
+
+## Next Steps
+1. [ ] Create Data Contract YAML
+2. [ ] Architect review
+3. [ ] Implementation
+</code></pre>
+<hr>
+<h2>Related Documents</h2>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a></td>
+<td>Data Mesh principles</td>
+</tr>
+<tr>
+<td><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a></td>
+<td>Naming convention</td>
+</tr>
+<tr>
+<td><a href="../GOV-DM-003-domain-hierarchy.md">GOV-DM-003</a></td>
+<td>Domain hierarchy</td>
+</tr>
+<tr>
+<td><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a></td>
+<td>Operating model</td>
+</tr>
+<tr>
+<td><a href="../../policies/GOV-004-data-ownership.md">GOV-004</a></td>
+<td>Data ownership</td>
+</tr>
+<tr>
+<td><a href="../../policies/GOV-013-data-product-governance.md">GOV-013</a></td>
+<td>DP governance</td>
+</tr>
+<tr>
+<td><a href="../catalogs/gcc-dp-catalog.md">GCC Catalog</a></td>
+<td>Example DP catalog</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Revision History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0</td>
+<td>2026-01-08</td>
+<td>Senior Data Mesh Consultant</td>
+<td>Initial version</td>
+</tr>
+<tr>
+<td>1.1</td>
+<td>2026-01-08</td>
+<td>Senior Data Mesh Consultant</td>
+<td>Translated to English per documentation standards</td>
+</tr>
+<tr>
+<td>1.2</td>
+<td>2026-01-08</td>
+<td>Senior Data Mesh Consultant</td>
+<td>Added Table of Contents with navigation links</td>
+</tr>
+<tr>
+<td>1.3</td>
+<td>2026-01-08</td>
+<td>Senior Data Mesh Consultant</td>
+<td>Added 3 questions from scan review: Q5.1 Aggregation Level, Q6.1 Data Sources, Q7.3 Data Period &amp; Temporality. Total: 31 questions.</td>
+</tr>
+<tr>
+<td>1.4</td>
+<td>2026-01-08</td>
+<td>Senior Data Mesh Consultant</td>
+<td>Added hyperlinks to all referenced governance documents (GOV-DM-<em>, GOV-</em>, ADR-*).</td>
+</tr>
+<tr>
+<td>1.5</td>
+<td>2026-01-08</td>
+<td>Senior Data Mesh Consultant</td>
+<td>Added hyperlinks to all COMP rules (COMP-1 through COMP-7).</td>
+</tr>
+<tr>
+<td>1.6</td>
+<td>2026-01-08</td>
+<td>Senior Data Mesh Consultant</td>
+<td>Fixed missing GOV-DM-002 hyperlinks in validation section.</td>
+</tr>
+<tr>
+<td>1.7</td>
+<td>2026-01-08</td>
+<td>Senior Data Mesh Consultant</td>
+<td>Added hyperlinks to naming rules (TITLE-1/5/6, SLUG-5).</td>
+</tr>
+<tr>
+<td>1.8</td>
+<td>2026-01-08</td>
+<td>Senior Data Mesh Consultant</td>
+<td>Fixed naming rule anchors: SLUG→#42-rules, TITLE→#52-rules.</td>
+</tr>
+</tbody></table>
+
+</body></html>

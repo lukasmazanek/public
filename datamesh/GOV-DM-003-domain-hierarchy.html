@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOV-DM-003: Domain Hierarchy & Ownership</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            color: #1f2328;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: .3em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; border-bottom: none; }
+        h4, h5, h6 { border-bottom: none; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+        code {
+            background: rgba(175,184,193,0.2);
+            padding: .2em .4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+        pre code { background: none; padding: 0; font-size: 100%; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 6px 13px;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background: #f6f8fa; }
+        blockquote {
+            border-left: .25em solid #d1d9e0;
+            margin: 0;
+            padding: 0 1em;
+            color: #656d76;
+        }
+        hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+        ul, ol { padding-left: 2em; }
+        li + li { margin-top: .25em; }
+    </style>
+</head>
+<body>
+<h1>GOV-DM-003: Domain Hierarchy &amp; Ownership</h1>
+<blockquote>
+<p><strong>Status:</strong> ACTIVE
+<strong>Effective:</strong> 2026-01-08
+<strong>Owner:</strong> CDO - Lukáš Mazánek
+<strong>Parent:</strong> <a href="GOV-DM-001-data-mesh-governance.md">GOV-DM-001-data-mesh-governance.md</a></p>
+</blockquote>
+<hr>
+<h2>1. Purpose</h2>
+<p>Define the domain hierarchy structure and ownership rules for Data Products at RBCZ, ensuring:</p>
+<ul>
+<li>Clear accountability for data</li>
+<li>Consistent inheritance of rules</li>
+<li>Proper interoperability through federated ontology</li>
+</ul>
+<hr>
+<h2>2. Domain Hierarchy</h2>
+<h3>2.1 Complete Structure</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                    EXTERNAL AUTHORITIES                          │
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌──────────┐  │
+│  │    FIBO    │  │ Schema.org │  │    ČNB     │  │   ISO    │  │
+│  │ (Finance)  │  │ (General)  │  │ (Regulator)│  │(Standards)│  │
+│  └────────────┘  └────────────┘  └────────────┘  └──────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                       extends/maps (optional)
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                         RBI GROUP                                │
+│                    (Group-level standards)                       │
+│                                                                  │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │                      RBCZ GROUP                            │  │
+│  │               (Czech Republic entities)                    │  │
+│  │                                                            │  │
+│  │  ┌─────────────────────────────────────────────────────┐  │  │
+│  │  │                      RBCZ                            │  │  │
+│  │  │            (Raiffeisen Bank Czech Republic)          │  │  │
+│  │  │                                                      │  │  │
+│  │  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐   │  │  │
+│  │  │  │   fin   │ │   mib   │ │ retail  │ │corporate│   │  │  │
+│  │  │  │(Finance)│ │ (MIB BU)│ │(Retail) │ │(Corp.)  │   │  │  │
+│  │  │  └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘   │  │  │
+│  │  │       │           │           │           │         │  │  │
+│  │  │       │      ┌────┴────┐      │           │         │  │  │
+│  │  │       │      │investment│      │           │         │  │  │
+│  │  │       │      │ (Domain) │      │           │         │  │  │
+│  │  │       │      └─────────┘      │           │         │  │  │
+│  │  └───────┴───────────────────────┴───────────┴─────────┘  │  │
+│  │                                                            │  │
+│  │  ┌───────────────┐ ┌───────────────┐ ┌───────────────┐    │  │
+│  │  │     RLCZ      │ │     RSTS      │ │  Other NWUs   │    │  │
+│  │  │  (Leasing)    │ │(Stav.spoř.)   │ │  (RIS, ...)   │    │  │
+│  │  └───────────────┘ └───────────────┘ └───────────────┘    │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                                                                  │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │                    Other Country Groups                    │  │
+│  │              (Austria, Slovakia, Hungary, ...)             │  │
+│  └───────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3>2.2 Domain Types</h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Type</th>
+<th>Examples</th>
+<th>Characteristics</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td><strong>External</strong></td>
+<td>FIBO, ČNB, ISO</td>
+<td>Standards, regulations</td>
+</tr>
+<tr>
+<td>1</td>
+<td><strong>Group</strong></td>
+<td>RBI</td>
+<td>Group-wide policies</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Entity</strong></td>
+<td>RBCZ, RLCZ</td>
+<td>Legal entities</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Shared</strong></td>
+<td>rbcz:countries, rbcz:currencies</td>
+<td>Shared reference data (directly under entity, no <code>ref</code> subdomain)</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>BU</strong></td>
+<td>mib, retail, fin, corporate</td>
+<td>Business Units</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Domain</strong></td>
+<td>investment, gcc</td>
+<td>Specific business domain</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Subdomain</strong></td>
+<td>(future)</td>
+<td>Specialized areas</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>3. Ownership Model</h2>
+<h3>3.1 Core Principle</h3>
+<p><strong>Domain Path = Ownership</strong></p>
+<p>Whoever defines a concept at a given level in the hierarchy owns it.</p>
+<h3>3.2 Ownership Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>OWN-1</strong></td>
+<td>Path Defines Owner</td>
+<td><code>rbcz:mib:investment:X</code> → Investment Domain Owner owns X</td>
+</tr>
+<tr>
+<td><strong>OWN-2</strong></td>
+<td>Specialization Allowed</td>
+<td>Child domain CAN add new attributes</td>
+</tr>
+<tr>
+<td><strong>OWN-3</strong></td>
+<td>Narrowing Allowed</td>
+<td>Child domain CAN restrict constraints (subset)</td>
+</tr>
+<tr>
+<td><strong>OWN-4</strong></td>
+<td>Contradiction Forbidden</td>
+<td>Child domain CANNOT change parent definitions</td>
+</tr>
+<tr>
+<td><strong>OWN-5</strong></td>
+<td>Weakening Forbidden</td>
+<td>Child domain CANNOT relax parent constraints</td>
+</tr>
+<tr>
+<td><strong>OWN-6</strong></td>
+<td>Parent Rules Inherited</td>
+<td>All parent rules apply automatically</td>
+</tr>
+</tbody></table>
+<h3>3.3 Specialization Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Allowed</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Add attribute</strong></td>
+<td>✅ YES</td>
+<td><code>+ riskProfile</code> to Customer</td>
+</tr>
+<tr>
+<td><strong>Add constraint</strong></td>
+<td>✅ YES</td>
+<td><code>segment IN (&#39;MIB&#39;)</code> (subset)</td>
+</tr>
+<tr>
+<td><strong>Change type</strong></td>
+<td>❌ NO</td>
+<td><code>id: string → int</code></td>
+</tr>
+<tr>
+<td><strong>Remove attribute</strong></td>
+<td>❌ NO</td>
+<td>Remove inherited <code>name</code></td>
+</tr>
+<tr>
+<td><strong>Relax constraint</strong></td>
+<td>❌ NO</td>
+<td><code>required → optional</code></td>
+</tr>
+<tr>
+<td><strong>Widen enum</strong></td>
+<td>❌ NO</td>
+<td>Add values to parent enum</td>
+</tr>
+</tbody></table>
+<h4>3.3.1 Concrete Example: Investment Customer</h4>
+<p>When <strong>Investment domain</strong> extends a concept from <strong>MIB domain</strong> (e.g., Customer), these rules apply:</p>
+<pre><code>MIB:Customer (parent)                   Investment:Customer (child)
+─────────────────────                   ───────────────────────────
+id: string (required)                   id: string (required)      ← MUST remain
+name: string (required)                 name: string (required)    ← MUST remain
+segment: enum [MIB, Retail, Corp]       segment: enum [MIB]        ← OK: narrowing
+                                        + mifidClass: enum         ← OK: new attribute
+                                        + riskProfile: enum        ← OK: new attribute
+</code></pre>
+<p><strong>✅ What IS Allowed:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Example</th>
+<th>Why OK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Add attribute</strong></td>
+<td><code>+ mifidClass</code></td>
+<td>Investment needs MiFID classification, MIB doesn&#39;t</td>
+</tr>
+<tr>
+<td><strong>Narrow constraint</strong></td>
+<td><code>segment IN (&#39;MIB&#39;)</code> instead of <code>[&#39;MIB&#39;,&#39;Retail&#39;,&#39;Corp&#39;]</code></td>
+<td>Investment clients are always MIB segment</td>
+</tr>
+</tbody></table>
+<p><strong>❌ What is FORBIDDEN:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Example</th>
+<th>Why NOT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Change type</strong></td>
+<td><code>id: string → int</code></td>
+<td>Code expecting string would fail</td>
+</tr>
+<tr>
+<td><strong>Remove attribute</strong></td>
+<td>Delete <code>name</code></td>
+<td>Code using <code>name</code> would fail</td>
+</tr>
+<tr>
+<td><strong>Relax constraint</strong></td>
+<td><code>required → optional</code></td>
+<td>Code expecting value would fail</td>
+</tr>
+<tr>
+<td><strong>Widen enum</strong></td>
+<td>Add <code>&#39;VIP&#39;</code> to segment</td>
+<td>Parent doesn&#39;t know &#39;VIP&#39;, cannot validate</td>
+</tr>
+</tbody></table>
+<h3>3.4 Liskov Substitution Principle</h3>
+<p><strong>Why these rules?</strong> Any code expecting the parent type MUST work with the child type:</p>
+<pre><code>RULE:
+Wherever code expects MIB:Customer,
+it MUST also work with Investment:Customer
+
+EXAMPLE:
+┌──────────────────────────────────────────────────────┐
+│  function processCustomer(c: MIB:Customer) {         │
+│    console.log(c.name);       // MUST exist          │
+│    console.log(c.id);         // MUST be string      │
+│    if (c.segment === &#39;MIB&#39;)   // MUST be valid value │
+│  }                                                   │
+│                                                      │
+│  // This MUST work:                                  │
+│  processCustomer(investmentCustomer);  // ✅ OK      │
+└──────────────────────────────────────────────────────┘
+</code></pre>
+<pre><code>Child MUST be usable wherever Parent is expected.
+
+RBCZ:MIB:Investment:Customer MUST be valid RBCZ:Customer
+
+Any code/query that works with RBCZ:Customer
+MUST work with Investment:Customer without modification.
+</code></pre>
+<hr>
+<h2>4. Domain Owners</h2>
+<h3>4.1 Current Assignments</h3>
+<table>
+<thead>
+<tr>
+<th>Domain Path</th>
+<th>Owner Role</th>
+<th>Current Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rbcz</code></td>
+<td>CDO</td>
+<td>Lukáš Mazánek</td>
+</tr>
+<tr>
+<td><code>rbcz:fin</code></td>
+<td>Finance Domain Owner</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><code>rbcz:mib</code></td>
+<td>MIB BU Owner</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><code>rbcz:mib:investment</code></td>
+<td>Investment Domain Owner</td>
+<td>Marek Podrabský</td>
+</tr>
+<tr>
+<td><code>rbcz:retail</code></td>
+<td>Retail BU Owner</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><code>rbcz:corporate</code></td>
+<td>Corporate BU Owner</td>
+<td>TBD</td>
+</tr>
+<tr>
+<td><code>rbcz:corporate:gcc</code></td>
+<td>GCC Product Owner</td>
+<td>TBD</td>
+</tr>
+</tbody></table>
+<h3>4.2 Owner Responsibilities</h3>
+<table>
+<thead>
+<tr>
+<th>Responsibility</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Define concepts</strong></td>
+<td>Create and maintain domain ontology</td>
+</tr>
+<tr>
+<td><strong>Approve changes</strong></td>
+<td>Review and approve modifications</td>
+</tr>
+<tr>
+<td><strong>Ensure quality</strong></td>
+<td>Maintain data quality standards</td>
+</tr>
+<tr>
+<td><strong>Manage consumers</strong></td>
+<td>Track and approve data consumers</td>
+</tr>
+<tr>
+<td><strong>Align with parent</strong></td>
+<td>Ensure consistency with parent domain</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>5. Interoperability: Federated Ontology</h2>
+<h3>5.1 Domain-First Principle</h3>
+<pre><code>PRIMARY AUTHORITY = RBCZ Domain Ontology
+
+External authorities (FIBO, Schema.org) provide:
+- Semantic grounding (what does it mean globally)
+- Interoperability (cross-organization communication)
+- Validation (is our model correct)
+
+BUT they do NOT override domain definitions.
+</code></pre>
+<h3>5.2 Mapping Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule ID</th>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MAP-1</strong></td>
+<td>Parent Mapping Required</td>
+<td>Every concept MUST extend parent or define new</td>
+</tr>
+<tr>
+<td><strong>MAP-2</strong></td>
+<td>Transitive External</td>
+<td>External mapping inherited from parent</td>
+</tr>
+<tr>
+<td><strong>MAP-3</strong></td>
+<td>New = External Important</td>
+<td>New concepts SHOULD have external mapping</td>
+</tr>
+<tr>
+<td><strong>MAP-4</strong></td>
+<td>Bank-Specific OK</td>
+<td>Domain-specific without external is allowed</td>
+</tr>
+<tr>
+<td><strong>MAP-5</strong></td>
+<td>Direct = Validation</td>
+<td>Direct external at subdomain is for validation</td>
+</tr>
+</tbody></table>
+<h3>5.3 Transitive Mapping Examples</h3>
+<p><strong>Scenario 1: Concept exists in parent</strong></p>
+<pre><code>investment:Customer
+       │ extends
+       ▼
+   rbcz:Customer ───────→ fibo-fbc:Customer
+
+Result:
+- investment:Customer inherits FIBO mapping transitively
+- Direct mapping investment:Customer → fibo is REDUNDANT
+- Can exist for VALIDATION purposes
+</code></pre>
+<p><strong>Scenario 2: New concept (no parent)</strong></p>
+<pre><code>investment:MiFIDClass (NEW - doesn&#39;t exist in parent)
+       │
+       ▼
+   No parent mapping available
+
+Result:
+- MUST define direct external mapping
+- investment:MiFIDClass → fibo-sec:MiFIDClassification
+- This is CRITICAL for semantic grounding
+</code></pre>
+<p><strong>Scenario 3: Bank-specific concept</strong></p>
+<pre><code>investment:EDIContract (bank-specific)
+       │
+       ▼
+   No FIBO/Schema.org equivalent exists
+
+Result:
+- Document as &quot;domain-only&quot;
+- No external mapping required
+- Must have clear domain definition
+</code></pre>
+<hr>
+<h2>6. Cross-Domain Concepts</h2>
+<h3>6.1 Customer Example</h3>
+<pre><code>rbcz:Customer (Enterprise - CDO owns)
+│
+├── Core Attributes (inherited by all):
+│   ├── id: string (required)
+│   ├── name: string (required)
+│   ├── status: enum [Active, Inactive, Closed]
+│   └── created: date
+│
+├──extends→ rbcz:retail:Customer (Retail owns)
+│           └── + channelPreference: enum
+│           └── + digitalConsent: boolean
+│
+├──extends→ rbcz:mib:Customer (MIB owns)
+│           └── + riskProfile: enum [Low, Medium, High]
+│           └── + segment: string
+│           │
+│           └──extends→ rbcz:mib:investment:Customer (Investment owns)
+│                       └── + mifidClass: enum [Retail, Professional, ECP]
+│                       └── + investmentPreference: string
+│
+└──extends→ rbcz:corporate:Customer (Corporate owns)
+            └── + legalForm: enum
+            └── + industryCode: string
+</code></pre>
+<h3>6.2 Multi-Origin Entities</h3>
+<p>When entity can be created in multiple domains (e.g., Customer):</p>
+<table>
+<thead>
+<tr>
+<th>Origin</th>
+<th>Creates</th>
+<th>Owns</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Retail onboarding</td>
+<td>Retail Customer</td>
+<td>Retail:Customer attributes</td>
+</tr>
+<tr>
+<td>Corporate onboarding</td>
+<td>Corporate Customer</td>
+<td>Corporate:Customer attributes</td>
+</tr>
+<tr>
+<td>MIB onboarding</td>
+<td>Investment Customer</td>
+<td>Investment:Customer attributes</td>
+</tr>
+</tbody></table>
+<p><strong>Rule:</strong> Each domain owns its VIEW of the entity, but RBCZ:Customer is the unified base (CDO owns).</p>
+<hr>
+<h2>7. Reference Data Ownership</h2>
+<h3>7.1 Shared Reference Data (RBCZ Level)</h3>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Domain Path</th>
+<th>Owner</th>
+<th>Standard</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Countries</td>
+<td><code>rbcz:countries</code></td>
+<td>CDO</td>
+<td>ISO 3166-1</td>
+</tr>
+<tr>
+<td>Currencies</td>
+<td><code>rbcz:currencies</code></td>
+<td>CDO</td>
+<td>ISO 4217</td>
+</tr>
+<tr>
+<td>Calendars</td>
+<td><code>rbcz:calendars</code></td>
+<td>CDO</td>
+<td>Business</td>
+</tr>
+<tr>
+<td>Legal Entities</td>
+<td><code>rbcz:legal-entities</code></td>
+<td>CDO</td>
+<td>LEI (ISO 17442)</td>
+</tr>
+</tbody></table>
+<h3>7.2 Domain-Owned Master Data</h3>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Domain Path</th>
+<th>Owner</th>
+<th>Consumers</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MIB Segments</td>
+<td><code>rbcz:mib:segments</code></td>
+<td>MIB</td>
+<td>Investment, other MIB</td>
+</tr>
+<tr>
+<td>Investment Products</td>
+<td><code>rbcz:mib:investment:products</code></td>
+<td>Investment</td>
+<td>All Investment DPs</td>
+</tr>
+<tr>
+<td>Retail Channels</td>
+<td><code>rbcz:retail:channels</code></td>
+<td>Retail</td>
+<td>All Retail DPs</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>8. Governance Processes</h2>
+<h3>8.1 New Concept Creation</h3>
+<pre><code>1. Check if concept exists in parent domain
+   │
+   ├── YES → Extend parent (add only new attributes)
+   │
+   └── NO → Create new concept
+            │
+            ├── Check external authority (FIBO, Schema.org)
+            │   │
+            │   ├── EXISTS → Map to external
+            │   │
+            │   └── NOT EXISTS → Document as domain-only
+            │
+            └── Register in domain ontology
+</code></pre>
+<h3>8.2 Cross-Domain Promotion</h3>
+<p>When concept should move to higher level (e.g., Investment → MIB):</p>
+<ol>
+<li>Domain Owner proposes promotion</li>
+<li>Parent Domain Owner reviews</li>
+<li>Impact analysis on existing consumers</li>
+<li>Migration plan created</li>
+<li>Both owners approve</li>
+<li>Concept moved, aliases maintained</li>
+</ol>
+<hr>
+<h2>9. Validation Rules</h2>
+<h3>9.1 Hierarchy Validation</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Every concept has valid domain path</li>
+<li><input disabled="" type="checkbox"> Parent domain exists (or is root)</li>
+<li><input disabled="" type="checkbox"> No circular inheritance</li>
+<li><input disabled="" type="checkbox"> Child attributes don&#39;t conflict with parent</li>
+</ul>
+<h3>9.2 Ownership Validation</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Domain Owner assigned</li>
+<li><input disabled="" type="checkbox"> Owner has authority for domain level</li>
+<li><input disabled="" type="checkbox"> Changes approved by Owner</li>
+</ul>
+<h3>9.3 Mapping Validation</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Parent mapping exists (if parent has concept)</li>
+<li><input disabled="" type="checkbox"> External mapping exists for new concepts (if available)</li>
+<li><input disabled="" type="checkbox"> No conflicting external mappings in hierarchy</li>
+</ul>
+<hr>
+<h2>10. Revision History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0</td>
+<td>2026-01-08</td>
+<td>Banking Domain Expert</td>
+<td>Initial version</td>
+</tr>
+<tr>
+<td>1.1</td>
+<td>2026-01-08</td>
+<td>Banking Domain Expert</td>
+<td>Added detailed Specialization Matrix explanation (3.3.1)</td>
+</tr>
+<tr>
+<td>1.2</td>
+<td>2026-01-08</td>
+<td>Data Mesh Consultant</td>
+<td><strong>Fixed Level 3:</strong> <code>rbcz:ref</code> → <code>rbcz:countries</code>, <code>rbcz:currencies</code> (no <code>ref</code> subdomain exists). Renamed &quot;Platform&quot; → &quot;Shared&quot;. Added <code>corporate</code> to BU examples, <code>gcc</code> to Domain examples.</td>
+</tr>
+<tr>
+<td>1.3</td>
+<td>2026-01-08</td>
+<td>Principal Architect</td>
+<td><strong>Fixed Section 4.1 and 7.1:</strong> Removed <code>rbcz:ref</code> from Domain Owners (no such subdomain). Updated Section 7.1 paths to <code>rbcz:countries</code> etc. Added <code>rbcz:corporate:gcc</code> to Domain Owners.</td>
+</tr>
+</tbody></table>
+
+</body></html>

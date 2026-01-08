@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCC Data Product Catalog Review</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+            color: #1f2328;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 24px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            line-height: 1.25;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: .3em;
+        }
+        h1 { font-size: 2em; }
+        h2 { font-size: 1.5em; }
+        h3 { font-size: 1.25em; border-bottom: none; }
+        h4, h5, h6 { border-bottom: none; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        pre {
+            background: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+        code {
+            background: rgba(175,184,193,0.2);
+            padding: .2em .4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
+        pre code { background: none; padding: 0; font-size: 100%; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 16px 0;
+        }
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 6px 13px;
+        }
+        th { background: #f6f8fa; font-weight: 600; }
+        tr:nth-child(2n) { background: #f6f8fa; }
+        blockquote {
+            border-left: .25em solid #d1d9e0;
+            margin: 0;
+            padding: 0 1em;
+            color: #656d76;
+        }
+        hr { border: none; border-top: 1px solid #d1d9e0; margin: 24px 0; }
+        ul, ol { padding-left: 2em; }
+        li + li { margin-top: .25em; }
+    </style>
+</head>
+<body>
+<h1>GCC Data Product Catalog Review</h1>
+<blockquote>
+<p><strong>Date:</strong> 2026-01-08
+<strong>Reviewer:</strong> Senior Data Mesh Consultant
+<strong>Document:</strong> <code>datamesh/catalogs/gcc-dp-catalog.md</code> v3.4
+<strong>Status:</strong> APPROVED with minor fixes</p>
+</blockquote>
+<hr>
+<h2>1. Executive Summary</h2>
+<p>The GCC (Group of Connected Clients) Data Product Catalog is a <strong>well-designed, governance-compliant</strong> implementation of Data Mesh principles for the Corporate BU&#39;s GCC subdomain.</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Rating</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Data Mesh Principles</td>
+<td>✅ <strong>Strong</strong></td>
+<td>Clear domain ownership, product mindset</td>
+</tr>
+<tr>
+<td>GOV-DM-001 Compliance</td>
+<td>✅ <strong>Compliant</strong></td>
+<td>L1/L2/L3 layers, naming conventions</td>
+</tr>
+<tr>
+<td>FIBO Alignment</td>
+<td>✅ <strong>Good</strong></td>
+<td>Core concepts mapped</td>
+</tr>
+<tr>
+<td>Documentation Quality</td>
+<td>✅ <strong>Excellent</strong></td>
+<td>Purpose, schema, dependencies documented</td>
+</tr>
+<tr>
+<td>Minor Issues</td>
+<td>⚠️ <strong>3 found</strong></td>
+<td>Czech text remnants, count mismatch</td>
+</tr>
+</tbody></table>
+<p><strong>Recommendation:</strong> Approve for implementation after minor fixes.</p>
+<hr>
+<h2>2. Data Mesh Principles Assessment</h2>
+<h3>2.1 Domain Ownership ✅</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Status</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Clear domain boundary</td>
+<td>✅</td>
+<td><code>RBCZ:Corporate:GCC</code> well-defined</td>
+</tr>
+<tr>
+<td>Single accountable owner</td>
+<td>✅</td>
+<td>&quot;GCC Product Owner under Corporate BU&quot;</td>
+</tr>
+<tr>
+<td>Domain team autonomy</td>
+<td>✅</td>
+<td>7 domain-specific DPs</td>
+</tr>
+<tr>
+<td>Cross-functional alignment</td>
+<td>✅</td>
+<td>Serves MS PaaS + External Account Calculator</td>
+</tr>
+</tbody></table>
+<p><strong>Strength:</strong> Domain placement decision (Corporate vs Risk) was explicitly addressed through QAR session.</p>
+<h3>2.2 Data as Product ✅</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Status</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Explicit consumers</td>
+<td>✅</td>
+<td>MS PaaS, External Account Income Calculator</td>
+</tr>
+<tr>
+<td>SLAs defined</td>
+<td>✅</td>
+<td>T+1 batch, Real-time API</td>
+</tr>
+<tr>
+<td>Self-describing schemas</td>
+<td>✅</td>
+<td>Full schema with types, descriptions</td>
+</tr>
+<tr>
+<td>Purpose-driven naming</td>
+<td>✅</td>
+<td>Each DP answers a business question</td>
+</tr>
+<tr>
+<td>Independently useful</td>
+<td>✅</td>
+<td>Design principle #3 enforced</td>
+</tr>
+</tbody></table>
+<p><strong>Strength:</strong> &quot;Every DP must have a clear purpose&quot; principle explicitly stated and followed.</p>
+<h3>2.3 Self-Serve Platform ✅</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Status</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Standardized output ports</td>
+<td>✅</td>
+<td>Delta Lake (batch), API (real-time)</td>
+</tr>
+<tr>
+<td>Clear dependency patterns</td>
+<td>✅</td>
+<td>R→ (REFERENCES), A→ (AGGREGATES)</td>
+</tr>
+<tr>
+<td>Reusable reference data</td>
+<td>✅</td>
+<td>Uses RBCZ-level countries, currencies</td>
+</tr>
+</tbody></table>
+<h3>2.4 Federated Governance ✅</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Status</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Global standards followed</td>
+<td>✅</td>
+<td>GOV-DM-001, GOV-DM-003 referenced</td>
+</tr>
+<tr>
+<td>Local autonomy preserved</td>
+<td>✅</td>
+<td>GCC-specific concepts (Membership, Request)</td>
+</tr>
+<tr>
+<td>Interoperability via ontology</td>
+<td>✅</td>
+<td>FIBO mappings for core concepts</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>3. GOV-DM-001 Compliance</h2>
+<h3>3.1 DATSIS Characteristics</h3>
+<table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>D</strong>iscoverable</td>
+<td>⏳</td>
+<td>Will be in DPCC Catalog after implementation</td>
+</tr>
+<tr>
+<td><strong>A</strong>ddressable</td>
+<td>✅</td>
+<td>Unique IDs assigned (<code>rbcz:corporate:gcc:*</code>)</td>
+</tr>
+<tr>
+<td><strong>T</strong>rustworthy</td>
+<td>⏳</td>
+<td>Maturity Score TBD</td>
+</tr>
+<tr>
+<td><strong>S</strong>elf-describing</td>
+<td>✅</td>
+<td>Schemas documented</td>
+</tr>
+<tr>
+<td><strong>I</strong>nteroperable</td>
+<td>✅</td>
+<td>FIBO mappings defined</td>
+</tr>
+<tr>
+<td><strong>S</strong>ecure</td>
+<td>⏳</td>
+<td>Classification TBD</td>
+</tr>
+</tbody></table>
+<h3>3.2 Layer Classification</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>DPs</th>
+<th>Compliance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L1 - Shared Reference</td>
+<td>2 (countries, currencies)</td>
+<td>✅ Reuses RBCZ-level</td>
+</tr>
+<tr>
+<td>L2 - Domain Master Data</td>
+<td>5 (natural-persons, legal-entities, members, relations, requests)</td>
+<td>✅ Correctly classified</td>
+</tr>
+<tr>
+<td>L3 - Analytics</td>
+<td>2 (groups, financials)</td>
+<td>✅ Derived/aggregated</td>
+</tr>
+</tbody></table>
+<p><strong>Per GOV-DM-001 Section 7.1:</strong> Layer assignment is correct.</p>
+<h3>3.3 Naming Convention</h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Format</th>
+<th>Compliance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ID</td>
+<td><code>rbcz:corporate:gcc:*</code></td>
+<td>✅ Domain path with colons</td>
+</tr>
+<tr>
+<td>Slug</td>
+<td><code>gcc-*</code></td>
+<td>✅ Lowercase hyphenated</td>
+</tr>
+<tr>
+<td>Title</td>
+<td>&quot;GCC Natural Persons&quot;</td>
+<td>✅ Human readable</td>
+</tr>
+</tbody></table>
+<h3>3.4 Dependency Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Status</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>COMP-1: Shared Reference Allowed</td>
+<td>✅</td>
+<td>Uses <code>rbcz:countries</code>, <code>rbcz:currencies</code></td>
+</tr>
+<tr>
+<td>COMP-2: Same Domain Allowed</td>
+<td>✅</td>
+<td>gcc-groups → gcc-members, gcc-relations</td>
+</tr>
+<tr>
+<td>COMP-3: Parent Domain Allowed</td>
+<td>✅</td>
+<td>N/A (no parent domain DPs)</td>
+</tr>
+<tr>
+<td>COMP-5: No Circular Dependencies</td>
+<td>✅</td>
+<td>Verified in dependency graph</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>4. Concept Model Assessment</h2>
+<h3>4.1 Concept Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Count</th>
+<th>Concepts</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L1</td>
+<td>2</td>
+<td>Country, Currency</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>7</td>
+<td>Natural Person, Legal Entity, Address, GCC Membership, Ownership, Control Relation, GCC Request</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>2</td>
+<td>GCC Group, Financial Statement</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>11</strong></td>
+<td>(Note: 12 in doc, but Address is embedded)</td>
+</tr>
+</tbody></table>
+<h3>4.2 FIBO Alignment</h3>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>FIBO Mapping</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Natural Person</td>
+<td>fibo-fnd-aap-ppl:NaturalPerson</td>
+<td>✅ Direct</td>
+</tr>
+<tr>
+<td>Legal Entity</td>
+<td>fibo-fnd-org-fm:LegalEntity</td>
+<td>✅ Direct</td>
+</tr>
+<tr>
+<td>Ownership</td>
+<td>fibo-be-oac-own:Ownership</td>
+<td>✅ Direct</td>
+</tr>
+<tr>
+<td>Control Relation</td>
+<td>fibo-be-oac-cctl:Control</td>
+<td>✅ Direct</td>
+</tr>
+<tr>
+<td>Financial Statement</td>
+<td>fibo-fnd:FinancialStatement</td>
+<td>✅ Direct</td>
+</tr>
+<tr>
+<td>GCC Membership</td>
+<td>—</td>
+<td>✅ Domain-specific (acceptable)</td>
+</tr>
+<tr>
+<td>GCC Group</td>
+<td>—</td>
+<td>✅ Domain-specific (acceptable)</td>
+</tr>
+<tr>
+<td>GCC Request</td>
+<td>—</td>
+<td>✅ Domain-specific (acceptable)</td>
+</tr>
+</tbody></table>
+<p><strong>Assessment:</strong> Good balance of FIBO-aligned core concepts and domain-specific extensions.</p>
+<h3>4.3 Identity vs Role Separation</h3>
+<p><strong>Excellent design decision:</strong></p>
+<ul>
+<li><code>gcc-natural-persons</code> / <code>gcc-legal-entities</code> = <strong>Identity</strong> (WHO they are)</li>
+<li><code>gcc-members</code> = <strong>Role</strong> (membership in GCC)</li>
+</ul>
+<p>This follows the Party/Customer pattern from GOV-DM-003 and enables:</p>
+<ul>
+<li>Same person in multiple GCC groups</li>
+<li>Clear separation of concerns</li>
+<li>Reusability of identity data</li>
+</ul>
+<hr>
+<h2>5. Issues Found</h2>
+<h3>5.1 Czech Text Remnants ⚠️</h3>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Text</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>28</td>
+<td><code>[Pojmy: Party, NaturalPerson, LegalEntity, Customer]</code></td>
+<td><code>[Concepts: Party, NaturalPerson, LegalEntity, Customer]</code></td>
+</tr>
+<tr>
+<td>65</td>
+<td><code>(JAK jsou propojeni)</code></td>
+<td><code>(HOW they are connected)</code></td>
+</tr>
+<tr>
+<td>70</td>
+<td><code>(STRUKTURA skupiny)</code></td>
+<td><code>(group STRUCTURE)</code></td>
+</tr>
+<tr>
+<td>417</td>
+<td><code>vazba na request</code></td>
+<td><code>request reference</code></td>
+</tr>
+<tr>
+<td>528</td>
+<td><code>(struktura skupiny)</code></td>
+<td><code>(group structure)</code></td>
+</tr>
+</tbody></table>
+<h3>5.2 Count Mismatch ⚠️</h3>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>States</th>
+<th>Actual</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Section 7 Governance Compliance</td>
+<td>&quot;7 DPs, each with clear purpose&quot;</td>
+<td>9 DPs</td>
+</tr>
+</tbody></table>
+<h3>5.3 Missing Request Reference ⚠️</h3>
+<p><code>gcc-relations</code> Dependencies section mentions <code>R→ requests</code> in Summary Table but the detailed DP-GCC-004 section doesn&#39;t list it in Dependencies.</p>
+<hr>
+<h2>6. Recommendations</h2>
+<h3>6.1 Immediate Fixes (Before Implementation)</h3>
+<ol>
+<li><strong>Fix Czech text remnants</strong> (5 occurrences)</li>
+<li><strong>Update DP count</strong> in Section 7 from &quot;7 DPs&quot; to &quot;9 DPs&quot;</li>
+<li><strong>Add gcc-requests dependency</strong> to DP-GCC-004 detailed section</li>
+</ol>
+<h3>6.2 Future Enhancements</h3>
+<table>
+<thead>
+<tr>
+<th>Enhancement</th>
+<th>Priority</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Add Data Contract YAML</td>
+<td>HIGH</td>
+<td>Required for DATSIS compliance</td>
+</tr>
+<tr>
+<td>Define Maturity Score</td>
+<td>MEDIUM</td>
+<td>Production readiness indicator</td>
+</tr>
+<tr>
+<td>Add Security Classification</td>
+<td>MEDIUM</td>
+<td>PII/GDPR tagging</td>
+</tr>
+<tr>
+<td>Add SLA metrics</td>
+<td>LOW</td>
+<td>Beyond T+1 (latency, availability)</td>
+</tr>
+</tbody></table>
+<h3>6.3 Implementation Order</h3>
+<p>The proposed roadmap is appropriate:</p>
+<ol>
+<li><strong>Phase 1:</strong> Identity (natural-persons, legal-entities) - foundation</li>
+<li><strong>Phase 2:</strong> Membership (members) - links identities</li>
+<li><strong>Phase 3:</strong> Relations (relations, groups) - core business logic</li>
+<li><strong>Phase 4:</strong> Integration (API, consumers) - external access</li>
+</ol>
+<hr>
+<h2>7. Conclusion</h2>
+<p>The GCC Data Product Catalog demonstrates <strong>mature Data Mesh thinking</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Strength</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Purpose-driven design</td>
+<td>Each DP answers specific business question</td>
+</tr>
+<tr>
+<td>Clear ownership</td>
+<td>GCC Product Owner under Corporate BU</td>
+</tr>
+<tr>
+<td>Proper layering</td>
+<td>L1/L2/L3 correctly applied</td>
+</tr>
+<tr>
+<td>Good abstraction</td>
+<td>Identity vs Role separation</td>
+</tr>
+<tr>
+<td>FIBO alignment</td>
+<td>Core concepts mapped</td>
+</tr>
+<tr>
+<td>Consumer focus</td>
+<td>Explicit consumers documented</td>
+</tr>
+</tbody></table>
+<p><strong>Final Assessment:</strong> ✅ <strong>APPROVED</strong> for implementation after minor text fixes.</p>
+<hr>
+<h2>8. Appendix: Checklist Verification</h2>
+<h3>GOV-DM-001 Appendix A Checklist</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>✅ Unique ID assigned (domain path)</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>✅ Slug defined (lowercase-hyphen)</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>✅ Purpose-driven Title</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>⏳ Data Contract YAML exists</td>
+<td>TODO</td>
+</tr>
+<tr>
+<td>✅ Domain mapping defined</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>✅ External authority mapped (if new concept)</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>⏳ Maturity Score calculated</td>
+<td>TODO</td>
+</tr>
+<tr>
+<td>⏳ Listed in DPCC Catalog</td>
+<td>TODO</td>
+</tr>
+<tr>
+<td>✅ Owner assigned</td>
+<td>Done</td>
+</tr>
+<tr>
+<td>✅ Consumers documented</td>
+<td>Done</td>
+</tr>
+</tbody></table>
+<hr>
+<p><em>Review completed by Senior Data Mesh Consultant</em></p>
+
+</body></html>
