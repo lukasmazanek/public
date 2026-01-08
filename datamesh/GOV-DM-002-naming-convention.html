@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,15 +72,29 @@
     </style>
 </head>
 <body>
-<h1>GOV-DM-002: Data Product Naming Convention</h1>
+<h1 id="gov-dm-002-data-product-naming-convention">GOV-DM-002: Data Product Naming Convention</h1>
 <blockquote>
 <p><strong>Status:</strong> ACTIVE
 <strong>Effective:</strong> 2026-01-08
 <strong>Owner:</strong> CDO - Lukáš Mazánek
-<strong>Parent:</strong> <a href="GOV-DM-001-data-mesh-governance.md">GOV-DM-001-data-mesh-governance.md</a></p>
+<strong>Parent:</strong> <a href="GOV-DM-001-data-mesh-governance.html">GOV-DM-001-data-mesh-governance.html</a></p>
 </blockquote>
 <hr>
-<h2>1. Purpose</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-purpose">Purpose</a></li>
+<li><a href="#2-three-level-naming-system">Three-Level Naming System</a></li>
+<li><a href="#3-id-technical-identifier">ID (Technical Identifier)</a></li>
+<li><a href="#4-slug-short-name">Slug (Short Name)</a></li>
+<li><a href="#5-title-business-name">Title (Business Name)</a></li>
+<li><a href="#6-anti-patterns">Anti-Patterns</a></li>
+<li><a href="#7-complete-examples">Complete Examples</a></li>
+<li><a href="#8-migration-from-legacy-names">Migration from Legacy Names</a></li>
+<li><a href="#9-validation-checklist">Validation Checklist</a></li>
+<li><a href="#10-revision-history">Revision History</a></li>
+</ol>
+<hr>
+<h2 id="1-purpose">1. Purpose</h2>
 <p>Establish consistent naming conventions for Data Products across RBCZ to ensure:</p>
 <ul>
 <li>Discoverability in catalogs</li>
@@ -83,7 +103,7 @@
 <li>Technical compatibility</li>
 </ul>
 <hr>
-<h2>2. Three-Level Naming System</h2>
+<h2 id="2-three-level-naming-system">2. Three-Level Naming System</h2>
 <p>Every Data Product has three names:</p>
 <table>
 <thead>
@@ -114,8 +134,8 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>3. ID (Technical Identifier)</h2>
-<h3>3.1 Format</h3>
+<h2 id="3-id-technical-identifier">3. ID (Technical Identifier)</h2>
+<h3 id="31-format">3.1 Format</h3>
 <pre><code>{entity}:{bu}:{domain}:{concept}
 
 Examples:
@@ -124,7 +144,7 @@ Examples:
 - rbcz:mib:segments
 - rbcz:ref:countries
 </code></pre>
-<h3>3.2 Rules</h3>
+<h3 id="32-rules">3.2 Rules</h3>
 <table>
 <thead>
 <tr>
@@ -159,7 +179,7 @@ Examples:
 <td>Must exist in ontology</td>
 </tr>
 </tbody></table>
-<h3>3.3 Special Prefixes</h3>
+<h3 id="33-special-prefixes">3.3 Special Prefixes</h3>
 <table>
 <thead>
 <tr>
@@ -185,8 +205,8 @@ Examples:
 </tr>
 </tbody></table>
 <hr>
-<h2>4. Slug (Short Name)</h2>
-<h3>4.1 Format</h3>
+<h2 id="4-slug-short-name">4. Slug (Short Name)</h2>
+<h3 id="41-format">4.1 Format</h3>
 <pre><code>{domain-prefix}-{purpose-description}
 
 Examples:
@@ -195,7 +215,7 @@ Examples:
 - mib-segmentation
 - ref-countries
 </code></pre>
-<h3>4.2 Rules</h3>
+<h3 id="42-rules">4.2 Rules</h3>
 <table>
 <thead>
 <tr>
@@ -248,7 +268,7 @@ Examples:
 <td><code>investment-aum-table</code></td>
 </tr>
 </tbody></table>
-<h3>4.3 Domain Prefixes</h3>
+<h3 id="43-domain-prefixes">4.3 Domain Prefixes</h3>
 <table>
 <thead>
 <tr>
@@ -294,8 +314,8 @@ Examples:
 </tr>
 </tbody></table>
 <hr>
-<h2>5. Title (Business Name)</h2>
-<h3>5.1 Format</h3>
+<h2 id="5-title-business-name">5. Title (Business Name)</h2>
+<h3 id="51-format">5.1 Format</h3>
 <pre><code>{Domain} {Business Value/Purpose} [for {Use Case}]
 
 Examples:
@@ -304,7 +324,7 @@ Examples:
 - &quot;MIB Client Segmentation for Campaign Targeting&quot;
 - &quot;ISO Country Reference for Compliance&quot;
 </code></pre>
-<h3>5.2 Rules</h3>
+<h3 id="52-rules">5.2 Rules</h3>
 <table>
 <thead>
 <tr>
@@ -351,7 +371,7 @@ Examples:
 <td>&quot;EDI Customer&quot;</td>
 </tr>
 </tbody></table>
-<h3>5.3 Purpose Keywords</h3>
+<h3 id="53-purpose-keywords">5.3 Purpose Keywords</h3>
 <p>Use these to clarify business value:</p>
 <table>
 <thead>
@@ -381,7 +401,7 @@ Examples:
 <td>Compliance, Regulatory, Audit, Governance</td>
 </tr>
 </tbody></table>
-<h3>5.4 Examples: Bad → Good</h3>
+<h3 id="54-examples-bad-good">5.4 Examples: Bad → Good</h3>
 <table>
 <thead>
 <tr>
@@ -411,8 +431,8 @@ Examples:
 </tr>
 </tbody></table>
 <hr>
-<h2>6. Anti-Patterns</h2>
-<h3>6.1 Application Names in DP Names</h3>
+<h2 id="6-anti-patterns">6. Anti-Patterns</h2>
+<h3 id="61-application-names-in-dp-names">6.1 Application Names in DP Names</h3>
 <pre><code>❌ FORBIDDEN:
 - edi-customer
 - ams-account
@@ -426,7 +446,7 @@ Examples:
 - investment-aum-reporting
 </code></pre>
 <p><strong>Reason:</strong> Data Products should be source-agnostic. If source system changes, name should remain valid.</p>
-<h3>6.2 Technical Terms in Titles</h3>
+<h3 id="62-technical-terms-in-titles">6.2 Technical Terms in Titles</h3>
 <pre><code>❌ FORBIDDEN:
 - &quot;Investment Customer Dimension&quot;
 - &quot;AUM Fact Table&quot;
@@ -437,7 +457,7 @@ Examples:
 - &quot;Investment AUM Reporting&quot;
 - &quot;MIB Segment History&quot;
 </code></pre>
-<h3>6.3 Entity-Only Names</h3>
+<h3 id="63-entity-only-names">6.3 Entity-Only Names</h3>
 <pre><code>❌ FORBIDDEN:
 - &quot;Customer Master&quot;
 - &quot;Product Catalog&quot;
@@ -449,7 +469,7 @@ Examples:
 - &quot;Investment Transaction Analysis&quot;
 </code></pre>
 <hr>
-<h2>7. Complete Examples</h2>
+<h2 id="7-complete-examples">7. Complete Examples</h2>
 <table>
 <thead>
 <tr>
@@ -520,8 +540,8 @@ Examples:
 </tr>
 </tbody></table>
 <hr>
-<h2>8. Migration from Legacy Names</h2>
-<h3>8.1 EDI-Prefixed Products</h3>
+<h2 id="8-migration-from-legacy-names">8. Migration from Legacy Names</h2>
+<h3 id="81-edi-prefixed-products">8.1 EDI-Prefixed Products</h3>
 <table>
 <thead>
 <tr>
@@ -580,7 +600,7 @@ Examples:
 <td>Investment Position Holdings Overview</td>
 </tr>
 </tbody></table>
-<h3>8.2 Migration Strategy</h3>
+<h3 id="82-migration-strategy">8.2 Migration Strategy</h3>
 <ol>
 <li><strong>Add new names</strong> - Keep old names as aliases temporarily</li>
 <li><strong>Update catalog</strong> - New names primary, old as &quot;also known as&quot;</li>
@@ -589,7 +609,7 @@ Examples:
 <li><strong>Remove old</strong> - After transition period</li>
 </ol>
 <hr>
-<h2>9. Validation Checklist</h2>
+<h2 id="9-validation-checklist">9. Validation Checklist</h2>
 <p>Before publishing a Data Product, verify:</p>
 <ul>
 <li><input disabled="" type="checkbox"> ID follows domain path format (<code>entity:bu:domain:concept</code>)</li>
@@ -604,7 +624,7 @@ Examples:
 <li><input disabled="" type="checkbox"> All three names are consistent (refer to same product)</li>
 </ul>
 <hr>
-<h2>10. Revision History</h2>
+<h2 id="10-revision-history">10. Revision History</h2>
 <table>
 <thead>
 <tr>

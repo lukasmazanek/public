@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,7 +72,7 @@
     </style>
 </head>
 <body>
-<h1>Data Product Discovery Questionnaire</h1>
+<h1 id="data-product-discovery-questionnaire">Data Product Discovery Questionnaire</h1>
 <blockquote>
 <p><strong>Purpose:</strong> Structured interview guide for Domain Owner sessions
 <strong>Participants:</strong> Domain Owner, Architect, Business Analyst
@@ -76,7 +82,7 @@
 <strong>Date:</strong> 2026-01-08</p>
 </blockquote>
 <hr>
-<h2>Table of Contents</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
 <ol>
 <li><a href="#how-to-use-this-guide">How to Use This Guide</a></li>
 <li><a href="#section-1-domain--ownership">Section 1: Domain &amp; Ownership</a><ul>
@@ -145,7 +151,7 @@
 <li><a href="#related-documents">Related Documents</a></li>
 </ol>
 <hr>
-<h2>How to Use This Guide</h2>
+<h2 id="how-to-use-this-guide">How to Use This Guide</h2>
 <ol>
 <li><strong>Before session:</strong> Architect reviews existing domain context, related DPs</li>
 <li><strong>During session:</strong> BA leads questions, Architect validates technical feasibility</li>
@@ -154,8 +160,8 @@
 </ol>
 <p><strong>Time estimate:</strong> 60-90 minutes per Data Product</p>
 <hr>
-<h2>Section 1: Domain &amp; Ownership</h2>
-<h3>Q1.1: Domain Placement</h3>
+<h2 id="section-1-domain-amp-ownership">Section 1: Domain &amp; Ownership</h2>
+<h3 id="q11-domain-placement">Q1.1: Domain Placement</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Where does this Data Product belong in the domain hierarchy?</p>
@@ -187,7 +193,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li>Domain path determines ownership (<a href="../GOV-DM-003-domain-hierarchy.md">GOV-DM-003</a> OWN-1)</li>
+<li>Domain path determines ownership (<a href="../GOV-DM-003-domain-hierarchy.html">GOV-DM-003</a> OWN-1)</li>
 <li>Child domains inherit parent concepts but cannot modify them</li>
 <li>Incorrect placement causes governance conflicts later</li>
 </ul>
@@ -195,10 +201,10 @@
 <ul>
 <li>Start at lowest specific level (domain)</li>
 <li>Promote to higher level only when cross-domain reuse proven</li>
-<li>Per <a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a> Section 7.4: &quot;Start embedded, extract when needed&quot;</li>
+<li>Per <a href="../GOV-DM-001-data-mesh-governance.html">GOV-DM-001</a> Section 7.4: &quot;Start embedded, extract when needed&quot;</li>
 </ul>
 <hr>
-<h3>Q1.2: Domain Owner Assignment</h3>
+<h3 id="q12-domain-owner-assignment">Q1.2: Domain Owner Assignment</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Who is accountable for this Data Product?</p>
@@ -230,7 +236,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../../policies/GOV-004-data-ownership.md">GOV-004</a> requires single accountable owner</li>
+<li><a href="../../policies/GOV-004-data-ownership.html">GOV-004</a> requires single accountable owner</li>
 <li>Owner must respond to change requests within 5 business days</li>
 <li>Owner responsible for FIBO mapping validation</li>
 </ul>
@@ -241,7 +247,7 @@
 <li>Verify owner has authority for this domain level</li>
 </ul>
 <hr>
-<h3>Q1.3: Existing Concepts Check</h3>
+<h3 id="q13-existing-concepts-check">Q1.3: Existing Concepts Check</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Do concepts that this DP uses already exist in parent domain?</p>
@@ -269,7 +275,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-003-domain-hierarchy.md">GOV-DM-003</a> Section 3.3: Child can ADD attributes, cannot CHANGE parent</li>
+<li><a href="../GOV-DM-003-domain-hierarchy.html">GOV-DM-003</a> Section 3.3: Child can ADD attributes, cannot CHANGE parent</li>
 <li>Liskov Substitution: Child must work wherever parent is expected</li>
 <li>Homonyms are allowed if meaning is genuinely different</li>
 </ul>
@@ -280,8 +286,8 @@
 <li>If homonym, document distinction clearly</li>
 </ul>
 <hr>
-<h2>Section 2: Purpose &amp; Business Value</h2>
-<h3>Q2.1: Business Question</h3>
+<h2 id="section-2-purpose-amp-business-value">Section 2: Purpose &amp; Business Value</h2>
+<h3 id="q21-business-question">Q2.1: Business Question</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What business question does this Data Product answer?</p>
@@ -318,7 +324,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a> <a href="../GOV-DM-002-naming-convention.md#52-rules">TITLE-1</a>: Must state business purpose</li>
+<li><a href="../GOV-DM-002-naming-convention.html">GOV-DM-002</a> <a href="../GOV-DM-002-naming-convention.md#52-rules">TITLE-1</a>: Must state business purpose</li>
 <li>Purpose-driven naming prevents &quot;data dump&quot; products</li>
 <li>Clear purpose helps consumers evaluate relevance</li>
 </ul>
@@ -329,7 +335,7 @@
 <li>Document 2-4 business questions per DP</li>
 </ul>
 <hr>
-<h3>Q2.2: Independent Usefulness</h3>
+<h3 id="q22-independent-usefulness">Q2.2: Independent Usefulness</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Is this Data Product useful on its own, without other DPs?</p>
@@ -368,7 +374,7 @@
 <li>Dependencies on other domain DPs should be minimized</li>
 </ul>
 <hr>
-<h3>Q2.3: Known Consumers</h3>
+<h3 id="q23-known-consumers">Q2.3: Known Consumers</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Who will use this Data Product?</p>
@@ -385,7 +391,7 @@
 <tbody><tr>
 <td>A - Known application</td>
 <td>MS PaaS, Reporting</td>
-<td>Mandatory (<a href="../GOV-DM-001-data-mesh-governance.md">COMP-6</a>)</td>
+<td>Mandatory (<a href="../GOV-DM-001-data-mesh-governance.html">COMP-6</a>)</td>
 </tr>
 <tr>
 <td>B - Known team</td>
@@ -405,7 +411,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a> <a href="../GOV-DM-001-data-mesh-governance.md">COMP-6</a>: Consumer MUST be registered</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.html">GOV-DM-001</a> <a href="../GOV-DM-001-data-mesh-governance.html">COMP-6</a>: Consumer MUST be registered</li>
 <li>Anti-pattern: &quot;Build it and they will come&quot;</li>
 <li>No consumers = no Data Product needed</li>
 </ul>
@@ -416,8 +422,8 @@
 <li>Document use case for each consumer</li>
 </ul>
 <hr>
-<h2>Section 3: Data Product Classification</h2>
-<h3>Q3.1: Layer Classification</h3>
+<h2 id="section-3-data-product-classification">Section 3: Data Product Classification</h2>
+<h3 id="q31-layer-classification">Q3.1: Layer Classification</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Which layer does this Data Product belong to?</p>
@@ -453,7 +459,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a> Section 7.1 defines three layers</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.html">GOV-DM-001</a> Section 7.1 defines three layers</li>
 <li>L1 is owned by CDO, not domain</li>
 <li>L3 typically aggregates L2 data</li>
 </ul>
@@ -464,7 +470,7 @@
 <li>Layer determines governance intensity</li>
 </ul>
 <hr>
-<h3>Q3.2: Composability Pattern</h3>
+<h3 id="q32-composability-pattern">Q3.2: Composability Pattern</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>How does this DP relate to other DPs in the domain?</p>
@@ -501,9 +507,9 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a> Section 7.3 defines dependency rules</li>
-<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-5</a>: No circular dependencies</li>
-<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-7</a>: Cross-domain requires contract</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.html">GOV-DM-001</a> Section 7.3 defines dependency rules</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.html">COMP-5</a>: No circular dependencies</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.html">COMP-7</a>: Cross-domain requires contract</li>
 </ul>
 <p><strong>Recommendation:</strong></p>
 <ul>
@@ -512,7 +518,7 @@
 <li>EMBEDDED is OK for truly internal data</li>
 </ul>
 <hr>
-<h3>Q3.3: Reference Data Decision</h3>
+<h3 id="q33-reference-data-decision">Q3.3: Reference Data Decision</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Does this DP contain reference data that could be shared?</p>
@@ -549,7 +555,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a> Section 7.4: Decision tree for embedded vs separate</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.html">GOV-DM-001</a> Section 7.4: Decision tree for embedded vs separate</li>
 <li>&quot;When in doubt, start embedded. First duplicate request = signal to extract.&quot;</li>
 <li>Refactoring is cheap, over-engineering is expensive</li>
 </ul>
@@ -560,8 +566,8 @@
 <li>Ask: &quot;Can I imagine someone else wanting this?&quot;</li>
 </ul>
 <hr>
-<h2>Section 4: Naming</h2>
-<h3>Q4.1: Technical ID</h3>
+<h2 id="section-4-naming">Section 4: Naming</h2>
+<h3 id="q41-technical-id">Q4.1: Technical ID</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What will be the technical identifier (ID) for this Data Product?</p>
@@ -594,8 +600,8 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a> ID rules: lowercase, colon separator, full path</li>
-<li><a href="../../decisions/ADR-010-domain-path-notation.md">ADR-010</a> mandates colon notation</li>
+<li><a href="../GOV-DM-002-naming-convention.html">GOV-DM-002</a> ID rules: lowercase, colon separator, full path</li>
+<li><a href="../../decisions/ADR-010-domain-path-notation.html">ADR-010</a> mandates colon notation</li>
 <li>ID must match domain hierarchy exactly</li>
 </ul>
 <p><strong>Recommendation:</strong></p>
@@ -605,7 +611,7 @@
 <li>Validate against domain hierarchy</li>
 </ul>
 <hr>
-<h3>Q4.2: Slug (Short Name)</h3>
+<h3 id="q42-slug-short-name">Q4.2: Slug (Short Name)</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What will be the short name (slug) for URLs and references?</p>
@@ -643,7 +649,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a> SLUG rules: lowercase, hyphen, domain prefix, max 4 words</li>
+<li><a href="../GOV-DM-002-naming-convention.html">GOV-DM-002</a> SLUG rules: lowercase, hyphen, domain prefix, max 4 words</li>
 <li><a href="../GOV-DM-002-naming-convention.md#42-rules">SLUG-5</a>: No application names (EDI, AMS, Siebel)</li>
 <li>Purpose-oriented, not entity-only</li>
 </ul>
@@ -654,7 +660,7 @@
 <li>Keep under 4 words</li>
 </ul>
 <hr>
-<h3>Q4.3: Business Title</h3>
+<h3 id="q43-business-title">Q4.3: Business Title</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What will be the business name (Title) for the catalog?</p>
@@ -682,7 +688,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a> <a href="../GOV-DM-002-naming-convention.md#52-rules">TITLE-1</a>: Must state business purpose</li>
+<li><a href="../GOV-DM-002-naming-convention.html">GOV-DM-002</a> <a href="../GOV-DM-002-naming-convention.md#52-rules">TITLE-1</a>: Must state business purpose</li>
 <li><a href="../GOV-DM-002-naming-convention.md#52-rules">TITLE-5</a>: No technical jargon</li>
 <li><a href="../GOV-DM-002-naming-convention.md#52-rules">TITLE-6</a>: No application names</li>
 </ul>
@@ -693,8 +699,8 @@
 <li>Human readable, Title Case</li>
 </ul>
 <hr>
-<h2>Section 5: Schema &amp; Concepts</h2>
-<h3>Q5.1: Aggregation Level</h3>
+<h2 id="section-5-schema-amp-concepts">Section 5: Schema &amp; Concepts</h2>
+<h3 id="q51-aggregation-level">Q5.1: Aggregation Level</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>At what level of granularity/aggregation is the data?</p>
@@ -749,7 +755,7 @@
 <li>Consider regulatory requirements (some require transaction-level)</li>
 </ul>
 <hr>
-<h3>Q5.2: Core Entities</h3>
+<h3 id="q52-core-entities">Q5.2: Core Entities</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What core business entities (concepts) does this DP contain?</p>
@@ -781,7 +787,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../../policies/GOV-013-data-product-governance.md">GOV-013</a> Rule DP-001: Property types MUST NOT appear in concepts</li>
+<li><a href="../../policies/GOV-013-data-product-governance.html">GOV-013</a> Rule DP-001: Property types MUST NOT appear in concepts</li>
 <li>Concepts = business entities/nouns</li>
 <li>Property Types = types of attributes</li>
 </ul>
@@ -792,7 +798,7 @@
 <li>Classifications may be separate reference DPs</li>
 </ul>
 <hr>
-<h3>Q5.3: Key Attributes</h3>
+<h3 id="q53-key-attributes">Q5.3: Key Attributes</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What are the key attributes for each concept?</p>
@@ -834,7 +840,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li>Every attribute needs semantic type (<a href="../../policies/GOV-010-semantic-typing.md">GOV-010</a>)</li>
+<li>Every attribute needs semantic type (<a href="../../policies/GOV-010-semantic-typing.html">GOV-010</a>)</li>
 <li>Primitives: String, Integer, Number, Boolean, Date, Datetime</li>
 <li>Custom types need definition in Property Types</li>
 </ul>
@@ -845,7 +851,7 @@
 <li>Map standard attributes to FIBO where possible</li>
 </ul>
 <hr>
-<h3>Q5.4: FIBO Alignment</h3>
+<h3 id="q54-fibo-alignment">Q5.4: FIBO Alignment</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>How do concepts map to FIBO ontology?</p>
@@ -882,7 +888,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../../decisions/ADR-017-domain-first-fibo-aligned.md">ADR-017</a>: Domain-First, FIBO-Aligned</li>
+<li><a href="../../decisions/ADR-017-domain-first-fibo-aligned.html">ADR-017</a>: Domain-First, FIBO-Aligned</li>
 <li>FIBO provides semantic interoperability</li>
 <li>Not everything maps to FIBO - domain-specific is OK</li>
 </ul>
@@ -893,8 +899,8 @@
 <li>Document &quot;domain-only&quot; for bank-specific concepts</li>
 </ul>
 <hr>
-<h2>Section 6: Data Sources &amp; Dependencies</h2>
-<h3>Q6.1: Data Sources</h3>
+<h2 id="section-6-data-sources-amp-dependencies">Section 6: Data Sources &amp; Dependencies</h2>
+<h3 id="q61-data-sources">Q6.1: Data Sources</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Who/what provides the source data for this DP?</p>
@@ -947,10 +953,10 @@
 <li>Document source system owners/contacts</li>
 <li>Identify data extraction method (API, batch, CDC)</li>
 <li>Note any transformation at source vs in DP</li>
-<li>Per <a href="../../decisions/ADR-066-fix-at-source.md">ADR-066</a>: Fix quality issues at source, not downstream</li>
+<li>Per <a href="../../decisions/ADR-066-fix-at-source.html">ADR-066</a>: Fix quality issues at source, not downstream</li>
 </ul>
 <hr>
-<h3>Q6.2: Reference Data Dependencies</h3>
+<h3 id="q62-reference-data-dependencies">Q6.2: Reference Data Dependencies</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What reference data (L1) does this DP require?</p>
@@ -982,7 +988,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-1</a>: Shared reference consumption is always allowed</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.html">COMP-1</a>: Shared reference consumption is always allowed</li>
 <li>Reference DPs owned by CDO</li>
 <li>Standard ISO codelists</li>
 </ul>
@@ -993,7 +999,7 @@
 <li>Document dependency in catalog</li>
 </ul>
 <hr>
-<h3>Q6.3: Domain Dependencies</h3>
+<h3 id="q63-domain-dependencies">Q6.3: Domain Dependencies</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What other DPs within the domain does this DP depend on?</p>
@@ -1020,9 +1026,9 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-2</a>: Same domain allowed</li>
-<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-3</a>: Parent domain allowed</li>
-<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-5</a>: No circular dependencies</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.html">COMP-2</a>: Same domain allowed</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.html">COMP-3</a>: Parent domain allowed</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.html">COMP-5</a>: No circular dependencies</li>
 </ul>
 <p><strong>Recommendation:</strong></p>
 <ul>
@@ -1031,7 +1037,7 @@
 <li>Document each dependency with reason</li>
 </ul>
 <hr>
-<h3>Q6.4: Cross-Domain Dependencies</h3>
+<h3 id="q64-cross-domain-dependencies">Q6.4: Cross-Domain Dependencies</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Does this DP need data from another domain?</p>
@@ -1052,24 +1058,24 @@
 </tr>
 <tr>
 <td>B - Parent domain</td>
-<td><a href="../GOV-DM-001-data-mesh-governance.md">COMP-3</a> allowed</td>
+<td><a href="../GOV-DM-001-data-mesh-governance.html">COMP-3</a> allowed</td>
 <td>Document</td>
 </tr>
 <tr>
 <td>C - Sibling domain</td>
-<td><a href="../GOV-DM-001-data-mesh-governance.md">COMP-4</a>: Requires contract</td>
+<td><a href="../GOV-DM-001-data-mesh-governance.html">COMP-4</a>: Requires contract</td>
 <td>Escalate to Guild</td>
 </tr>
 <tr>
 <td>D - Different BU</td>
-<td><a href="../GOV-DM-001-data-mesh-governance.md">COMP-7</a>: Requires DP + Contract</td>
+<td><a href="../GOV-DM-001-data-mesh-governance.html">COMP-7</a>: Requires DP + Contract</td>
 <td>Formal agreement</td>
 </tr>
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
 <li>Cross-domain is allowed but requires explicit contract</li>
-<li><a href="../GOV-DM-001-data-mesh-governance.md">COMP-7</a>: Production exchange across domain boundary requires DP + Contract</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.html">COMP-7</a>: Production exchange across domain boundary requires DP + Contract</li>
 <li>Prevents hidden dependencies</li>
 </ul>
 <p><strong>Recommendation:</strong></p>
@@ -1079,8 +1085,8 @@
 <li>Register as consumer in source DP</li>
 </ul>
 <hr>
-<h2>Section 7: Outputs &amp; SLA</h2>
-<h3>Q7.1: Output Ports</h3>
+<h2 id="section-7-outputs-amp-sla">Section 7: Outputs &amp; SLA</h2>
+<h3 id="q71-output-ports">Q7.1: Output Ports</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What output ports does this DP provide?</p>
@@ -1117,7 +1123,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a>: Multimodality is mandatory feature</li>
+<li><a href="../GOV-DM-001-data-mesh-governance.html">GOV-DM-001</a>: Multimodality is mandatory feature</li>
 <li>Different consumers need different formats</li>
 <li>SLA per port, not per DP</li>
 </ul>
@@ -1128,7 +1134,7 @@
 <li>Document SLA for each port</li>
 </ul>
 <hr>
-<h3>Q7.2: Freshness SLA</h3>
+<h3 id="q72-freshness-sla">Q7.2: Freshness SLA</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>How fresh must the data be?</p>
@@ -1165,7 +1171,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a> Section 7.3: Freshness is SLA metric</li>
+<li><a href="../GOV-DM-004-operating-model.html">GOV-DM-004</a> Section 7.3: Freshness is SLA metric</li>
 <li>Stricter SLA = higher operational cost</li>
 <li>Mismatch causes consumer disappointment</li>
 </ul>
@@ -1176,7 +1182,7 @@
 <li>Document consumer expectations explicitly</li>
 </ul>
 <hr>
-<h3>Q7.3: Data Period &amp; Temporality</h3>
+<h3 id="q73-data-period-amp-temporality">Q7.3: Data Period &amp; Temporality</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What time period does the data cover and how is it structured temporally?</p>
@@ -1236,7 +1242,7 @@
 <li>If multiple periods needed, document each separately</li>
 </ul>
 <hr>
-<h3>Q7.4: Quality Expectations</h3>
+<h3 id="q74-quality-expectations">Q7.4: Quality Expectations</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What are the data quality expectations?</p>
@@ -1273,7 +1279,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a> Section 7.1: Three quality layers (Maturity, Data Quality, SLA)</li>
+<li><a href="../GOV-DM-004-operating-model.html">GOV-DM-004</a> Section 7.1: Three quality layers (Maturity, Data Quality, SLA)</li>
 <li>Quality dimensions from DAMA-DMBOK</li>
 <li>Thresholds enforceable via pipeline</li>
 </ul>
@@ -1284,8 +1290,8 @@
 <li>Warning 80-95% = notify owner</li>
 </ul>
 <hr>
-<h2>Section 8: Security &amp; Compliance</h2>
-<h3>Q8.1: Data Classification</h3>
+<h2 id="section-8-security-amp-compliance">Section 8: Security &amp; Compliance</h2>
+<h3 id="q81-data-classification">Q8.1: Data Classification</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What is the data classification for this DP?</p>
@@ -1322,8 +1328,8 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li>DATSIS &#39;S&#39; = Secure (classification assigned) - see <a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a> Section 4</li>
-<li><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a>: PII/GDPR compliance is Phase 2 enforcement</li>
+<li>DATSIS &#39;S&#39; = Secure (classification assigned) - see <a href="../GOV-DM-001-data-mesh-governance.html">GOV-DM-001</a> Section 4</li>
+<li><a href="../GOV-DM-004-operating-model.html">GOV-DM-004</a>: PII/GDPR compliance is Phase 2 enforcement</li>
 <li>Untagged PII is CRITICAL violation</li>
 </ul>
 <p><strong>Recommendation:</strong></p>
@@ -1333,7 +1339,7 @@
 <li>Document GDPR basis if personal data</li>
 </ul>
 <hr>
-<h3>Q8.2: PII Identification</h3>
+<h3 id="q82-pii-identification">Q8.2: PII Identification</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Does this DP contain personal data (PII)?</p>
@@ -1372,7 +1378,7 @@
 <ul>
 <li>GDPR requires legal basis for processing</li>
 <li>PII must be tagged in schema</li>
-<li><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a>: Untagged PII blocks deployment</li>
+<li><a href="../GOV-DM-004-operating-model.html">GOV-DM-004</a>: Untagged PII blocks deployment</li>
 </ul>
 <p><strong>Recommendation:</strong></p>
 <ul>
@@ -1381,8 +1387,8 @@
 <li>Consider pseudonymization for analytics</li>
 </ul>
 <hr>
-<h2>Section 9: Lifecycle</h2>
-<h3>Q9.1: Initial Maturity</h3>
+<h2 id="section-9-lifecycle">Section 9: Lifecycle</h2>
+<h3 id="q91-initial-maturity">Q9.1: Initial Maturity</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>What lifecycle phase is this DP starting in?</p>
@@ -1419,7 +1425,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a> Section 6: Six-phase lifecycle</li>
+<li><a href="../GOV-DM-004-operating-model.html">GOV-DM-004</a> Section 6: Six-phase lifecycle</li>
 <li>Maturity Score determines production readiness</li>
 <li>&lt; 40% = blocked, 40-60% = warning, &gt; 60% = publish</li>
 </ul>
@@ -1430,7 +1436,7 @@
 <li>Target PUBLISH within sprint cycle</li>
 </ul>
 <hr>
-<h3>Q9.2: Retirement Planning</h3>
+<h3 id="q92-retirement-planning">Q9.2: Retirement Planning</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Is there a plan for retiring this DP?</p>
@@ -1458,7 +1464,7 @@
 </tbody></table>
 <p><strong>Explanation:</strong></p>
 <ul>
-<li><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a> Section 6.3: RETIRE phase often forgotten</li>
+<li><a href="../GOV-DM-004-operating-model.html">GOV-DM-004</a> Section 6.3: RETIRE phase often forgotten</li>
 <li>Zombie DPs cost money and create confusion</li>
 <li>Consumers need 3-month deprecation notice</li>
 </ul>
@@ -1469,8 +1475,8 @@
 <li>Document predecessor DP if applicable</li>
 </ul>
 <hr>
-<h2>Section 10: Summary &amp; Validation</h2>
-<h3>Q10.1: DATSIS Checklist</h3>
+<h2 id="section-10-summary-amp-validation">Section 10: Summary &amp; Validation</h2>
+<h3 id="q101-datsis-checklist">Q10.1: DATSIS Checklist</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Does the DP meet all DATSIS characteristics?</p>
@@ -1521,7 +1527,7 @@
 <li>This is minimum for production DP</li>
 </ul>
 <hr>
-<h3>Q10.2: Naming Validation</h3>
+<h3 id="q102-naming-validation">Q10.2: Naming Validation</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Are all three names consistent and valid?</p>
@@ -1554,10 +1560,10 @@
 <ul>
 <li>All three must refer to same product</li>
 <li>No application names in any</li>
-<li>Use <a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a> validation checklist</li>
+<li>Use <a href="../GOV-DM-002-naming-convention.html">GOV-DM-002</a> validation checklist</li>
 </ul>
 <hr>
-<h3>Q10.3: Dependency Graph Validation</h3>
+<h3 id="q103-dependency-graph-validation">Q10.3: Dependency Graph Validation</h3>
 <p><strong>Question:</strong></p>
 <blockquote>
 <p>Is the dependency graph complete and cycle-free?</p>
@@ -1565,9 +1571,9 @@
 <pre><code>Check:
 [ ] All R→ dependencies documented
 [ ] All A→ dependencies documented
-[ ] No circular dependencies ([COMP-5](../GOV-DM-001-data-mesh-governance.md))
-[ ] Cross-domain has contract ([COMP-7](../GOV-DM-001-data-mesh-governance.md))
-[ ] All consumers registered ([COMP-6](../GOV-DM-001-data-mesh-governance.md))
+[ ] No circular dependencies ([COMP-5](../GOV-DM-001-data-mesh-governance.html))
+[ ] Cross-domain has contract ([COMP-7](../GOV-DM-001-data-mesh-governance.html))
+[ ] All consumers registered ([COMP-6](../GOV-DM-001-data-mesh-governance.html))
 </code></pre>
 <p><strong>Recommendation:</strong></p>
 <ul>
@@ -1576,7 +1582,7 @@
 <li>Update when dependencies change</li>
 </ul>
 <hr>
-<h2>Appendix A: Quick Reference Card</h2>
+<h2 id="appendix-a-quick-reference-card">Appendix A: Quick Reference Card</h2>
 <pre><code>DATA PRODUCT DISCOVERY - QUICK CHECKLIST (31 Questions)
 
 DOMAIN &amp; OWNERSHIP
@@ -1594,7 +1600,7 @@ CLASSIFICATION
 [ ] Composability pattern defined (Q3.2)
 [ ] Reference data decision made (Q3.3)
 
-NAMING ([GOV-DM-002](../GOV-DM-002-naming-convention.md))
+NAMING ([GOV-DM-002](../GOV-DM-002-naming-convention.html))
 [ ] ID: rbcz:bu:domain:concept (Q4.1)
 [ ] Slug: domain-purpose (Q4.2)
 [ ] Title: &quot;Domain Purpose Description&quot; (Q4.3)
@@ -1631,7 +1637,7 @@ FINAL VALIDATION
 [ ] Dependencies valid (Q10.3)
 </code></pre>
 <hr>
-<h2>Appendix B: Session Output Template</h2>
+<h2 id="appendix-b-session-output-template">Appendix B: Session Output Template</h2>
 <p>After completing discovery session, produce:</p>
 <pre><code class="language-markdown"># Data Product: {Title}
 
@@ -1691,7 +1697,7 @@ FINAL VALIDATION
 3. [ ] Implementation
 </code></pre>
 <hr>
-<h2>Related Documents</h2>
+<h2 id="related-documents">Related Documents</h2>
 <table>
 <thead>
 <tr>
@@ -1700,36 +1706,36 @@ FINAL VALIDATION
 </tr>
 </thead>
 <tbody><tr>
-<td><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a></td>
+<td><a href="../GOV-DM-001-data-mesh-governance.html">GOV-DM-001</a></td>
 <td>Data Mesh principles</td>
 </tr>
 <tr>
-<td><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a></td>
+<td><a href="../GOV-DM-002-naming-convention.html">GOV-DM-002</a></td>
 <td>Naming convention</td>
 </tr>
 <tr>
-<td><a href="../GOV-DM-003-domain-hierarchy.md">GOV-DM-003</a></td>
+<td><a href="../GOV-DM-003-domain-hierarchy.html">GOV-DM-003</a></td>
 <td>Domain hierarchy</td>
 </tr>
 <tr>
-<td><a href="../GOV-DM-004-operating-model.md">GOV-DM-004</a></td>
+<td><a href="../GOV-DM-004-operating-model.html">GOV-DM-004</a></td>
 <td>Operating model</td>
 </tr>
 <tr>
-<td><a href="../../policies/GOV-004-data-ownership.md">GOV-004</a></td>
+<td><a href="../../policies/GOV-004-data-ownership.html">GOV-004</a></td>
 <td>Data ownership</td>
 </tr>
 <tr>
-<td><a href="../../policies/GOV-013-data-product-governance.md">GOV-013</a></td>
+<td><a href="../../policies/GOV-013-data-product-governance.html">GOV-013</a></td>
 <td>DP governance</td>
 </tr>
 <tr>
-<td><a href="../catalogs/gcc-dp-catalog.md">GCC Catalog</a></td>
+<td><a href="../catalogs/gcc-dp-catalog.html">GCC Catalog</a></td>
 <td>Example DP catalog</td>
 </tr>
 </tbody></table>
 <hr>
-<h2>Revision History</h2>
+<h2 id="revision-history">Revision History</h2>
 <table>
 <thead>
 <tr>

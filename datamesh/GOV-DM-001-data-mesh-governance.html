@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,7 +72,7 @@
     </style>
 </head>
 <body>
-<h1>GOV-DM-001: Data Mesh Governance</h1>
+<h1 id="gov-dm-001-data-mesh-governance">GOV-DM-001: Data Mesh Governance</h1>
 <blockquote>
 <p><strong>Status:</strong> ACTIVE
 <strong>Effective:</strong> 2026-01-08
@@ -74,7 +80,26 @@
 <strong>Review Cycle:</strong> Quarterly</p>
 </blockquote>
 <hr>
-<h2>1. Purpose</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-purpose">Purpose</a></li>
+<li><a href="#2-scope">Scope</a></li>
+<li><a href="#3-core-principles">Core Principles</a></li>
+<li><a href="#4-data-product-definition">Data Product Definition</a></li>
+<li><a href="#5-domain-hierarchy">Domain Hierarchy</a></li>
+<li><a href="#6-interoperability-model">Interoperability Model</a></li>
+<li><a href="#7-composability">Composability</a></li>
+<li><a href="#8-naming-convention">Naming Convention</a></li>
+<li><a href="#9-maturity-score">Maturity Score</a></li>
+<li><a href="#10-federated-governance---guild">Federated Governance - Guild</a></li>
+<li><a href="#11-related-documents">Related Documents</a></li>
+<li><a href="#12-revision-history">Revision History</a></li>
+</ol>
+<ul>
+<li><a href="#appendix-a-quick-reference">Appendix A: Quick Reference</a></li>
+</ul>
+<hr>
+<h2 id="1-purpose">1. Purpose</h2>
 <p>This document establishes the governance framework for Data Products and Data Mesh at RBCZ, covering:</p>
 <ul>
 <li>Data Product definition and mandatory features</li>
@@ -84,7 +109,7 @@
 <li>Naming conventions</li>
 </ul>
 <hr>
-<h2>2. Scope</h2>
+<h2 id="2-scope">2. Scope</h2>
 <p>This policy applies to:</p>
 <ul>
 <li>All Data Products within RBCZ and subsidiary entities (RLCZ, etc.)</li>
@@ -93,8 +118,8 @@
 <li>Cross-entity data sharing within RBI Group</li>
 </ul>
 <hr>
-<h2>3. Core Principles</h2>
-<h3>3.1 Data Mesh Principles (Dehghani)</h3>
+<h2 id="3-core-principles">3. Core Principles</h2>
+<h3 id="31-data-mesh-principles-dehghani">3.1 Data Mesh Principles (Dehghani)</h3>
 <table>
 <thead>
 <tr>
@@ -119,7 +144,7 @@
 <td>This document + Guild structure</td>
 </tr>
 </tbody></table>
-<h3>3.2 RBCZ-Specific Principles</h3>
+<h3 id="32-rbcz-specific-principles">3.2 RBCZ-Specific Principles</h3>
 <table>
 <thead>
 <tr>
@@ -145,8 +170,8 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>4. Data Product Definition</h2>
-<h3>4.1 DATSIS Characteristics</h3>
+<h2 id="4-data-product-definition">4. Data Product Definition</h2>
+<h3 id="41-datsis-characteristics">4.1 DATSIS Characteristics</h3>
 <p>Every Data Product MUST satisfy:</p>
 <table>
 <thead>
@@ -187,7 +212,7 @@
 <td>PII/GDPR tagged</td>
 </tr>
 </tbody></table>
-<h3>4.2 Mandatory Technical Features</h3>
+<h3 id="42-mandatory-technical-features">4.2 Mandatory Technical Features</h3>
 <p>Per RBCZ Governance (existing):</p>
 <table>
 <thead>
@@ -219,8 +244,8 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>5. Domain Hierarchy</h2>
-<h3>5.1 Structure</h3>
+<h2 id="5-domain-hierarchy">5. Domain Hierarchy</h2>
+<h3 id="51-structure">5.1 Structure</h3>
 <pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                    EXTERNAL AUTHORITIES                          │
 │  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌──────────┐  │
@@ -256,7 +281,7 @@
 │  └────────────────────────────────────────────────────────┘      │
 └─────────────────────────────────────────────────────────────────┘
 </code></pre>
-<h3>5.2 Domain Types</h3>
+<h3 id="52-domain-types">5.2 Domain Types</h3>
 <table>
 <thead>
 <tr>
@@ -291,7 +316,7 @@
 <td>Specific business domain</td>
 </tr>
 </tbody></table>
-<h3>5.3 Ownership Rules</h3>
+<h3 id="53-ownership-rules">5.3 Ownership Rules</h3>
 <table>
 <thead>
 <tr>
@@ -321,7 +346,7 @@
 <td>Child inherits all parent rules</td>
 </tr>
 </tbody></table>
-<h4>Example: Customer Ownership</h4>
+<h4 id="example-customer-ownership">Example: Customer Ownership</h4>
 <pre><code>RBCZ:Customer (Enterprise - CDO owns)
 ├── Core attributes: ID, Name, Status
 │
@@ -332,8 +357,8 @@
                └── + MiFIDClass, + InvestmentPreferences
 </code></pre>
 <hr>
-<h2>6. Interoperability Model</h2>
-<h3>6.1 Federated Ontology</h3>
+<h2 id="6-interoperability-model">6. Interoperability Model</h2>
+<h3 id="61-federated-ontology">6.1 Federated Ontology</h3>
 <pre><code>PRIMÁRNÍ AUTORITA = RBCZ Doménová Ontologie
                          │
                          │ optional alignment
@@ -344,7 +369,7 @@
             │    ISO, ČNB, ...)      │
             └────────────────────────┘
 </code></pre>
-<h3>6.2 Mapping Rules</h3>
+<h3 id="62-mapping-rules">6.2 Mapping Rules</h3>
 <table>
 <thead>
 <tr>
@@ -379,7 +404,7 @@
 <td>Direct external mapping at subdomain level is for validation</td>
 </tr>
 </tbody></table>
-<h4>Transitive Mapping Example</h4>
+<h4 id="transitive-mapping-example">Transitive Mapping Example</h4>
 <pre><code>Scenario 1: Concept EXISTS in parent
 ─────────────────────────────────────
 investment:Customer
@@ -399,8 +424,8 @@ investment:MiFIDClass (new in investment)
 Result: External mapping (fibo-sec:MiFIDClassification) is IMPORTANT
 </code></pre>
 <hr>
-<h2>7. Composability</h2>
-<h3>7.1 Data Product Layers</h3>
+<h2 id="7-composability">7. Composability</h2>
+<h3 id="71-data-product-layers">7.1 Data Product Layers</h3>
 <pre><code>LAYER 3: Analytics/Reporting DPs (Domain owns)
          ├── Purpose: Answer business questions
          └── Examples: investment-aum-reporting, investment-profitability
@@ -413,7 +438,7 @@ LAYER 1: Shared Reference Data DPs (CDO/RBCZ root owns)
          ├── Purpose: Cross-BU standards
          └── Examples: ref-countries (ISO 3166), ref-currencies (ISO 4217)
 </code></pre>
-<h3>7.2 Classification Criteria</h3>
+<h3 id="72-classification-criteria">7.2 Classification Criteria</h3>
 <table>
 <thead>
 <tr>
@@ -448,7 +473,7 @@ LAYER 1: Shared Reference Data DPs (CDO/RBCZ root owns)
 <td>ISO/Enterprise</td>
 </tr>
 </tbody></table>
-<h4>A) Embedded Pattern</h4>
+<h4 id="a-embedded-pattern">A) Embedded Pattern</h4>
 <p><strong>When to use:</strong> Data that no one else needs</p>
 <pre><code>┌─────────────────────────────────────────┐
 │         investment-aum-reporting         │
@@ -462,7 +487,7 @@ LAYER 1: Shared Reference Data DPs (CDO/RBCZ root owns)
 └─────────────────────────────────────────┘
 </code></pre>
 <p><strong>Examples:</strong> Helper calculation tables, staging data, DP-specific constants</p>
-<h4>B) Separate DP Pattern (Domain owns)</h4>
+<h4 id="b-separate-dp-pattern-domain-owns">B) Separate DP Pattern (Domain owns)</h4>
 <p><strong>When to use:</strong> Data used by multiple DPs within the SAME domain</p>
 <pre><code>┌─────────────────────────────────────────────────────────────┐
 │                    INVESTMENT DOMAIN                         │
@@ -481,7 +506,7 @@ LAYER 1: Shared Reference Data DPs (CDO/RBCZ root owns)
 └─────────────────────────────────────────────────────────────┘
 </code></pre>
 <p><strong>Examples:</strong> <code>investment-products-catalog</code>, <code>mib-segmentation</code>, <code>retail-channels</code></p>
-<h4>C) Shared Reference Pattern (RBCZ root owns)</h4>
+<h4 id="c-shared-reference-pattern-rbcz-root-owns">C) Shared Reference Pattern (RBCZ root owns)</h4>
 <p><strong>When to use:</strong> Data used by ALL BUs and domains</p>
 <pre><code>┌─────────────────────────────────────────────────────────────┐
 │                    RBCZ (root domain)                        │
@@ -501,7 +526,7 @@ LAYER 1: Shared Reference Data DPs (CDO/RBCZ root owns)
 </code></pre>
 <p><strong>Examples:</strong> <code>rbcz:ref:countries</code> (ISO 3166), <code>rbcz:ref:currencies</code> (ISO 4217), <code>rbcz:ref:legal-entities</code> (LEI)</p>
 <p><strong>Principle:</strong> RBCZ as root domain owns all shared data. CDO is owner of RBCZ level.</p>
-<h4>Decision Tree</h4>
+<h4 id="decision-tree">Decision Tree</h4>
 <pre><code>                    Used by more than one DP?
                               │
                ┌──────────────┴──────────────┐
@@ -520,7 +545,7 @@ LAYER 1: Shared Reference Data DPs (CDO/RBCZ root owns)
                                      SEPARATE DP                      SHARED (RBCZ root)
                                      per BU                            (CDO owns)
 </code></pre>
-<h4>Example: Classifying IDM_* from DP EDI AUM</h4>
+<h4 id="example-classifying-idm-from-dp-edi-aum">Example: Classifying IDM_* from DP EDI AUM</h4>
 <table>
 <thead>
 <tr>
@@ -565,7 +590,7 @@ LAYER 1: Shared Reference Data DPs (CDO/RBCZ root owns)
 <td>Parent DP</td>
 </tr>
 </tbody></table>
-<h3>7.3 Dependency Rules</h3>
+<h3 id="73-dependency-rules">7.3 Dependency Rules</h3>
 <table>
 <thead>
 <tr>
@@ -610,7 +635,7 @@ LAYER 1: Shared Reference Data DPs (CDO/RBCZ root owns)
 <td>Production data exchange across domain boundary requires DP + Contract</td>
 </tr>
 </tbody></table>
-<h4>COMP-7: Cross-Domain Data Exchange (Detail)</h4>
+<h4 id="comp-7-cross-domain-data-exchange-detail">COMP-7: Cross-Domain Data Exchange (Detail)</h4>
 <p><strong>Rule:</strong> Any PRODUCTION exchange of analytical data across domain boundary MUST be realized through a published Data Product with a valid Data Contract.</p>
 <pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                    DOMAIN BOUNDARY                               │
@@ -668,10 +693,10 @@ LAYER 1: Shared Reference Data DPs (CDO/RBCZ root owns)
 <li>Consumer MUST be registered in Consumer Catalog</li>
 <li>Breaking changes require notification of all registered consumers</li>
 </ul>
-<h3>7.4 Design Guidance: Embedded vs. Separate DP</h3>
+<h3 id="74-design-guidance-embedded-vs-separate-dp">7.4 Design Guidance: Embedded vs. Separate DP</h3>
 <p>Key question during design: <em>&quot;How do I know if data will be used by more than one DP?&quot;</em></p>
 <p><strong>Short answer:</strong> You don&#39;t know for sure. But you have signals.</p>
-<h4>Signals for Reuse</h4>
+<h4 id="signals-for-reuse">Signals for Reuse</h4>
 <table>
 <thead>
 <tr>
@@ -716,7 +741,7 @@ LAYER 1: Shared Reference Data DPs (CDO/RBCZ root owns)
 <td>🟡 Medium</td>
 </tr>
 </tbody></table>
-<h4>Evolution Pattern: Start Small, Promote When Needed</h4>
+<h4 id="evolution-pattern-start-small-promote-when-needed">Evolution Pattern: Start Small, Promote When Needed</h4>
 <pre><code>EVOLUTION PATTERN:
 
 Time 0: Don&#39;t know if anyone will need it
@@ -742,7 +767,7 @@ Time 0: Don&#39;t know if anyone will need it
 └─────────────────────────────────────┘
 </code></pre>
 <p><strong>Key insight:</strong> Refactoring is cheap, over-engineering is expensive.</p>
-<h4>Decision Questions During Design</h4>
+<h4 id="decision-questions-during-design">Decision Questions During Design</h4>
 <pre><code>1. &quot;Is this an ENTITY or a CALCULATION?&quot;
    │
    ├── ENTITY (Customer, Product) → probably SEPARATE DP
@@ -767,7 +792,7 @@ Time 0: Don&#39;t know if anyone will need it
    │
    └── NO (always changes together) → EMBEDDED
 </code></pre>
-<h4>Updated Decision Tree</h4>
+<h4 id="updated-decision-tree">Updated Decision Tree</h4>
 <pre><code>                    Is it an ENTITY or CLASSIFICATION?
                               │
                ┌──────────────┴──────────────┐
@@ -785,7 +810,7 @@ Time 0: Don&#39;t know if anyone will need it
 SHARED (RBCZ root)    SEPARATE DP
                       (Domain/BU)
 </code></pre>
-<h4>Examples from Investment Domain</h4>
+<h4 id="examples-from-investment-domain">Examples from Investment Domain</h4>
 <table>
 <thead>
 <tr>
@@ -826,7 +851,7 @@ SHARED (RBCZ root)    SEPARATE DP
 <td>→ EMBEDDED</td>
 </tr>
 </tbody></table>
-<h4>Practical Rule</h4>
+<h4 id="practical-rule">Practical Rule</h4>
 <blockquote>
 <p><strong>&quot;When in doubt, start embedded. First duplicate request = signal to extract.&quot;</strong></p>
 </blockquote>
@@ -837,8 +862,8 @@ SHARED (RBCZ root)    SEPARATE DP
 <li>Premature abstraction costs more than late extraction</li>
 </ul>
 <hr>
-<h2>8. Naming Convention</h2>
-<h3>8.1 Three-Level Naming</h3>
+<h2 id="8-naming-convention">8. Naming Convention</h2>
+<h3 id="81-three-level-naming">8.1 Three-Level Naming</h3>
 <table>
 <thead>
 <tr>
@@ -867,8 +892,8 @@ SHARED (RBCZ root)    SEPARATE DP
 <td>&quot;Investment AUM Performance Reporting&quot;</td>
 </tr>
 </tbody></table>
-<h3>8.2 Rules</h3>
-<p>See <a href="GOV-DM-002-naming-convention.md">GOV-DM-002-naming-convention.md</a> for detailed rules.</p>
+<h3 id="82-rules">8.2 Rules</h3>
+<p>See <a href="GOV-DM-002-naming-convention.html">GOV-DM-002-naming-convention.html</a> for detailed rules.</p>
 <p><strong>Key Principles:</strong></p>
 <ul>
 <li><strong>Purpose-Driven</strong>: Title reflects business value, not just entity</li>
@@ -876,7 +901,7 @@ SHARED (RBCZ root)    SEPARATE DP
 <li><strong>Domain Prefix</strong>: Slug starts with domain identifier</li>
 </ul>
 <hr>
-<h2>9. Maturity Score</h2>
+<h2 id="9-maturity-score">9. Maturity Score</h2>
 <p>Maturity Score indicates production-readiness (per existing RBCZ Governance):</p>
 <table>
 <thead>
@@ -913,7 +938,7 @@ SHARED (RBCZ root)    SEPARATE DP
 <li>&lt; 60%: In development</li>
 </ul>
 <hr>
-<h2>10. Federated Governance - Guild</h2>
+<h2 id="10-federated-governance---guild">10. Federated Governance - Guild</h2>
 <table>
 <thead>
 <tr>
@@ -947,7 +972,7 @@ SHARED (RBCZ root)    SEPARATE DP
 </tr>
 </tbody></table>
 <hr>
-<h2>11. Related Documents</h2>
+<h2 id="11-related-documents">11. Related Documents</h2>
 <table>
 <thead>
 <tr>
@@ -956,28 +981,28 @@ SHARED (RBCZ root)    SEPARATE DP
 </tr>
 </thead>
 <tbody><tr>
-<td><a href="GOV-DM-002-naming-convention.md">GOV-DM-002-naming-convention.md</a></td>
+<td><a href="GOV-DM-002-naming-convention.html">GOV-DM-002-naming-convention.html</a></td>
 <td>Detailed naming rules</td>
 </tr>
 <tr>
-<td><a href="GOV-DM-003-domain-hierarchy.md">GOV-DM-003-domain-hierarchy.md</a></td>
+<td><a href="GOV-DM-003-domain-hierarchy.html">GOV-DM-003-domain-hierarchy.html</a></td>
 <td>Domain hierarchy &amp; ownership</td>
 </tr>
 <tr>
-<td><a href="GOV-DM-004-operating-model.md">GOV-DM-004-operating-model.md</a></td>
+<td><a href="GOV-DM-004-operating-model.html">GOV-DM-004-operating-model.html</a></td>
 <td>Operating model, lifecycle, quality</td>
 </tr>
 <tr>
-<td><a href="review/2026-01-08-domain-composability-framework.md">Composability Framework</a></td>
+<td><a href="review/2026-01-08-domain-composability-framework.html">Composability Framework</a></td>
 <td>Composability patterns</td>
 </tr>
 <tr>
-<td><a href="catalogs/investment-dp-catalog.md">Investment DP Catalog</a></td>
+<td><a href="catalogs/investment-dp-catalog.html">Investment DP Catalog</a></td>
 <td>Investment domain DPs</td>
 </tr>
 </tbody></table>
 <hr>
-<h2>12. Revision History</h2>
+<h2 id="12-revision-history">12. Revision History</h2>
 <table>
 <thead>
 <tr>
@@ -995,8 +1020,8 @@ SHARED (RBCZ root)    SEPARATE DP
 </tr>
 </tbody></table>
 <hr>
-<h2>Appendix A: Quick Reference</h2>
-<h3>Data Product Checklist</h3>
+<h2 id="appendix-a-quick-reference">Appendix A: Quick Reference</h2>
+<h3 id="data-product-checklist">Data Product Checklist</h3>
 <ul>
 <li><input disabled="" type="checkbox"> Unique ID assigned (domain path)</li>
 <li><input disabled="" type="checkbox"> Slug defined (lowercase-hyphen)</li>
@@ -1009,7 +1034,7 @@ SHARED (RBCZ root)    SEPARATE DP
 <li><input disabled="" type="checkbox"> Owner assigned</li>
 <li><input disabled="" type="checkbox"> Consumers documented</li>
 </ul>
-<h3>Governance Decision Tree</h3>
+<h3 id="governance-decision-tree">Governance Decision Tree</h3>
 <pre><code>New Data Product?
        │
        ▼

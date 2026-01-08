@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,7 +72,7 @@
     </style>
 </head>
 <body>
-<h1>Test Domain - Data Product Catalog</h1>
+<h1 id="test-domain---data-product-catalog">Test Domain - Data Product Catalog</h1>
 <blockquote>
 <p><strong>Status:</strong> DRAFT
 <strong>Created:</strong> 2026-01-08
@@ -74,15 +80,15 @@
 <strong>Based on:</strong> GOV-DM-001, GOV-DM-003, Test domain ontology</p>
 </blockquote>
 <hr>
-<h2>1. Executive Summary</h2>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
 <p>This catalog defines Data Products for the <strong>Test</strong> domain hierarchy based on semantic analysis of the ontology. The Test domain serves as a reference implementation demonstrating Data Mesh patterns.</p>
-<h3>Domain Structure</h3>
+<h3 id="domain-structure">Domain Structure</h3>
 <pre><code>Test (root)                          5 DPs (3 concepts + 2 ISO ref) - SHARED REFERENCE
 ├── Test:MIB (BU)                   2 DPs (11 concepts)            - BU MASTER DATA
 │   └── Test:MIB:Investment         18 DPs (262 concepts)          - DOMAIN ANALYTICS
 └── Test:Retail (BU)                2 DPs (9 concepts)             - BU MASTER DATA
 </code></pre>
-<h3>Data Product Summary</h3>
+<h3 id="data-product-summary">Data Product Summary</h3>
 <table>
 <thead>
 <tr>
@@ -116,7 +122,7 @@
 <p><strong>GOV-DM-001 Compliance:</strong> All DP names are <strong>purpose-driven</strong> (reflect business value, not just entities).
 <strong>DPCC Alignment:</strong> Catalog aligned with production DPCC (9 Investment DPs mapped).</p>
 </blockquote>
-<h3>DPCC Alignment Table</h3>
+<h3 id="dpcc-alignment-table">DPCC Alignment Table</h3>
 <table>
 <thead>
 <tr>
@@ -171,7 +177,7 @@
 <td>Investment agreements for CRM</td>
 </tr>
 </tbody></table>
-<h3>DWH Consumption Mapping</h3>
+<h3 id="dwh-consumption-mapping">DWH Consumption Mapping</h3>
 <p>Investment DPs consume enterprise data from DWH (upstream cross-cutting layer):</p>
 <table>
 <thead>
@@ -228,11 +234,11 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>2. Layer 1: Shared Reference Data</h2>
+<h2 id="2-layer-1-shared-reference-data">2. Layer 1: Shared Reference Data</h2>
 <p><strong>Owner:</strong> Test root (CDO equivalent)
 <strong>Consumers:</strong> All BUs and domains</p>
-<h3>2.1 ISO Reference Data</h3>
-<h4>DP-REF-001: countries-reference-master</h4>
+<h3 id="21-iso-reference-data">2.1 ISO Reference Data</h3>
+<h4 id="dp-ref-001-countries-reference-master">DP-REF-001: countries-reference-master</h4>
 <table>
 <thead>
 <tr>
@@ -294,7 +300,7 @@
 <li>Retail DPs (customer address)</li>
 </ul>
 <hr>
-<h4>DP-REF-002: currencies-reference-master</h4>
+<h4 id="dp-ref-002-currencies-reference-master">DP-REF-002: currencies-reference-master</h4>
 <table>
 <thead>
 <tr>
@@ -356,8 +362,8 @@
 <li>All financial DPs</li>
 </ul>
 <hr>
-<h3>2.2 Cross-Domain Business Entities</h3>
-<h4>DP-REF-003: customer-crossdomain-reporting</h4>
+<h3 id="22-cross-domain-business-entities">2.2 Cross-Domain Business Entities</h3>
+<h4 id="dp-ref-003-customer-crossdomain-reporting">DP-REF-003: customer-crossdomain-reporting</h4>
 <table>
 <thead>
 <tr>
@@ -424,7 +430,7 @@
 <li>Enterprise reporting</li>
 </ul>
 <hr>
-<h4>DP-REF-004: account-crossdomain-reporting</h4>
+<h4 id="dp-ref-004-account-crossdomain-reporting">DP-REF-004: account-crossdomain-reporting</h4>
 <table>
 <thead>
 <tr>
@@ -489,7 +495,7 @@
 <li>Enterprise reporting</li>
 </ul>
 <hr>
-<h4>DP-REF-005: transaction-crossdomain-analytics</h4>
+<h4 id="dp-ref-005-transaction-crossdomain-analytics">DP-REF-005: transaction-crossdomain-analytics</h4>
 <table>
 <thead>
 <tr>
@@ -554,10 +560,10 @@
 <li>Enterprise analytics</li>
 </ul>
 <hr>
-<h2>3. Layer 2: BU Master Data</h2>
-<h3>3.1 MIB Business Unit</h3>
+<h2 id="3-layer-2-bu-master-data">3. Layer 2: BU Master Data</h2>
+<h3 id="31-mib-business-unit">3.1 MIB Business Unit</h3>
 <p><strong>Owner:</strong> MIB BU Owner</p>
-<h4>DP-MIB-001: mib-customers</h4>
+<h4 id="dp-mib-001-mib-customers">DP-MIB-001: mib-customers</h4>
 <table>
 <thead>
 <tr>
@@ -645,7 +651,7 @@
 <li>investment-transactions</li>
 </ul>
 <hr>
-<h4>DP-MIB-002: mib-contracts</h4>
+<h4 id="dp-mib-002-mib-contracts">DP-MIB-002: mib-contracts</h4>
 <table>
 <thead>
 <tr>
@@ -690,9 +696,9 @@
 <li>All Investment analytical DPs</li>
 </ul>
 <hr>
-<h3>3.2 Retail Business Unit</h3>
+<h3 id="32-retail-business-unit">3.2 Retail Business Unit</h3>
 <p><strong>Owner:</strong> Retail BU Owner</p>
-<h4>DP-RET-001: retail-products</h4>
+<h4 id="dp-ret-001-retail-products">DP-RET-001: retail-products</h4>
 <table>
 <thead>
 <tr>
@@ -749,7 +755,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h4>DP-RET-002: retail-customers</h4>
+<h4 id="dp-ret-002-retail-customers">DP-RET-002: retail-customers</h4>
 <table>
 <thead>
 <tr>
@@ -809,11 +815,11 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>4. Layer 3: Investment Domain Analytics</h2>
+<h2 id="4-layer-3-investment-domain-analytics">4. Layer 3: Investment Domain Analytics</h2>
 <p><strong>Owner:</strong> Investment Domain Owner
 <strong>Parent Domain:</strong> Test:MIB</p>
-<h3>4.1 Master Data (Domain-specific)</h3>
-<h4>DP-INV-001: investment-products-catalog</h4>
+<h3 id="41-master-data-domain-specific">4.1 Master Data (Domain-specific)</h3>
+<h4 id="dp-inv-001-investment-products-catalog">DP-INV-001: investment-products-catalog</h4>
 <table>
 <thead>
 <tr>
@@ -934,7 +940,7 @@
 <li>investment-transactions</li>
 </ul>
 <hr>
-<h4>DP-INV-002: investment-suitability-assessment</h4>
+<h4 id="dp-inv-002-investment-suitability-assessment">DP-INV-002: investment-suitability-assessment</h4>
 <table>
 <thead>
 <tr>
@@ -1035,7 +1041,7 @@
 <li>Compliance reporting</li>
 </ul>
 <hr>
-<h4>DP-INV-002b: investment-customer-contact</h4>
+<h4 id="dp-inv-002b-investment-customer-contact">DP-INV-002b: investment-customer-contact</h4>
 <table>
 <thead>
 <tr>
@@ -1145,7 +1151,7 @@
 <li>CRM systems</li>
 </ul>
 <hr>
-<h4>DP-INV-003: investment-contracts</h4>
+<h4 id="dp-inv-003-investment-contracts">DP-INV-003: investment-contracts</h4>
 <table>
 <thead>
 <tr>
@@ -1257,7 +1263,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h4>DP-INV-004: investment-accounts</h4>
+<h4 id="dp-inv-004-investment-accounts">DP-INV-004: investment-accounts</h4>
 <table>
 <thead>
 <tr>
@@ -1329,8 +1335,8 @@
 </tr>
 </tbody></table>
 <hr>
-<h3>4.2 Analytical Data Products</h3>
-<h4>DP-INV-005: investment-positions</h4>
+<h3 id="42-analytical-data-products">4.2 Analytical Data Products</h3>
+<h4 id="dp-inv-005-investment-positions">DP-INV-005: investment-positions</h4>
 <table>
 <thead>
 <tr>
@@ -1405,7 +1411,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h4>DP-INV-006: investment-aum-reporting</h4>
+<h4 id="dp-inv-006-investment-aum-reporting">DP-INV-006: investment-aum-reporting</h4>
 <table>
 <thead>
 <tr>
@@ -1489,7 +1495,7 @@
 </tbody></table>
 <p><strong>DPCC Equivalent:</strong> <code>DP_EDI_AUM</code></p>
 <hr>
-<h4>DP-INV-007: investment-transactions</h4>
+<h4 id="dp-inv-007-investment-transactions">DP-INV-007: investment-transactions</h4>
 <table>
 <thead>
 <tr>
@@ -1599,7 +1605,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h4>DP-INV-008: investment-profitability</h4>
+<h4 id="dp-inv-008-investment-profitability">DP-INV-008: investment-profitability</h4>
 <table>
 <thead>
 <tr>
@@ -1696,7 +1702,7 @@
 </tbody></table>
 <p><strong>DPCC Equivalent:</strong> <code>DP_EDI_PROFITABILITY</code></p>
 <hr>
-<h4>DP-INV-008b: investment-client-reporting</h4>
+<h4 id="dp-inv-008b-investment-client-reporting">DP-INV-008b: investment-client-reporting</h4>
 <table>
 <thead>
 <tr>
@@ -1818,7 +1824,7 @@
 </tbody></table>
 <p><strong>DPCC Equivalent:</strong> <code>DP_EDI_AGG_CLIENT</code></p>
 <hr>
-<h4>DP-INV-008c: investment-sales-reporting</h4>
+<h4 id="dp-inv-008c-investment-sales-reporting">DP-INV-008c: investment-sales-reporting</h4>
 <table>
 <thead>
 <tr>
@@ -1932,7 +1938,7 @@
 </tbody></table>
 <p><strong>DPCC Equivalent:</strong> <code>DP_EDI_SALES</code></p>
 <hr>
-<h4>DP-INV-009: investment-campaigns</h4>
+<h4 id="dp-inv-009-investment-campaigns">DP-INV-009: investment-campaigns</h4>
 <table>
 <thead>
 <tr>
@@ -2023,7 +2029,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h4>DP-INV-010: investment-onboarding</h4>
+<h4 id="dp-inv-010-investment-onboarding">DP-INV-010: investment-onboarding</h4>
 <table>
 <thead>
 <tr>
@@ -2111,7 +2117,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h4>DP-INV-011: investment-digital-channels</h4>
+<h4 id="dp-inv-011-investment-digital-channels">DP-INV-011: investment-digital-channels</h4>
 <table>
 <thead>
 <tr>
@@ -2235,7 +2241,7 @@
 </tbody></table>
 <p><strong>DPCC Equivalent:</strong> <code>DP_EDI_APP_USAGE</code></p>
 <hr>
-<h4>DP-INV-012: investment-network-banks</h4>
+<h4 id="dp-inv-012-investment-network-banks">DP-INV-012: investment-network-banks</h4>
 <table>
 <thead>
 <tr>
@@ -2298,7 +2304,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h4>DP-INV-013: investment-portfolios</h4>
+<h4 id="dp-inv-013-investment-portfolios">DP-INV-013: investment-portfolios</h4>
 <table>
 <thead>
 <tr>
@@ -2366,7 +2372,7 @@
 </tbody></table>
 <p><strong>DPCC Equivalent:</strong> <code>DP_EDI_PORTFOLIO</code></p>
 <hr>
-<h4>DP-INV-014: investment-edi-customers</h4>
+<h4 id="dp-inv-014-investment-edi-customers">DP-INV-014: investment-edi-customers</h4>
 <table>
 <thead>
 <tr>
@@ -2436,7 +2442,7 @@
 </tbody></table>
 <p><strong>DPCC Equivalent:</strong> <code>DP_EDI_CUSTOMER</code></p>
 <hr>
-<h4>DP-INV-015: investment-reconciliation</h4>
+<h4 id="dp-inv-015-investment-reconciliation">DP-INV-015: investment-reconciliation</h4>
 <table>
 <thead>
 <tr>
@@ -2509,7 +2515,7 @@
 </tbody></table>
 <p><strong>DPCC Equivalent:</strong> <code>DP_EDI_PORTFOLIO_RI</code>, <code>DP_EDI_POSITION_REC</code></p>
 <hr>
-<h4>DP-INV-016: investment-agreements</h4>
+<h4 id="dp-inv-016-investment-agreements">DP-INV-016: investment-agreements</h4>
 <table>
 <thead>
 <tr>
@@ -2583,8 +2589,8 @@
 </tbody></table>
 <p><strong>DPCC Equivalent:</strong> <code>DP_AGREEMENT</code></p>
 <hr>
-<h2>5. Dependency Graph</h2>
-<h3>5.1 Legend</h3>
+<h2 id="5-dependency-graph">5. Dependency Graph</h2>
+<h3 id="51-legend">5.1 Legend</h3>
 <table>
 <thead>
 <tr>
@@ -2614,7 +2620,7 @@
 <td>Transforms/calculates new data</td>
 </tr>
 </tbody></table>
-<h3>5.2 Layer 1 → Layer 2</h3>
+<h3 id="52-layer-1-layer-2">5.2 Layer 1 → Layer 2</h3>
 <pre><code>┌─────────────────────────────────────────────────────────────────────┐
 │                         LAYER 1: SHARED REFERENCE                    │
 │  ┌──────────────────┐  ┌──────────────────┐  ┌────────────────────┐ │
@@ -2635,7 +2641,7 @@
             │ R→                  │ S→
             ▼                     ▼
 </code></pre>
-<h3>5.3 Layer 2 → Layer 3 (Investment Domain)</h3>
+<h3 id="53-layer-2-layer-3-investment-domain">5.3 Layer 2 → Layer 3 (Investment Domain)</h3>
 <pre><code>┌─────────────────────────────────────────────────────────────────────┐
 │                    LAYER 3: INVESTMENT DOMAIN                        │
 │                                                                      │
@@ -2689,7 +2695,7 @@
 │  └────────────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────────┘
 </code></pre>
-<h3>5.4 Dependency Summary</h3>
+<h3 id="54-dependency-summary">5.4 Dependency Summary</h3>
 <table>
 <thead>
 <tr>
@@ -2720,8 +2726,8 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>6. Governance Compliance</h2>
-<h3>6.1 DATSIS Checklist</h3>
+<h2 id="6-governance-compliance">6. Governance Compliance</h2>
+<h3 id="61-datsis-checklist">6.1 DATSIS Checklist</h3>
 <table>
 <thead>
 <tr>
@@ -2936,7 +2942,7 @@
 <td><code>DP_AGREEMENT</code></td>
 </tr>
 </tbody></table>
-<h3>6.2 Composability Rules</h3>
+<h3 id="62-composability-rules">6.2 Composability Rules</h3>
 <table>
 <thead>
 <tr>
@@ -2981,7 +2987,7 @@
 <td>All cross-domain via DP</td>
 </tr>
 </tbody></table>
-<h3>6.3 Ownership Alignment</h3>
+<h3 id="63-ownership-alignment">6.3 Ownership Alignment</h3>
 <table>
 <thead>
 <tr>
@@ -3017,15 +3023,15 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>7. Implementation Roadmap</h2>
-<h3>Phase 1: Foundation (Week 1-2)</h3>
+<h2 id="7-implementation-roadmap">7. Implementation Roadmap</h2>
+<h3 id="phase-1-foundation-week-1-2">Phase 1: Foundation (Week 1-2)</h3>
 <ul>
 <li><input disabled="" type="checkbox"> ref-countries</li>
 <li><input disabled="" type="checkbox"> ref-currencies</li>
 <li><input disabled="" type="checkbox"> mib-customers</li>
 <li><input disabled="" type="checkbox"> mib-contracts</li>
 </ul>
-<h3>Phase 2: Investment Master (Week 3-4)</h3>
+<h3 id="phase-2-investment-master-week-3-4">Phase 2: Investment Master (Week 3-4)</h3>
 <ul>
 <li><input disabled="" type="checkbox"> investment-products-catalog</li>
 <li><input disabled="" type="checkbox"> investment-suitability-assessment <em>(MiFID compliance)</em></li>
@@ -3033,7 +3039,7 @@
 <li><input disabled="" type="checkbox"> investment-contracts</li>
 <li><input disabled="" type="checkbox"> investment-accounts</li>
 </ul>
-<h3>Phase 3: Core Analytics - DPCC Aligned (Week 5-8)</h3>
+<h3 id="phase-3-core-analytics---dpcc-aligned-week-5-8">Phase 3: Core Analytics - DPCC Aligned (Week 5-8)</h3>
 <ul>
 <li><input disabled="" type="checkbox"> investment-positions</li>
 <li><input disabled="" type="checkbox"> investment-aum-reporting <em>(DPCC: DP_EDI_AUM)</em></li>
@@ -3042,7 +3048,7 @@
 <li><input disabled="" type="checkbox"> investment-sales-reporting <em>(DPCC: DP_EDI_SALES)</em> <strong>NEW</strong></li>
 <li><input disabled="" type="checkbox"> investment-profitability <em>(DPCC: DP_EDI_PROFITABILITY)</em></li>
 </ul>
-<h3>Phase 4: EDI Network (Week 9-10)</h3>
+<h3 id="phase-4-edi-network-week-9-10">Phase 4: EDI Network (Week 9-10)</h3>
 <ul>
 <li><input disabled="" type="checkbox"> investment-portfolios <em>(DPCC: DP_EDI_PORTFOLIO)</em> <strong>NEW</strong></li>
 <li><input disabled="" type="checkbox"> investment-edi-customers <em>(DPCC: DP_EDI_CUSTOMER)</em> <strong>NEW</strong></li>
@@ -3050,14 +3056,14 @@
 <li><input disabled="" type="checkbox"> investment-agreements <em>(DPCC: DP_AGREEMENT)</em> <strong>NEW</strong></li>
 <li><input disabled="" type="checkbox"> investment-network-banks</li>
 </ul>
-<h3>Phase 5: Engagement (Week 11-12)</h3>
+<h3 id="phase-5-engagement-week-11-12">Phase 5: Engagement (Week 11-12)</h3>
 <ul>
 <li><input disabled="" type="checkbox"> investment-campaigns</li>
 <li><input disabled="" type="checkbox"> investment-onboarding</li>
 <li><input disabled="" type="checkbox"> investment-digital-channels <em>(DPCC: DP_EDI_APP_USAGE)</em></li>
 </ul>
 <hr>
-<h2>8. Revision History</h2>
+<h2 id="8-revision-history">8. Revision History</h2>
 <table>
 <thead>
 <tr>

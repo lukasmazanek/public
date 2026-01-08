@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,16 +72,30 @@
     </style>
 </head>
 <body>
-<h1>GOV-DM-004: Data Mesh Operating Model</h1>
+<h1 id="gov-dm-004-data-mesh-operating-model">GOV-DM-004: Data Mesh Operating Model</h1>
 <blockquote>
 <p><strong>Status:</strong> ACTIVE
 <strong>Effective:</strong> 2026-01-08
 <strong>Owner:</strong> CDO - Lukáš Mazánek
-<strong>Parent:</strong> <a href="GOV-DM-001-data-mesh-governance.md">GOV-DM-001-data-mesh-governance.md</a>
+<strong>Parent:</strong> <a href="GOV-DM-001-data-mesh-governance.html">GOV-DM-001-data-mesh-governance.html</a>
 <strong>Source:</strong> QAR Session with Senior Data Mesh Consultant</p>
 </blockquote>
 <hr>
-<h2>1. Executive Summary</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-executive-summary">Executive Summary</a></li>
+<li><a href="#2-federated-governance">Federated Governance</a></li>
+<li><a href="#3-self-serve-platform">Self-Serve Platform</a></li>
+<li><a href="#4-domain-team-autonomy">Domain Team Autonomy</a></li>
+<li><a href="#5-consumer-experience">Consumer Experience</a></li>
+<li><a href="#6-data-product-lifecycle">Data Product Lifecycle</a></li>
+<li><a href="#7-quality--sla">Quality &amp; SLA</a></li>
+<li><a href="#8-gap-analysis--roadmap">Gap Analysis &amp; Roadmap</a></li>
+<li><a href="#9-related-documents">Related Documents</a></li>
+<li><a href="#10-revision-history">Revision History</a></li>
+</ol>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
 <p>This document defines the operating model for Data Mesh at RBCZ, covering:</p>
 <ul>
 <li>Federated Governance and decision-making processes</li>
@@ -90,8 +110,8 @@
 <p><em>Domains/Tribes are E2E independent. CDO owns architecture and governance, not data or decisions.</em></p>
 </blockquote>
 <hr>
-<h2>2. Federated Governance</h2>
-<h3>2.1 Decision Model: Hybrid</h3>
+<h2 id="2-federated-governance">2. Federated Governance</h2>
+<h3 id="21-decision-model-hybrid">2.1 Decision Model: Hybrid</h3>
 <pre><code>DECISION MATRIX:
 
 ┌─────────────────────────────┬─────────────────┬─────────────────┐
@@ -103,7 +123,7 @@
 │ Breaking change in DP       │ Domain Owner    │ Consumers+Guild │
 └─────────────────────────────┴─────────────────┴─────────────────┘
 </code></pre>
-<h3>2.2 Review Process: Checklist-Based with Escalation</h3>
+<h3 id="22-review-process-checklist-based-with-escalation">2.2 Review Process: Checklist-Based with Escalation</h3>
 <pre><code>DP CREATION FLOW:
 
   Domain Owner        Automated           Guild Review
@@ -118,7 +138,7 @@
          Auto-approve      Escalate to guild
          + notification    (async or meeting)
 </code></pre>
-<h3>2.3 Checklist Criteria</h3>
+<h3 id="23-checklist-criteria">2.3 Checklist Criteria</h3>
 <table>
 <thead>
 <tr>
@@ -163,7 +183,7 @@
 <td>⚠️ Trigger review</td>
 </tr>
 </tbody></table>
-<h3>2.4 Enforcement: Catalog + Pipeline (Shift Left + Gate Right)</h3>
+<h3 id="24-enforcement-catalog-pipeline-shift-left-gate-right">2.4 Enforcement: Catalog + Pipeline (Shift Left + Gate Right)</h3>
 <pre><code>DEVELOPMENT                    DEPLOYMENT                    RUNTIME
      │                              │                            │
      ▼                              ▼                            ▼
@@ -230,8 +250,8 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>3. Self-Serve Platform</h2>
-<h3>3.1 Maturity Level: L4 (Full Self-Serve)</h3>
+<h2 id="3-self-serve-platform">3. Self-Serve Platform</h2>
+<h3 id="31-maturity-level-l4-full-self-serve">3.1 Maturity Level: L4 (Full Self-Serve)</h3>
 <table>
 <thead>
 <tr>
@@ -261,7 +281,7 @@
 <td>✅ <strong>Current state</strong></td>
 </tr>
 </tbody></table>
-<h3>3.2 Domain Team Experience</h3>
+<h3 id="32-domain-team-experience">3.2 Domain Team Experience</h3>
 <pre><code>DOMAIN TEAM EXPERIENCE:
 
 1. INIT          2. DEVELOP           3. DEPLOY           4. OPERATE
@@ -278,7 +298,7 @@
 
 ⏱️ Time to first DP: &lt; 1 day
 </code></pre>
-<h3>3.3 Available Tools</h3>
+<h3 id="33-available-tools">3.3 Available Tools</h3>
 <table>
 <thead>
 <tr>
@@ -313,7 +333,7 @@
 <td>Domain Team sets up own alerts</td>
 </tr>
 </tbody></table>
-<h3>3.4 DP Template Structure</h3>
+<h3 id="34-dp-template-structure">3.4 DP Template Structure</h3>
 <pre><code>dp-template/
 ├── datacontract.yaml      # Schema + metadata
 ├── src/
@@ -329,8 +349,8 @@
 └── README.md              # Auto-generated docs
 </code></pre>
 <hr>
-<h2>4. Domain Team Autonomy</h2>
-<h3>4.1 Target State: Tribe E2E Autonomy</h3>
+<h2 id="4-domain-team-autonomy">4. Domain Team Autonomy</h2>
+<h3 id="41-target-state-tribe-e2e-autonomy">4.1 Target State: Tribe E2E Autonomy</h3>
 <pre><code>CDO TARGET OPERATING MODEL:
 
 ┌─────────────────────────────────────────────────────────────────┐
@@ -371,7 +391,7 @@
    │ Account.│            │ Account.│            │ Account.│
    └─────────┘            └─────────┘            └─────────┘
 </code></pre>
-<h3>4.2 Team Transformation</h3>
+<h3 id="42-team-transformation">4.2 Team Transformation</h3>
 <table>
 <thead>
 <tr>
@@ -396,7 +416,7 @@
 <td>Architect &amp; Enabler</td>
 </tr>
 </tbody></table>
-<h3>4.3 Transformation Path (6-12 months)</h3>
+<h3 id="43-transformation-path-6-12-months">4.3 Transformation Path (6-12 months)</h3>
 <pre><code>CURRENT STATE              TRANSITION              TARGET STATE
 
 Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  BU-Dedicated
@@ -409,7 +429,7 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
 • Shallow                  • Knowledge transfer    • Deep
   knowledge                                          expertise
 </code></pre>
-<h3>4.4 Domain Team Structure</h3>
+<h3 id="44-domain-team-structure">4.4 Domain Team Structure</h3>
 <pre><code>DOMAIN TEAM STRUCTURE:
 
 ┌─────────────────────────────────────────────────────┐
@@ -430,7 +450,7 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
    Prioritization  Build &amp;      Business
    + roadmap       maintain     knowledge
 </code></pre>
-<h3>4.5 CDO Success Metrics</h3>
+<h3 id="45-cdo-success-metrics">4.5 CDO Success Metrics</h3>
 <table>
 <thead>
 <tr>
@@ -461,8 +481,8 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
 </tr>
 </tbody></table>
 <hr>
-<h2>5. Consumer Experience</h2>
-<h3>5.1 Consumer Journey</h3>
+<h2 id="5-consumer-experience">5. Consumer Experience</h2>
+<h3 id="51-consumer-journey">5.1 Consumer Journey</h3>
 <pre><code>CONSUMER JOURNEY:
 
 1. DISCOVER          2. EVALUATE           3. ACCESS            4. USE
@@ -480,7 +500,7 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
  • Domain            • Sample rows        • Request for
    browse                                   restricted
 </code></pre>
-<h3>5.2 Catalog Features</h3>
+<h3 id="52-catalog-features">5.2 Catalog Features</h3>
 <table>
 <thead>
 <tr>
@@ -530,7 +550,7 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
 <td>🟢 Low</td>
 </tr>
 </tbody></table>
-<h3>5.3 Consumer Decision Flow</h3>
+<h3 id="53-consumer-decision-flow">5.3 Consumer Decision Flow</h3>
 <pre><code>&quot;I need AUM data&quot;
          │
          ▼
@@ -552,8 +572,8 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
     Using within 10 minutes
 </code></pre>
 <hr>
-<h2>6. Data Product Lifecycle</h2>
-<h3>6.1 Six-Phase Lifecycle</h3>
+<h2 id="6-data-product-lifecycle">6. Data Product Lifecycle</h2>
+<h3 id="61-six-phase-lifecycle">6.1 Six-Phase Lifecycle</h3>
 <pre><code>DATA PRODUCT LIFECYCLE:
 
 ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐
@@ -569,7 +589,7 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
   Sponsor      Review        Quality       Maturity     SLA met      Consumers
   approval     approved      tests pass   ≥60%                      migrated
 </code></pre>
-<h3>6.2 Phases and Responsibilities</h3>
+<h3 id="62-phases-and-responsibilities">6.2 Phases and Responsibilities</h3>
 <table>
 <thead>
 <tr>
@@ -617,9 +637,9 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
 </tr>
 </tbody></table>
 <blockquote>
-<p><strong>Tool:</strong> Use the <a href="templates/dp-discovery-questionnaire.md">DP Discovery Questionnaire</a> for IDEATE → DESIGN sessions with Domain Owners. Structured QAR format ensures all governance requirements are captured.</p>
+<p><strong>Tool:</strong> Use the <a href="templates/dp-discovery-questionnaire.html">DP Discovery Questionnaire</a> for IDEATE → DESIGN sessions with Domain Owners. Structured QAR format ensures all governance requirements are captured.</p>
 </blockquote>
-<h3>6.3 RETIRE Phase (Important!)</h3>
+<h3 id="63-retire-phase-important">6.3 RETIRE Phase (Important!)</h3>
 <blockquote>
 <p>Most organizations forget the RETIRE phase → zombie DPs that nobody uses but still run and cost money.</p>
 </blockquote>
@@ -634,8 +654,8 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
 <li><input disabled="" type="checkbox"> Deallocate infrastructure</li>
 </ul>
 <hr>
-<h2>7. Quality &amp; SLA</h2>
-<h3>7.1 Three Layers of Measurement</h3>
+<h2 id="7-quality-amp-sla">7. Quality &amp; SLA</h2>
+<h3 id="71-three-layers-of-measurement">7.1 Three Layers of Measurement</h3>
 <pre><code>QUALITY MEASUREMENT LAYERS:
 
 ┌─────────────────────────────────────────────────────────────────┐
@@ -676,7 +696,7 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
 │  └────────────────┘ └────────────────┘ └────────────────┘       │
 └─────────────────────────────────────────────────────────────────┘
 </code></pre>
-<h3>7.2 When to Use Which Layer</h3>
+<h3 id="72-when-to-use-which-layer">7.2 When to Use Which Layer</h3>
 <table>
 <thead>
 <tr>
@@ -705,7 +725,7 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
 <td>Runtime</td>
 </tr>
 </tbody></table>
-<h3>7.3 Enforcement: Tiered Model</h3>
+<h3 id="73-enforcement-tiered-model">7.3 Enforcement: Tiered Model</h3>
 <pre><code>QUALITY ENFORCEMENT TIERS:
 
                     ┌─────────────────────────────────────┐
@@ -727,7 +747,7 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
    │  blocked  │              │  Timeline │              │           │
    └───────────┘              └───────────┘              └───────────┘
 </code></pre>
-<h3>7.4 Enforcement Matrix</h3>
+<h3 id="74-enforcement-matrix">7.4 Enforcement Matrix</h3>
 <table>
 <thead>
 <tr>
@@ -768,14 +788,14 @@ Cross-BU Pool    ──────▶   Hybrid Model   ──────▶  B
 <td>No</td>
 </tr>
 </tbody></table>
-<h3>7.5 Escalation Timeline</h3>
+<h3 id="75-escalation-timeline">7.5 Escalation Timeline</h3>
 <pre><code>DAY 0          DAY 3           DAY 7           DAY 14
   │              │               │                │
   ▼              ▼               ▼                ▼
 Warning      Reminder      Escalate to      Escalate to
 to Owner     to Owner      BU Manager       CDO + Block
 </code></pre>
-<h3>7.6 Enforcement Roadmap</h3>
+<h3 id="76-enforcement-roadmap">7.6 Enforcement Roadmap</h3>
 <pre><code>ENFORCEMENT ROADMAP:
 
 Q1                  Q2                  Q3                  Q4
@@ -831,8 +851,8 @@ Q1                  Q2                  Q3                  Q4
 </tr>
 </tbody></table>
 <hr>
-<h2>8. Gap Analysis &amp; Roadmap</h2>
-<h3>8.1 Current State vs. Target State</h3>
+<h2 id="8-gap-analysis-amp-roadmap">8. Gap Analysis &amp; Roadmap</h2>
+<h3 id="81-current-state-vs-target-state">8.1 Current State vs. Target State</h3>
 <table>
 <thead>
 <tr>
@@ -886,7 +906,7 @@ Q1                  Q2                  Q3                  Q4
 <td>🔴 High</td>
 </tr>
 </tbody></table>
-<h3>8.2 Prioritized Roadmap</h3>
+<h3 id="82-prioritized-roadmap">8.2 Prioritized Roadmap</h3>
 <table>
 <thead>
 <tr>
@@ -947,7 +967,7 @@ Q1                  Q2                  Q3                  Q4
 </tr>
 </tbody></table>
 <hr>
-<h2>9. Related Documents</h2>
+<h2 id="9-related-documents">9. Related Documents</h2>
 <table>
 <thead>
 <tr>
@@ -956,32 +976,32 @@ Q1                  Q2                  Q3                  Q4
 </tr>
 </thead>
 <tbody><tr>
-<td><a href="GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a></td>
+<td><a href="GOV-DM-001-data-mesh-governance.html">GOV-DM-001</a></td>
 <td>Main Data Mesh Governance</td>
 </tr>
 <tr>
-<td><a href="GOV-DM-002-naming-convention.md">GOV-DM-002</a></td>
+<td><a href="GOV-DM-002-naming-convention.html">GOV-DM-002</a></td>
 <td>Naming Convention</td>
 </tr>
 <tr>
-<td><a href="GOV-DM-003-domain-hierarchy.md">GOV-DM-003</a></td>
+<td><a href="GOV-DM-003-domain-hierarchy.html">GOV-DM-003</a></td>
 <td>Domain Hierarchy &amp; Ownership</td>
 </tr>
 <tr>
-<td><a href="templates/dp-discovery-questionnaire.md">DP Discovery Questionnaire</a></td>
+<td><a href="templates/dp-discovery-questionnaire.html">DP Discovery Questionnaire</a></td>
 <td>QAR interview guide for Domain Owner sessions</td>
 </tr>
 <tr>
-<td><a href="catalogs/investment-dp-catalog.md">Investment DP Catalog</a></td>
+<td><a href="catalogs/investment-dp-catalog.html">Investment DP Catalog</a></td>
 <td>Investment Domain Products</td>
 </tr>
 <tr>
-<td><a href="review/2026-01-08-domain-composability-framework.md">Composability Framework</a></td>
+<td><a href="review/2026-01-08-domain-composability-framework.html">Composability Framework</a></td>
 <td>DP Layer Classification</td>
 </tr>
 </tbody></table>
 <hr>
-<h2>10. Revision History</h2>
+<h2 id="10-revision-history">10. Revision History</h2>
 <table>
 <thead>
 <tr>

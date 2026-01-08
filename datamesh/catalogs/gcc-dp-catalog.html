@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,7 +72,7 @@
     </style>
 </head>
 <body>
-<h1>GCC Domain - Data Product Catalog</h1>
+<h1 id="gcc-domain---data-product-catalog">GCC Domain - Data Product Catalog</h1>
 <blockquote>
 <p><strong>Status:</strong> DRAFT
 <strong>Version:</strong> 3.6
@@ -76,15 +82,28 @@
 <strong>Based on:</strong> GOV-DM-001, GOV-DM-003, QAR session 2026-01-08</p>
 </blockquote>
 <hr>
-<h2>1. Executive Summary</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-executive-summary">Executive Summary</a></li>
+<li><a href="#2-reference-data-products-reuse">Reference Data Products (REUSE)</a></li>
+<li><a href="#3-gcc-data-products">GCC Data Products</a></li>
+<li><a href="#4-dependency-graph">Dependency Graph</a></li>
+<li><a href="#5-summary-table">Summary Table</a></li>
+<li><a href="#6-consumers">Consumers</a></li>
+<li><a href="#7-governance-compliance">Governance Compliance</a></li>
+<li><a href="#8-implementation-roadmap">Implementation Roadmap</a></li>
+<li><a href="#9-revision-history">Revision History</a></li>
+</ol>
+<hr>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
 <p>This catalog defines Data Products for <strong>GCC (Group of Connected Clients)</strong> - a subdomain of Corporate BU for identifying and managing connected parties.</p>
-<h3>Design Principles</h3>
+<h3 id="design-principles">Design Principles</h3>
 <ol>
 <li><strong>Every DP must have a clear purpose</strong> - no known purpose = no product needed</li>
 <li><strong>Single Source of Truth</strong> - identity data at RBCZ level (concepts), instances in domains</li>
 <li><strong>Every DP must be independently useful</strong> - makes sense even without others</li>
 </ol>
-<h3>Domain Placement</h3>
+<h3 id="domain-placement">Domain Placement</h3>
 <pre><code>RBCZ (Enterprise)
 ├── countries                          ← Reference (REUSE)
 ├── currencies                         ← Reference (REUSE)
@@ -100,7 +119,7 @@
         ├── gcc-requests               ← Request audit trail
         └── gcc-financials             ← Financial indicators
 </code></pre>
-<h3>Data Product Summary</h3>
+<h3 id="data-product-summary">Data Product Summary</h3>
 <table>
 <thead>
 <tr>
@@ -130,7 +149,7 @@
 <td></td>
 </tr>
 </tbody></table>
-<h3>Relationship Model</h3>
+<h3 id="relationship-model">Relationship Model</h3>
 <pre><code>gcc-natural-persons    gcc-legal-entities
 (WHO they are)         (WHO they are)
         │                     │
@@ -151,9 +170,9 @@
             (group STRUCTURE)
 </code></pre>
 <hr>
-<h2>2. Reference Data Products (REUSE)</h2>
+<h2 id="2-reference-data-products-reuse">2. Reference Data Products (REUSE)</h2>
 <p>These DPs exist at RBCZ level - GCC consumes them.</p>
-<h3>DP-REF-001: countries</h3>
+<h3 id="dp-ref-001-countries">DP-REF-001: countries</h3>
 <table>
 <thead>
 <tr>
@@ -174,7 +193,7 @@
 <td><code>country_code</code> in gcc-natural-persons, gcc-legal-entities</td>
 </tr>
 </tbody></table>
-<h3>DP-REF-002: currencies</h3>
+<h3 id="dp-ref-002-currencies">DP-REF-002: currencies</h3>
 <table>
 <thead>
 <tr>
@@ -196,11 +215,11 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>3. GCC Data Products</h2>
+<h2 id="3-gcc-data-products">3. GCC Data Products</h2>
 <p><strong>Owner:</strong> GCC Product Owner (under Corporate BU)
 <strong>Domain Path:</strong> <code>RBCZ:Corporate:GCC</code></p>
 <hr>
-<h3>DP-GCC-001: gcc-natural-persons</h3>
+<h3 id="dp-gcc-001-gcc-natural-persons">DP-GCC-001: gcc-natural-persons</h3>
 <table>
 <thead>
 <tr>
@@ -327,7 +346,7 @@
 <li>MS PaaS Application</li>
 </ul>
 <hr>
-<h3>DP-GCC-002: gcc-legal-entities</h3>
+<h3 id="dp-gcc-002-gcc-legal-entities">DP-GCC-002: gcc-legal-entities</h3>
 <table>
 <thead>
 <tr>
@@ -460,7 +479,7 @@
 <li>MS PaaS Application</li>
 </ul>
 <hr>
-<h3>DP-GCC-003: gcc-members</h3>
+<h3 id="dp-gcc-003-gcc-members">DP-GCC-003: gcc-members</h3>
 <table>
 <thead>
 <tr>
@@ -585,7 +604,7 @@
 <li>MS PaaS Application</li>
 </ul>
 <hr>
-<h3>DP-GCC-004: gcc-relations</h3>
+<h3 id="dp-gcc-004-gcc-relations">DP-GCC-004: gcc-relations</h3>
 <table>
 <thead>
 <tr>
@@ -746,7 +765,7 @@
 <li>MS PaaS Application</li>
 </ul>
 <hr>
-<h3>DP-GCC-005: gcc-groups</h3>
+<h3 id="dp-gcc-005-gcc-groups">DP-GCC-005: gcc-groups</h3>
 <table>
 <thead>
 <tr>
@@ -855,7 +874,7 @@
 <li>External Account Income Calculator (UC2)</li>
 </ul>
 <hr>
-<h3>DP-GCC-006: gcc-requests</h3>
+<h3 id="dp-gcc-006-gcc-requests">DP-GCC-006: gcc-requests</h3>
 <table>
 <thead>
 <tr>
@@ -979,7 +998,7 @@
 <li>Audit / Compliance</li>
 </ul>
 <hr>
-<h3>DP-GCC-007: gcc-financials</h3>
+<h3 id="dp-gcc-007-gcc-financials">DP-GCC-007: gcc-financials</h3>
 <table>
 <thead>
 <tr>
@@ -1083,8 +1102,8 @@
 <li>MS PaaS Application</li>
 </ul>
 <hr>
-<h2>4. Dependency Graph</h2>
-<h3>Legend</h3>
+<h2 id="4-dependency-graph">4. Dependency Graph</h2>
+<h3 id="legend">Legend</h3>
 <table>
 <thead>
 <tr>
@@ -1104,7 +1123,7 @@
 <td>Summarizes/counts</td>
 </tr>
 </tbody></table>
-<h3>Complete Graph</h3>
+<h3 id="complete-graph">Complete Graph</h3>
 <pre><code>L1 SHARED REFERENCE (RBCZ)
 ══════════════════════════
   rbcz:countries          rbcz:currencies
@@ -1153,7 +1172,7 @@ L3 ANALYTICS (GCC)
 <li>WHO/ROLE/HOW/WHAT/RESULT = semantic purpose</li>
 </ul>
 <hr>
-<h2>5. Summary Table</h2>
+<h2 id="5-summary-table">5. Summary Table</h2>
 <table>
 <thead>
 <tr>
@@ -1238,7 +1257,7 @@ L3 ANALYTICS (GCC)
 <td><code>GCC Membership</code></td>
 </tr>
 </tbody></table>
-<h3>Concept Summary</h3>
+<h3 id="concept-summary">Concept Summary</h3>
 <p><strong>Total concepts:</strong> 12</p>
 <table>
 <thead>
@@ -1261,7 +1280,7 @@ L3 ANALYTICS (GCC)
 </tr>
 </tbody></table>
 <hr>
-<h2>6. Consumers</h2>
+<h2 id="6-consumers">6. Consumers</h2>
 <table>
 <thead>
 <tr>
@@ -1282,8 +1301,8 @@ L3 ANALYTICS (GCC)
 </tr>
 </tbody></table>
 <hr>
-<h2>7. Governance Compliance</h2>
-<h3>GOV-DM-001 Compliance</h3>
+<h2 id="7-governance-compliance">7. Governance Compliance</h2>
+<h3 id="gov-dm-001-compliance">GOV-DM-001 Compliance</h3>
 <table>
 <thead>
 <tr>
@@ -1313,7 +1332,7 @@ L3 ANALYTICS (GCC)
 <td>Uses RBCZ reference data</td>
 </tr>
 </tbody></table>
-<h3>FIBO Alignment</h3>
+<h3 id="fibo-alignment">FIBO Alignment</h3>
 <table>
 <thead>
 <tr>
@@ -1351,29 +1370,29 @@ L3 ANALYTICS (GCC)
 </tr>
 </tbody></table>
 <hr>
-<h2>8. Implementation Roadmap</h2>
-<h3>Phase 1: Identity</h3>
+<h2 id="8-implementation-roadmap">8. Implementation Roadmap</h2>
+<h3 id="phase-1-identity">Phase 1: Identity</h3>
 <ul>
 <li><input disabled="" type="checkbox"> gcc-natural-persons</li>
 <li><input disabled="" type="checkbox"> gcc-legal-entities</li>
 </ul>
-<h3>Phase 2: Membership</h3>
+<h3 id="phase-2-membership">Phase 2: Membership</h3>
 <ul>
 <li><input disabled="" type="checkbox"> gcc-members</li>
 </ul>
-<h3>Phase 3: Relations</h3>
+<h3 id="phase-3-relations">Phase 3: Relations</h3>
 <ul>
 <li><input disabled="" type="checkbox"> gcc-relations</li>
 <li><input disabled="" type="checkbox"> gcc-groups</li>
 </ul>
-<h3>Phase 4: Integration</h3>
+<h3 id="phase-4-integration">Phase 4: Integration</h3>
 <ul>
 <li><input disabled="" type="checkbox"> API endpoints</li>
 <li><input disabled="" type="checkbox"> MS PaaS integration</li>
 <li><input disabled="" type="checkbox"> External Account Income Calculator integration</li>
 </ul>
 <hr>
-<h2>9. Revision History</h2>
+<h2 id="9-revision-history">9. Revision History</h2>
 <table>
 <thead>
 <tr>

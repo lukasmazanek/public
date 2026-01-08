@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,14 +72,14 @@
     </style>
 </head>
 <body>
-<h1>GCC Storage MVP2 - Data Model Analysis</h1>
+<h1 id="gcc-storage-mvp2---data-model-analysis">GCC Storage MVP2 - Data Model Analysis</h1>
 <blockquote>
 <p><strong>Source:</strong> Scan 8. 1. 2026 at 13.05.pdf (Vil Shakirov, 07.01.2026)
 <strong>Captured:</strong> 2026-01-08
 <strong>Domain:</strong> MIB (likely Credit/Risk subdomain)</p>
 </blockquote>
 <hr>
-<h2>Business Requirements</h2>
+<h2 id="business-requirements">Business Requirements</h2>
 <ol>
 <li>Store GCC group generated in MS PaaS application process</li>
 <li>Read names of GCC members for external account incomes calculation</li>
@@ -81,8 +87,8 @@
 <li>Data model usable for separate GCC component in the future</li>
 </ol>
 <hr>
-<h2>Conceptual Data Model (ERD)</h2>
-<h3>Core Entities</h3>
+<h2 id="conceptual-data-model-erd">Conceptual Data Model (ERD)</h2>
+<h3 id="core-entities">Core Entities</h3>
 <table>
 <thead>
 <tr>
@@ -107,7 +113,7 @@
 <td>party_id, name, cocunut_id, country_code, address, cribis_id, gcc_head_flag</td>
 </tr>
 </tbody></table>
-<h3>Relation Subtypes (Disjoint)</h3>
+<h3 id="relation-subtypes-disjoint">Relation Subtypes (Disjoint)</h3>
 <table>
 <thead>
 <tr>
@@ -127,7 +133,7 @@
 <td>(marker only)</td>
 </tr>
 </tbody></table>
-<h3>Subject Subtypes (Disjoint)</h3>
+<h3 id="subject-subtypes-disjoint">Subject Subtypes (Disjoint)</h3>
 <table>
 <thead>
 <tr>
@@ -147,7 +153,7 @@
 <td>business_id_number, tax_id_number</td>
 </tr>
 </tbody></table>
-<h3>Related Entities</h3>
+<h3 id="related-entities">Related Entities</h3>
 <table>
 <thead>
 <tr>
@@ -163,8 +169,8 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>Logical Data Model (Physical Schema)</h2>
-<h3>Tables</h3>
+<h2 id="logical-data-model-physical-schema">Logical Data Model (Physical Schema)</h2>
+<h3 id="tables">Tables</h3>
 <h4><code>requests</code></h4>
 <pre><code>PK  request_id: bigint
     application_id: varchar(50)
@@ -228,11 +234,11 @@ FK  subject_id: bigint
     parameter_name: varchar(50)
     parameter_amount: numeric
 </code></pre>
-<h3>Junction Table</h3>
+<h3 id="junction-table">Junction Table</h3>
 <h4><code>application_subjects</code></h4>
 <p>Links requests to subjects (used by GET request)</p>
 <hr>
-<h2>API Operations</h2>
+<h2 id="api-operations">API Operations</h2>
 <table>
 <thead>
 <tr>
@@ -262,7 +268,7 @@ FK  subject_id: bigint
 </tr>
 </tbody></table>
 <hr>
-<h2>Cardinalities</h2>
+<h2 id="cardinalities">Cardinalities</h2>
 <pre><code>Request 1 ←──────── 0..* Relation
 Relation 0..* ────→ 1 Subject (parent)
 Relation 0..* ────→ 1 Subject (child)
@@ -273,8 +279,8 @@ Relation 1 ←─────── 0..1 Ownership
 Relation 1 ←─────── 0..1 Control Relation
 </code></pre>
 <hr>
-<h2>Data Mesh Analysis Notes</h2>
-<h3>Potential Data Products</h3>
+<h2 id="data-mesh-analysis-notes">Data Mesh Analysis Notes</h2>
+<h3 id="potential-data-products">Potential Data Products</h3>
 <table>
 <thead>
 <tr>
@@ -299,13 +305,13 @@ Relation 1 ←─────── 0..1 Control Relation
 <td>Ownership chain analysis</td>
 </tr>
 </tbody></table>
-<h3>Domain Ownership</h3>
+<h3 id="domain-ownership">Domain Ownership</h3>
 <ul>
 <li><strong>Suggested Domain:</strong> <code>RBCZ:MIB:Credit</code> or <code>RBCZ:MIB:Risk</code></li>
 <li><strong>GCC</strong> = Group of Connected Clients (regulatory/risk concept)</li>
 <li>Cross-references: Party (enterprise), Country (reference)</li>
 </ul>
-<h3>FIBO Alignment Candidates</h3>
+<h3 id="fibo-alignment-candidates">FIBO Alignment Candidates</h3>
 <table>
 <thead>
 <tr>
@@ -334,7 +340,7 @@ Relation 1 ←─────── 0..1 Control Relation
 <td>fibo-be:Control</td>
 </tr>
 </tbody></table>
-<h3>Quality Observations</h3>
+<h3 id="quality-observations">Quality Observations</h3>
 <ol>
 <li><strong>Good:</strong> Clear separation of concerns (request, relation, subject)</li>
 <li><strong>Good:</strong> Subtype pattern for polymorphic entities</li>
@@ -343,7 +349,7 @@ Relation 1 ←─────── 0..1 Control Relation
 <li><strong>Note:</strong> Multiple <code>source_*</code> fields - lineage tracking</li>
 </ol>
 <hr>
-<h2>Next Steps</h2>
+<h2 id="next-steps">Next Steps</h2>
 <ul>
 <li><input disabled="" type="checkbox"> Confirm domain placement (Credit vs Risk)</li>
 <li><input disabled="" type="checkbox"> Create Data Contract YAML</li>

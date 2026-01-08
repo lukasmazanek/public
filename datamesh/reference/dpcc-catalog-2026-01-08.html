@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,14 +72,14 @@
     </style>
 </head>
 <body>
-<h1>DPCC Catalog Extract</h1>
+<h1 id="dpcc-catalog-extract">DPCC Catalog Extract</h1>
 <blockquote>
 <p><strong>Source:</strong> Scan 8. 1. 2026 at 11.06.pdf + Scan 8. 1. 2026 at 11.14.pdf (full names)
 <strong>Extracted:</strong> 2026-01-08
 <strong>Records:</strong> 87 Data Products</p>
 </blockquote>
 <hr>
-<h2>Summary by Domain</h2>
+<h2 id="summary-by-domain">Summary by Domain</h2>
 <table>
 <thead>
 <tr>
@@ -166,7 +172,7 @@
 </tbody></table>
 <hr>
 <h2>DWH Domain (<code>rbcz:it:development:dwh</code>)</h2>
-<h3>Accounting &amp; Finance</h3>
+<h3 id="accounting-amp-finance">Accounting &amp; Finance</h3>
 <table>
 <thead>
 <tr>
@@ -231,7 +237,7 @@
 <td>Taxonomy, Compliance</td>
 </tr>
 </tbody></table>
-<h3>Client Data</h3>
+<h3 id="client-data">Client Data</h3>
 <table>
 <thead>
 <tr>
@@ -284,7 +290,7 @@
 <td>Legal Entity</td>
 </tr>
 </tbody></table>
-<h3>Accounts &amp; Transactions</h3>
+<h3 id="accounts-amp-transactions">Accounts &amp; Transactions</h3>
 <table>
 <thead>
 <tr>
@@ -319,7 +325,7 @@
 <td>Transaction, Payment</td>
 </tr>
 </tbody></table>
-<h3>Contracts &amp; Products</h3>
+<h3 id="contracts-amp-products">Contracts &amp; Products</h3>
 <table>
 <thead>
 <tr>
@@ -378,7 +384,7 @@
 <td>Contract, Financial Instrument</td>
 </tr>
 </tbody></table>
-<h3>Risk &amp; Compliance</h3>
+<h3 id="risk-amp-compliance">Risk &amp; Compliance</h3>
 <table>
 <thead>
 <tr>
@@ -449,7 +455,7 @@
 <td>Credit Risk, Risk Assessment</td>
 </tr>
 </tbody></table>
-<h3>Collateral</h3>
+<h3 id="collateral">Collateral</h3>
 <table>
 <thead>
 <tr>
@@ -472,7 +478,7 @@
 <td>Collateral, Security Interest</td>
 </tr>
 </tbody></table>
-<h3>Segmentation &amp; Behavior</h3>
+<h3 id="segmentation-amp-behavior">Segmentation &amp; Behavior</h3>
 <table>
 <thead>
 <tr>
@@ -513,7 +519,7 @@
 <td>Customer Segment</td>
 </tr>
 </tbody></table>
-<h3>Marketing &amp; Campaigns</h3>
+<h3 id="marketing-amp-campaigns">Marketing &amp; Campaigns</h3>
 <table>
 <thead>
 <tr>
@@ -536,7 +542,7 @@
 <td>Marketing Campaign, Customer Engagement</td>
 </tr>
 </tbody></table>
-<h3>GDPR &amp; Consent</h3>
+<h3 id="gdpr-amp-consent">GDPR &amp; Consent</h3>
 <table>
 <thead>
 <tr>
@@ -565,7 +571,7 @@
 <td>Compliance</td>
 </tr>
 </tbody></table>
-<h3>External Registries</h3>
+<h3 id="external-registries">External Registries</h3>
 <table>
 <thead>
 <tr>
@@ -755,8 +761,8 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>Key Insights</h2>
-<h3>1. DWH as Enterprise Data Layer</h3>
+<h2 id="key-insights">Key Insights</h2>
+<h3 id="1-dwh-as-enterprise-data-layer">1. DWH as Enterprise Data Layer</h3>
 <p>The <code>rbcz:it:development:dwh</code> domain serves as a <strong>cross-cutting enterprise data layer</strong> providing:</p>
 <ul>
 <li>Client 360 data (profiles, addresses, contacts)</li>
@@ -765,14 +771,14 @@
 <li>Risk and compliance data</li>
 <li>External registry integrations</li>
 </ul>
-<h3>2. Domain Consumption Pattern</h3>
+<h3 id="2-domain-consumption-pattern">2. Domain Consumption Pattern</h3>
 <pre><code>DWH (Enterprise Layer)
     │
     ├── rbcz:mib:investment (consumes client, contract, transaction data)
     ├── rbcz:retail:* (consumes client, product, transaction data)
     └── rbcz:ai (consumes behavioral, campaign data)
 </code></pre>
-<h3>3. Investment Domain - Complete DP List</h3>
+<h3 id="3-investment-domain---complete-dp-list">3. Investment Domain - Complete DP List</h3>
 <table>
 <thead>
 <tr>
@@ -828,7 +834,7 @@
 </tr>
 </tbody></table>
 <p><strong>Note:</strong> DP_EDI_AGG_CLIENT, DP_EDI_PROFITABILITY, DP_EDI_SALES, DP_EDI_APP_USAGE were referenced in previous scan but not visible in current extract - may be planned or renamed.</p>
-<h3>4. FIBO Alignment</h3>
+<h3 id="4-fibo-alignment">4. FIBO Alignment</h3>
 <p>Most DWH DPs have explicit FIBO mappings documented:</p>
 <ul>
 <li>Accounting → FIBO Accounting</li>
@@ -839,7 +845,7 @@
 <li>Collateral → FIBO Collateral, Security Interest</li>
 </ul>
 <hr>
-<h2>Usage Notes</h2>
+<h2 id="usage-notes">Usage Notes</h2>
 <p>This extract serves as reference for:</p>
 <ol>
 <li>Mapping Test domain DPs to production DPCC</li>

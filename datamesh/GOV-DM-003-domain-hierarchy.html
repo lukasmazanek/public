@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,15 +72,29 @@
     </style>
 </head>
 <body>
-<h1>GOV-DM-003: Domain Hierarchy &amp; Ownership</h1>
+<h1 id="gov-dm-003-domain-hierarchy-amp-ownership">GOV-DM-003: Domain Hierarchy &amp; Ownership</h1>
 <blockquote>
 <p><strong>Status:</strong> ACTIVE
 <strong>Effective:</strong> 2026-01-08
 <strong>Owner:</strong> CDO - Lukáš Mazánek
-<strong>Parent:</strong> <a href="GOV-DM-001-data-mesh-governance.md">GOV-DM-001-data-mesh-governance.md</a></p>
+<strong>Parent:</strong> <a href="GOV-DM-001-data-mesh-governance.html">GOV-DM-001-data-mesh-governance.html</a></p>
 </blockquote>
 <hr>
-<h2>1. Purpose</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-purpose">Purpose</a></li>
+<li><a href="#2-domain-hierarchy">Domain Hierarchy</a></li>
+<li><a href="#3-ownership-model">Ownership Model</a></li>
+<li><a href="#4-domain-owners">Domain Owners</a></li>
+<li><a href="#5-interoperability-federated-ontology">Interoperability: Federated Ontology</a></li>
+<li><a href="#6-cross-domain-concepts">Cross-Domain Concepts</a></li>
+<li><a href="#7-reference-data-ownership">Reference Data Ownership</a></li>
+<li><a href="#8-governance-processes">Governance Processes</a></li>
+<li><a href="#9-validation-rules">Validation Rules</a></li>
+<li><a href="#10-revision-history">Revision History</a></li>
+</ol>
+<hr>
+<h2 id="1-purpose">1. Purpose</h2>
 <p>Define the domain hierarchy structure and ownership rules for Data Products at RBCZ, ensuring:</p>
 <ul>
 <li>Clear accountability for data</li>
@@ -82,8 +102,8 @@
 <li>Proper interoperability through federated ontology</li>
 </ul>
 <hr>
-<h2>2. Domain Hierarchy</h2>
-<h3>2.1 Complete Structure</h3>
+<h2 id="2-domain-hierarchy">2. Domain Hierarchy</h2>
+<h3 id="21-complete-structure">2.1 Complete Structure</h3>
 <pre><code>┌─────────────────────────────────────────────────────────────────┐
 │                    EXTERNAL AUTHORITIES                          │
 │  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌──────────┐  │
@@ -129,7 +149,7 @@
 │  └───────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
 </code></pre>
-<h3>2.2 Domain Types</h3>
+<h3 id="22-domain-types">2.2 Domain Types</h3>
 <table>
 <thead>
 <tr>
@@ -183,11 +203,11 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>3. Ownership Model</h2>
-<h3>3.1 Core Principle</h3>
+<h2 id="3-ownership-model">3. Ownership Model</h2>
+<h3 id="31-core-principle">3.1 Core Principle</h3>
 <p><strong>Domain Path = Ownership</strong></p>
 <p>Whoever defines a concept at a given level in the hierarchy owns it.</p>
-<h3>3.2 Ownership Rules</h3>
+<h3 id="32-ownership-rules">3.2 Ownership Rules</h3>
 <table>
 <thead>
 <tr>
@@ -227,7 +247,7 @@
 <td>All parent rules apply automatically</td>
 </tr>
 </tbody></table>
-<h3>3.3 Specialization Matrix</h3>
+<h3 id="33-specialization-matrix">3.3 Specialization Matrix</h3>
 <table>
 <thead>
 <tr>
@@ -267,7 +287,7 @@
 <td>Add values to parent enum</td>
 </tr>
 </tbody></table>
-<h4>3.3.1 Concrete Example: Investment Customer</h4>
+<h4 id="331-concrete-example-investment-customer">3.3.1 Concrete Example: Investment Customer</h4>
 <p>When <strong>Investment domain</strong> extends a concept from <strong>MIB domain</strong> (e.g., Customer), these rules apply:</p>
 <pre><code>MIB:Customer (parent)                   Investment:Customer (child)
 ─────────────────────                   ───────────────────────────
@@ -327,7 +347,7 @@ segment: enum [MIB, Retail, Corp]       segment: enum [MIB]        ← OK: narro
 <td>Parent doesn&#39;t know &#39;VIP&#39;, cannot validate</td>
 </tr>
 </tbody></table>
-<h3>3.4 Liskov Substitution Principle</h3>
+<h3 id="34-liskov-substitution-principle">3.4 Liskov Substitution Principle</h3>
 <p><strong>Why these rules?</strong> Any code expecting the parent type MUST work with the child type:</p>
 <pre><code>RULE:
 Wherever code expects MIB:Customer,
@@ -353,8 +373,8 @@ Any code/query that works with RBCZ:Customer
 MUST work with Investment:Customer without modification.
 </code></pre>
 <hr>
-<h2>4. Domain Owners</h2>
-<h3>4.1 Current Assignments</h3>
+<h2 id="4-domain-owners">4. Domain Owners</h2>
+<h3 id="41-current-assignments">4.1 Current Assignments</h3>
 <table>
 <thead>
 <tr>
@@ -399,7 +419,7 @@ MUST work with Investment:Customer without modification.
 <td>TBD</td>
 </tr>
 </tbody></table>
-<h3>4.2 Owner Responsibilities</h3>
+<h3 id="42-owner-responsibilities">4.2 Owner Responsibilities</h3>
 <table>
 <thead>
 <tr>
@@ -429,8 +449,8 @@ MUST work with Investment:Customer without modification.
 </tr>
 </tbody></table>
 <hr>
-<h2>5. Interoperability: Federated Ontology</h2>
-<h3>5.1 Domain-First Principle</h3>
+<h2 id="5-interoperability-federated-ontology">5. Interoperability: Federated Ontology</h2>
+<h3 id="51-domain-first-principle">5.1 Domain-First Principle</h3>
 <pre><code>PRIMARY AUTHORITY = RBCZ Domain Ontology
 
 External authorities (FIBO, Schema.org) provide:
@@ -440,7 +460,7 @@ External authorities (FIBO, Schema.org) provide:
 
 BUT they do NOT override domain definitions.
 </code></pre>
-<h3>5.2 Mapping Rules</h3>
+<h3 id="52-mapping-rules">5.2 Mapping Rules</h3>
 <table>
 <thead>
 <tr>
@@ -475,7 +495,7 @@ BUT they do NOT override domain definitions.
 <td>Direct external at subdomain is for validation</td>
 </tr>
 </tbody></table>
-<h3>5.3 Transitive Mapping Examples</h3>
+<h3 id="53-transitive-mapping-examples">5.3 Transitive Mapping Examples</h3>
 <p><strong>Scenario 1: Concept exists in parent</strong></p>
 <pre><code>investment:Customer
        │ extends
@@ -510,8 +530,8 @@ Result:
 - Must have clear domain definition
 </code></pre>
 <hr>
-<h2>6. Cross-Domain Concepts</h2>
-<h3>6.1 Customer Example</h3>
+<h2 id="6-cross-domain-concepts">6. Cross-Domain Concepts</h2>
+<h3 id="61-customer-example">6.1 Customer Example</h3>
 <pre><code>rbcz:Customer (Enterprise - CDO owns)
 │
 ├── Core Attributes (inherited by all):
@@ -536,7 +556,7 @@ Result:
             └── + legalForm: enum
             └── + industryCode: string
 </code></pre>
-<h3>6.2 Multi-Origin Entities</h3>
+<h3 id="62-multi-origin-entities">6.2 Multi-Origin Entities</h3>
 <p>When entity can be created in multiple domains (e.g., Customer):</p>
 <table>
 <thead>
@@ -564,8 +584,8 @@ Result:
 </tbody></table>
 <p><strong>Rule:</strong> Each domain owns its VIEW of the entity, but RBCZ:Customer is the unified base (CDO owns).</p>
 <hr>
-<h2>7. Reference Data Ownership</h2>
-<h3>7.1 Shared Reference Data (RBCZ Level)</h3>
+<h2 id="7-reference-data-ownership">7. Reference Data Ownership</h2>
+<h3 id="71-shared-reference-data-rbcz-level">7.1 Shared Reference Data (RBCZ Level)</h3>
 <table>
 <thead>
 <tr>
@@ -600,7 +620,7 @@ Result:
 <td>LEI (ISO 17442)</td>
 </tr>
 </tbody></table>
-<h3>7.2 Domain-Owned Master Data</h3>
+<h3 id="72-domain-owned-master-data">7.2 Domain-Owned Master Data</h3>
 <table>
 <thead>
 <tr>
@@ -630,8 +650,8 @@ Result:
 </tr>
 </tbody></table>
 <hr>
-<h2>8. Governance Processes</h2>
-<h3>8.1 New Concept Creation</h3>
+<h2 id="8-governance-processes">8. Governance Processes</h2>
+<h3 id="81-new-concept-creation">8.1 New Concept Creation</h3>
 <pre><code>1. Check if concept exists in parent domain
    │
    ├── YES → Extend parent (add only new attributes)
@@ -646,7 +666,7 @@ Result:
             │
             └── Register in domain ontology
 </code></pre>
-<h3>8.2 Cross-Domain Promotion</h3>
+<h3 id="82-cross-domain-promotion">8.2 Cross-Domain Promotion</h3>
 <p>When concept should move to higher level (e.g., Investment → MIB):</p>
 <ol>
 <li>Domain Owner proposes promotion</li>
@@ -657,28 +677,28 @@ Result:
 <li>Concept moved, aliases maintained</li>
 </ol>
 <hr>
-<h2>9. Validation Rules</h2>
-<h3>9.1 Hierarchy Validation</h3>
+<h2 id="9-validation-rules">9. Validation Rules</h2>
+<h3 id="91-hierarchy-validation">9.1 Hierarchy Validation</h3>
 <ul>
 <li><input disabled="" type="checkbox"> Every concept has valid domain path</li>
 <li><input disabled="" type="checkbox"> Parent domain exists (or is root)</li>
 <li><input disabled="" type="checkbox"> No circular inheritance</li>
 <li><input disabled="" type="checkbox"> Child attributes don&#39;t conflict with parent</li>
 </ul>
-<h3>9.2 Ownership Validation</h3>
+<h3 id="92-ownership-validation">9.2 Ownership Validation</h3>
 <ul>
 <li><input disabled="" type="checkbox"> Domain Owner assigned</li>
 <li><input disabled="" type="checkbox"> Owner has authority for domain level</li>
 <li><input disabled="" type="checkbox"> Changes approved by Owner</li>
 </ul>
-<h3>9.3 Mapping Validation</h3>
+<h3 id="93-mapping-validation">9.3 Mapping Validation</h3>
 <ul>
 <li><input disabled="" type="checkbox"> Parent mapping exists (if parent has concept)</li>
 <li><input disabled="" type="checkbox"> External mapping exists for new concepts (if available)</li>
 <li><input disabled="" type="checkbox"> No conflicting external mappings in hierarchy</li>
 </ul>
 <hr>
-<h2>10. Revision History</h2>
+<h2 id="10-revision-history">10. Revision History</h2>
 <table>
 <thead>
 <tr>

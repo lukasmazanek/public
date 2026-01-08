@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,14 +72,14 @@
     </style>
 </head>
 <body>
-<h1>Data Product Analysis: DP_EDI_AUM</h1>
+<h1 id="data-product-analysis-dpediaum">Data Product Analysis: DP_EDI_AUM</h1>
 <p><strong>Role:</strong> Banking Domain Expert
 <strong>Date:</strong> 2026-01-08
 <strong>Domain:</strong> <code>RBCZ:MIB:Investment</code>
 <strong>Type:</strong> Data Product Assessment
 <strong>Verdict:</strong> VALID DATA PRODUCT (needs maturation)</p>
 <hr>
-<h2>1. Basic Identification</h2>
+<h2 id="1-basic-identification">1. Basic Identification</h2>
 <table>
 <thead>
 <tr>
@@ -111,7 +117,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>2. DATSIS Test - Is it a Data Product?</h2>
+<h2 id="2-datsis-test---is-it-a-data-product">2. DATSIS Test - Is it a Data Product?</h2>
 <table>
 <thead>
 <tr>
@@ -153,8 +159,8 @@
 </tbody></table>
 <p><strong>Verdict:</strong> YES, this is a Data Product (but needs to mature)</p>
 <hr>
-<h2>3. Business Value Analysis</h2>
-<h3>Value Proposition</h3>
+<h2 id="3-business-value-analysis">3. Business Value Analysis</h2>
+<h3 id="value-proposition">Value Proposition</h3>
 <table>
 <thead>
 <tr>
@@ -179,7 +185,7 @@
 <td>Client distribution by segment</td>
 </tr>
 </tbody></table>
-<h3>Use Cases (3 defined)</h3>
+<h3 id="use-cases-3-defined">Use Cases (3 defined)</h3>
 <table>
 <thead>
 <tr>
@@ -210,7 +216,7 @@
 </tbody></table>
 <p><strong>Assessment:</strong> Clear business value, well-defined use cases</p>
 <hr>
-<h2>4. Product Structure</h2>
+<h2 id="4-product-structure">4. Product Structure</h2>
 <pre><code>DP_EDI_AUM
 ├── EDI_AUM (fact table)
 │   ├── DATUM (Calendar Day)
@@ -240,8 +246,8 @@
 </code></pre>
 <p><strong>Pattern:</strong> Star schema (fact + dimensions) - correct pattern for analytics product</p>
 <hr>
-<h2>5. Domain Expert Assessment</h2>
-<h3>What&#39;s Good</h3>
+<h2 id="5-domain-expert-assessment">5. Domain Expert Assessment</h2>
+<h3 id="what39s-good">What&#39;s Good</h3>
 <table>
 <thead>
 <tr>
@@ -274,7 +280,7 @@
 <td>Clear accountability</td>
 </tr>
 </tbody></table>
-<h3>Needs Improvement</h3>
+<h3 id="needs-improvement">Needs Improvement</h3>
 <table>
 <thead>
 <tr>
@@ -309,7 +315,7 @@
 <td>Aggregated data - OK for reporting</td>
 </tr>
 </tbody></table>
-<h3>Risks</h3>
+<h3 id="risks">Risks</h3>
 <table>
 <thead>
 <tr>
@@ -335,7 +341,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>6. FIBO Alignment Summary</h2>
+<h2 id="6-fibo-alignment-summary">6. FIBO Alignment Summary</h2>
 <p>From previous review (2025-12-31, <code>review/2025-12-31-domain-dp-edi-aum-fibo.md</code>):</p>
 <table>
 <thead>
@@ -372,7 +378,7 @@
 <li><code>Profitcenter Identifier</code> → missing external_concept</li>
 </ol>
 <hr>
-<h2>7. Data Product Scorecard</h2>
+<h2 id="7-data-product-scorecard">7. Data Product Scorecard</h2>
 <table>
 <thead>
 <tr>
@@ -438,27 +444,27 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>8. Recommendations</h2>
-<h3>Priority 1: Must fix before production</h3>
+<h2 id="8-recommendations">8. Recommendations</h2>
+<h3 id="priority-1-must-fix-before-production">Priority 1: Must fix before production</h3>
 <ul>
 <li><input disabled="" type="checkbox"> Complete missing business definitions (<code>AUM_LCY</code>, <code>L0/L1_PRODUCT_TYPE</code>)</li>
 <li><input disabled="" type="checkbox"> Fix 3 FIBO validation errors</li>
 <li><input disabled="" type="checkbox"> Increase maturity score to min. 60%</li>
 </ul>
-<h3>Priority 2: Before expanding consumers</h3>
+<h3 id="priority-2-before-expanding-consumers">Priority 2: Before expanding consumers</h3>
 <ul>
 <li><input disabled="" type="checkbox"> Reconsider SOURCE_CODE → Income mapping</li>
 <li><input disabled="" type="checkbox"> Document limitations (no ISIN = excluded)</li>
 <li><input disabled="" type="checkbox"> Add data quality metrics</li>
 </ul>
-<h3>Priority 3: Product evolution</h3>
+<h3 id="priority-3-product-evolution">Priority 3: Product evolution</h3>
 <ul>
 <li><input disabled="" type="checkbox"> Customer link for UC2/UC3 enrichment</li>
 <li><input disabled="" type="checkbox"> SCD Type 2 for segments</li>
 <li><input disabled="" type="checkbox"> Real-time variant (currently batch only)</li>
 </ul>
 <hr>
-<h2>9. Conclusion</h2>
+<h2 id="9-conclusion">9. Conclusion</h2>
 <p><strong>DP_EDI_AUM is a valid Data Product</strong> with clear business value and correct structure.</p>
 <table>
 <thead>
@@ -489,7 +495,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>Related Documents</h2>
+<h2 id="related-documents">Related Documents</h2>
 <table>
 <thead>
 <tr>
@@ -502,11 +508,11 @@
 <td>Source Data Contract</td>
 </tr>
 <tr>
-<td><a href="../../review/2025-12-31-domain-dp-edi-aum-fibo.md">2025-12-31-domain-dp-edi-aum-fibo.md</a></td>
+<td><a href="../../review/2025-12-31-domain-dp-edi-aum-fibo.html">2025-12-31-domain-dp-edi-aum-fibo.html</a></td>
 <td>Previous FIBO alignment review</td>
 </tr>
 <tr>
-<td><a href="../../policies/GOV-013-data-product-governance.md">GOV-013</a></td>
+<td><a href="../../policies/GOV-013-data-product-governance.html">GOV-013</a></td>
 <td>Data Product Governance Policy</td>
 </tr>
 </tbody></table>

@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,14 +72,14 @@
     </style>
 </head>
 <body>
-<h1>Data Product Composability Framework</h1>
+<h1 id="data-product-composability-framework">Data Product Composability Framework</h1>
 <p><strong>Role:</strong> Banking Domain Expert
 <strong>Date:</strong> 2026-01-08
 <strong>Type:</strong> Framework &amp; Governance Guidance
 <strong>Status:</strong> APPROVED
-<strong>Parent:</strong> <a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001-data-mesh-governance.md</a></p>
+<strong>Parent:</strong> <a href="../GOV-DM-001-data-mesh-governance.html">GOV-DM-001-data-mesh-governance.html</a></p>
 <hr>
-<h2>1. Framework: Kdy Embedded vs. Separate DP vs. Shared</h2>
+<h2 id="1-framework-kdy-embedded-vs-separate-dp-vs-shared">1. Framework: Kdy Embedded vs. Separate DP vs. Shared</h2>
 <table>
 <thead>
 <tr>
@@ -115,7 +121,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>2. Decision Tree</h2>
+<h2 id="2-decision-tree">2. Decision Tree</h2>
 <pre><code>                    Je data použita více DP?
                            │
               ┌────────────┴────────────┐
@@ -135,8 +141,8 @@
                               per Domain               (Platform/MDM owns)
 </code></pre>
 <hr>
-<h2>3. Classification Criteria</h2>
-<h3>A) Embedded Pattern</h3>
+<h2 id="3-classification-criteria">3. Classification Criteria</h2>
+<h3 id="a-embedded-pattern">A) Embedded Pattern</h3>
 <p><strong>Použít když:</strong></p>
 <ul>
 <li>Data jsou pouze kontextuální pro jeden DP</li>
@@ -150,7 +156,7 @@
 <li>DP-specific transformace</li>
 <li>Temporary/staging data</li>
 </ul>
-<h3>B) Separate DP Pattern (Domain owns)</h3>
+<h3 id="b-separate-dp-pattern-domain-owns">B) Separate DP Pattern (Domain owns)</h3>
 <p><strong>Použít když:</strong></p>
 <ul>
 <li>Data jsou použita více DP v JEDNÉ doméně</li>
@@ -164,7 +170,7 @@
 <li><code>mib-segmentation</code> - MIB customer segmentation (ID: <code>rbcz:mib:segments</code>)</li>
 <li><code>retail-channels</code> - Retail channel definitions (ID: <code>rbcz:retail:channels</code>)</li>
 </ul>
-<h3>C) Shared Reference Data Pattern (Platform/MDM owns)</h3>
+<h3 id="c-shared-reference-data-pattern-platformmdm-owns">C) Shared Reference Data Pattern (Platform/MDM owns)</h3>
 <p><strong>Použít když:</strong></p>
 <ul>
 <li>Data jsou použita napříč VÍCE doménami</li>
@@ -180,8 +186,8 @@
 <li><code>ref-legal-entities</code> - LEI registry (ID: <code>rbcz:ref:legal-entities</code>)</li>
 </ul>
 <hr>
-<h2>4. Reasoning: IDM_* Dimensions Analysis</h2>
-<h3>IDM_COUNTRIES → Shared Reference Data (Platform)</h3>
+<h2 id="4-reasoning-idm-dimensions-analysis">4. Reasoning: IDM_* Dimensions Analysis</h2>
+<h3 id="idmcountries-shared-reference-data-platform">IDM_COUNTRIES → Shared Reference Data (Platform)</h3>
 <table>
 <thead>
 <tr>
@@ -211,7 +217,7 @@
 <td></td>
 </tr>
 </tbody></table>
-<h3>IDM_PRODUCTS → Separate DP (Investment Domain)</h3>
+<h3 id="idmproducts-separate-dp-investment-domain">IDM_PRODUCTS → Separate DP (Investment Domain)</h3>
 <table>
 <thead>
 <tr>
@@ -241,7 +247,7 @@
 <td></td>
 </tr>
 </tbody></table>
-<h3>IDM_SEGMENTS → Separate DP (MIB Domain)</h3>
+<h3 id="idmsegments-separate-dp-mib-domain">IDM_SEGMENTS → Separate DP (MIB Domain)</h3>
 <table>
 <thead>
 <tr>
@@ -272,7 +278,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>5. Composability Model</h2>
+<h2 id="5-composability-model">5. Composability Model</h2>
 <pre><code>┌─────────────────────────────────────────────────────────────────┐
 │              PLATFORM / SHARED REFERENCE DATA (L1)               │
 │                     (Platform/MDM owns)                          │
@@ -318,7 +324,7 @@
 └─────────────────────────────────────────────────────────────────┘
 </code></pre>
 <hr>
-<h2>6. Dependency Rules</h2>
+<h2 id="6-dependency-rules">6. Dependency Rules</h2>
 <table>
 <thead>
 <tr>
@@ -351,7 +357,7 @@
 <td>Consumer MUSÍ být registrován v Consumers Catalog</td>
 </tr>
 </tbody></table>
-<h3>Povolené Dependency Patterns</h3>
+<h3 id="povolen-dependency-patterns">Povolené Dependency Patterns</h3>
 <pre><code>✅ investment-aum-reporting → ref-countries          (Shared Reference)
 ✅ investment-aum-reporting → mib-segmentation       (Parent Domain)
 ✅ investment-aum-reporting → investment-products-catalog (Same Domain)
@@ -360,7 +366,7 @@
 ❌ investment-X → investment-Y → investment-X        (Circular)
 </code></pre>
 <hr>
-<h2>7. Data Product Layers</h2>
+<h2 id="7-data-product-layers">7. Data Product Layers</h2>
 <pre><code>LAYER 3: Analytics/Reporting DPs
          ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
          │investment-aum-   │ │investment-sales- │ │investment-       │
@@ -383,7 +389,7 @@ LAYER 1: Shared Reference Data DPs
          └──────────────────┘ └──────────────────┘ └──────────────────┘
 </code></pre>
 <hr>
-<h2>8. Summary Table: RBCZ Data Products by Layer</h2>
+<h2 id="8-summary-table-rbcz-data-products-by-layer">8. Summary Table: RBCZ Data Products by Layer</h2>
 <table>
 <thead>
 <tr>
@@ -473,7 +479,7 @@ LAYER 1: Shared Reference Data DPs
 </tr>
 </tbody></table>
 <hr>
-<h2>Related Documents</h2>
+<h2 id="related-documents">Related Documents</h2>
 <table>
 <thead>
 <tr>
@@ -482,23 +488,23 @@ LAYER 1: Shared Reference Data DPs
 </tr>
 </thead>
 <tbody><tr>
-<td><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a></td>
+<td><a href="../GOV-DM-001-data-mesh-governance.html">GOV-DM-001</a></td>
 <td>Main Data Mesh Governance</td>
 </tr>
 <tr>
-<td><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a></td>
+<td><a href="../GOV-DM-002-naming-convention.html">GOV-DM-002</a></td>
 <td>Naming Convention</td>
 </tr>
 <tr>
-<td><a href="../GOV-DM-003-domain-hierarchy.md">GOV-DM-003</a></td>
+<td><a href="../GOV-DM-003-domain-hierarchy.html">GOV-DM-003</a></td>
 <td>Domain Hierarchy &amp; Ownership</td>
 </tr>
 <tr>
-<td><a href="../catalogs/investment-dp-catalog.md">Investment DP Catalog</a></td>
+<td><a href="../catalogs/investment-dp-catalog.html">Investment DP Catalog</a></td>
 <td>Investment Domain Products</td>
 </tr>
 <tr>
-<td><a href="2026-01-08-domain-dp-edi-aum-analysis.md">2026-01-08-domain-dp-edi-aum-analysis.md</a></td>
+<td><a href="2026-01-08-domain-dp-edi-aum-analysis.html">2026-01-08-domain-dp-edi-aum-analysis.html</a></td>
 <td>DP EDI AUM detailed analysis</td>
 </tr>
 </tbody></table>

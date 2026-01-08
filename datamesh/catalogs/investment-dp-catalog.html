@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,7 +72,7 @@
     </style>
 </head>
 <body>
-<h1>Investment Domain - Data Product Catalog</h1>
+<h1 id="investment-domain---data-product-catalog">Investment Domain - Data Product Catalog</h1>
 <blockquote>
 <p><strong>Domain:</strong> <code>rbcz:mib:investment</code>
 <strong>Owner:</strong> Marek Podrabský (RBCZ/MIB/Investment)
@@ -74,8 +80,8 @@
 <strong>Total DPs:</strong> 14 existing + 4 proposed</p>
 </blockquote>
 <hr>
-<h2>1. Overview</h2>
-<h3>1.1 Domain Context</h3>
+<h2 id="1-overview">1. Overview</h2>
+<h3 id="11-domain-context">1.1 Domain Context</h3>
 <table>
 <thead>
 <tr>
@@ -100,7 +106,7 @@
 <td>Risk, Finance, Marketing, Compliance, Management, Clients, ČNB, RBI Group</td>
 </tr>
 </tbody></table>
-<h3>1.2 DP Summary by Layer</h3>
+<h3 id="12-dp-summary-by-layer">1.2 DP Summary by Layer</h3>
 <table>
 <thead>
 <tr>
@@ -121,8 +127,8 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>2. Data Product Layers</h2>
-<h3>2.1 Layer Architecture</h3>
+<h2 id="2-data-product-layers">2. Data Product Layers</h2>
+<h3 id="21-layer-architecture">2.1 Layer Architecture</h3>
 <pre><code>PLATFORM (L1 - Reference)
 ├── ref-countries (ISO 3166)
 ├── ref-currencies (ISO 4217)
@@ -161,8 +167,8 @@ INVESTMENT (L3 - Analytics)
 └── investment-market-sales
 </code></pre>
 <hr>
-<h2>3. L2 - Domain Master Data Products</h2>
-<h3>3.1 Existing (Renamed)</h3>
+<h2 id="3-l2---domain-master-data-products">3. L2 - Domain Master Data Products</h2>
+<h3 id="31-existing-renamed">3.1 Existing (Renamed)</h3>
 <table>
 <thead>
 <tr>
@@ -207,7 +213,7 @@ INVESTMENT (L3 - Analytics)
 <td>RENAME</td>
 </tr>
 </tbody></table>
-<h3>3.2 Proposed (New)</h3>
+<h3 id="32-proposed-new">3.2 Proposed (New)</h3>
 <table>
 <thead>
 <tr>
@@ -248,8 +254,8 @@ INVESTMENT (L3 - Analytics)
 </tr>
 </tbody></table>
 <hr>
-<h2>4. L3 - Analytics Data Products</h2>
-<h3>4.1 Existing (Renamed)</h3>
+<h2 id="4-l3---analytics-data-products">4. L3 - Analytics Data Products</h2>
+<h3 id="41-existing-renamed">4.1 Existing (Renamed)</h3>
 <table>
 <thead>
 <tr>
@@ -332,8 +338,8 @@ INVESTMENT (L3 - Analytics)
 </tr>
 </tbody></table>
 <hr>
-<h2>5. Detailed Product Cards</h2>
-<h3>5.1 investment-aum-reporting</h3>
+<h2 id="5-detailed-product-cards">5. Detailed Product Cards</h2>
+<h3 id="51-investment-aum-reporting">5.1 investment-aum-reporting</h3>
 <table>
 <thead>
 <tr>
@@ -384,7 +390,7 @@ INVESTMENT (L3 - Analytics)
 </ol>
 <p><strong>Data Contract:</strong> <code>conceptspeak/input/datacontract/RBCZ/MIB/Investment/dp_edi_aum.yaml</code></p>
 <hr>
-<h3>5.2 investment-client-overview</h3>
+<h3 id="52-investment-client-overview">5.2 investment-client-overview</h3>
 <table>
 <thead>
 <tr>
@@ -433,7 +439,7 @@ INVESTMENT (L3 - Analytics)
 <li>adds: <code>mifidClass</code>, <code>investmentPreference</code>, <code>riskProfile</code></li>
 </ul>
 <hr>
-<h3>5.3 investment-products-catalog</h3>
+<h3 id="53-investment-products-catalog">5.3 investment-products-catalog</h3>
 <table>
 <thead>
 <tr>
@@ -483,8 +489,8 @@ INVESTMENT (L3 - Analytics)
 <li>ISIN maps to <code>fibo-sec:InternationalSecuritiesIdentificationNumber</code></li>
 </ul>
 <hr>
-<h2>6. Dependencies Matrix</h2>
-<h3>6.1 L3 → L2 Dependencies</h3>
+<h2 id="6-dependencies-matrix">6. Dependencies Matrix</h2>
+<h3 id="61-l3-l2-dependencies">6.1 L3 → L2 Dependencies</h3>
 <table>
 <thead>
 <tr>
@@ -529,7 +535,7 @@ INVESTMENT (L3 - Analytics)
 <td>products</td>
 </tr>
 </tbody></table>
-<h3>6.2 L2 → L1 Dependencies</h3>
+<h3 id="62-l2-l1-dependencies">6.2 L2 → L1 Dependencies</h3>
 <table>
 <thead>
 <tr>
@@ -555,8 +561,8 @@ INVESTMENT (L3 - Analytics)
 </tr>
 </tbody></table>
 <hr>
-<h2>7. Migration Plan</h2>
-<h3>7.1 Phase 1: Rename (Low Risk)</h3>
+<h2 id="7-migration-plan">7. Migration Plan</h2>
+<h3 id="71-phase-1-rename-low-risk">7.1 Phase 1: Rename (Low Risk)</h3>
 <table>
 <thead>
 <tr>
@@ -586,7 +592,7 @@ INVESTMENT (L3 - Analytics)
 <td>Communication</td>
 </tr>
 </tbody></table>
-<h3>7.2 Phase 2: Restructure (Medium Risk)</h3>
+<h3 id="72-phase-2-restructure-medium-risk">7.2 Phase 2: Restructure (Medium Risk)</h3>
 <table>
 <thead>
 <tr>
@@ -611,7 +617,7 @@ INVESTMENT (L3 - Analytics)
 <td>Pipeline changes</td>
 </tr>
 </tbody></table>
-<h3>7.3 Phase 3: New Products (Planned)</h3>
+<h3 id="73-phase-3-new-products-planned">7.3 Phase 3: New Products (Planned)</h3>
 <table>
 <thead>
 <tr>
@@ -637,8 +643,8 @@ INVESTMENT (L3 - Analytics)
 </tr>
 </tbody></table>
 <hr>
-<h2>8. Quality Metrics</h2>
-<h3>8.1 Current Maturity Scores</h3>
+<h2 id="8-quality-metrics">8. Quality Metrics</h2>
+<h3 id="81-current-maturity-scores">8.1 Current Maturity Scores</h3>
 <table>
 <thead>
 <tr>
@@ -667,7 +673,7 @@ INVESTMENT (L3 - Analytics)
 <td>TBD</td>
 </tr>
 </tbody></table>
-<h3>8.2 Coverage Targets</h3>
+<h3 id="82-coverage-targets">8.2 Coverage Targets</h3>
 <table>
 <thead>
 <tr>
@@ -703,7 +709,7 @@ INVESTMENT (L3 - Analytics)
 </tr>
 </tbody></table>
 <hr>
-<h2>9. Related Documents</h2>
+<h2 id="9-related-documents">9. Related Documents</h2>
 <table>
 <thead>
 <tr>
@@ -712,28 +718,28 @@ INVESTMENT (L3 - Analytics)
 </tr>
 </thead>
 <tbody><tr>
-<td><a href="../GOV-DM-001-data-mesh-governance.md">GOV-DM-001</a></td>
+<td><a href="../GOV-DM-001-data-mesh-governance.html">GOV-DM-001</a></td>
 <td>Main governance</td>
 </tr>
 <tr>
-<td><a href="../GOV-DM-002-naming-convention.md">GOV-DM-002</a></td>
+<td><a href="../GOV-DM-002-naming-convention.html">GOV-DM-002</a></td>
 <td>Naming convention</td>
 </tr>
 <tr>
-<td><a href="../GOV-DM-003-domain-hierarchy.md">GOV-DM-003</a></td>
+<td><a href="../GOV-DM-003-domain-hierarchy.html">GOV-DM-003</a></td>
 <td>Domain hierarchy</td>
 </tr>
 <tr>
-<td><a href="../review/2026-01-08-domain-composability-framework.md">Composability Framework</a></td>
+<td><a href="../review/2026-01-08-domain-composability-framework.html">Composability Framework</a></td>
 <td>DP layers &amp; dependencies</td>
 </tr>
 <tr>
-<td><a href="../review/2026-01-08-domain-dp-edi-aum-analysis.md">DP EDI AUM Analysis</a></td>
+<td><a href="../review/2026-01-08-domain-dp-edi-aum-analysis.html">DP EDI AUM Analysis</a></td>
 <td>Detailed AUM review</td>
 </tr>
 </tbody></table>
 <hr>
-<h2>10. Revision History</h2>
+<h2 id="10-revision-history">10. Revision History</h2>
 <table>
 <thead>
 <tr>

@@ -31,10 +31,16 @@
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -66,7 +72,7 @@
     </style>
 </head>
 <body>
-<h1>GCC Data Product Catalog Review</h1>
+<h1 id="gcc-data-product-catalog-review">GCC Data Product Catalog Review</h1>
 <blockquote>
 <p><strong>Date:</strong> 2026-01-08
 <strong>Reviewer:</strong> Senior Data Mesh Consultant
@@ -74,7 +80,7 @@
 <strong>Status:</strong> APPROVED with minor fixes</p>
 </blockquote>
 <hr>
-<h2>1. Executive Summary</h2>
+<h2 id="1-executive-summary">1. Executive Summary</h2>
 <p>The GCC (Group of Connected Clients) Data Product Catalog is a <strong>well-designed, governance-compliant</strong> implementation of Data Mesh principles for the Corporate BU&#39;s GCC subdomain.</p>
 <table>
 <thead>
@@ -112,8 +118,8 @@
 </tbody></table>
 <p><strong>Recommendation:</strong> Approve for implementation after minor fixes.</p>
 <hr>
-<h2>2. Data Mesh Principles Assessment</h2>
-<h3>2.1 Domain Ownership ✅</h3>
+<h2 id="2-data-mesh-principles-assessment">2. Data Mesh Principles Assessment</h2>
+<h3 id="21-domain-ownership">2.1 Domain Ownership ✅</h3>
 <table>
 <thead>
 <tr>
@@ -144,7 +150,7 @@
 </tr>
 </tbody></table>
 <p><strong>Strength:</strong> Domain placement decision (Corporate vs Risk) was explicitly addressed through QAR session.</p>
-<h3>2.2 Data as Product ✅</h3>
+<h3 id="22-data-as-product">2.2 Data as Product ✅</h3>
 <table>
 <thead>
 <tr>
@@ -180,7 +186,7 @@
 </tr>
 </tbody></table>
 <p><strong>Strength:</strong> &quot;Every DP must have a clear purpose&quot; principle explicitly stated and followed.</p>
-<h3>2.3 Self-Serve Platform ✅</h3>
+<h3 id="23-self-serve-platform">2.3 Self-Serve Platform ✅</h3>
 <table>
 <thead>
 <tr>
@@ -205,7 +211,7 @@
 <td>Uses RBCZ-level countries, currencies</td>
 </tr>
 </tbody></table>
-<h3>2.4 Federated Governance ✅</h3>
+<h3 id="24-federated-governance">2.4 Federated Governance ✅</h3>
 <table>
 <thead>
 <tr>
@@ -231,8 +237,8 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>3. GOV-DM-001 Compliance</h2>
-<h3>3.1 DATSIS Characteristics</h3>
+<h2 id="3-gov-dm-001-compliance">3. GOV-DM-001 Compliance</h2>
+<h3 id="31-datsis-characteristics">3.1 DATSIS Characteristics</h3>
 <table>
 <thead>
 <tr>
@@ -272,7 +278,7 @@
 <td>Classification TBD</td>
 </tr>
 </tbody></table>
-<h3>3.2 Layer Classification</h3>
+<h3 id="32-layer-classification">3.2 Layer Classification</h3>
 <table>
 <thead>
 <tr>
@@ -298,7 +304,7 @@
 </tr>
 </tbody></table>
 <p><strong>Per GOV-DM-001 Section 7.1:</strong> Layer assignment is correct.</p>
-<h3>3.3 Naming Convention</h3>
+<h3 id="33-naming-convention">3.3 Naming Convention</h3>
 <table>
 <thead>
 <tr>
@@ -323,7 +329,7 @@
 <td>✅ Human readable</td>
 </tr>
 </tbody></table>
-<h3>3.4 Dependency Rules</h3>
+<h3 id="34-dependency-rules">3.4 Dependency Rules</h3>
 <table>
 <thead>
 <tr>
@@ -354,8 +360,8 @@
 </tr>
 </tbody></table>
 <hr>
-<h2>4. Concept Model Assessment</h2>
-<h3>4.1 Concept Summary</h3>
+<h2 id="4-concept-model-assessment">4. Concept Model Assessment</h2>
+<h3 id="41-concept-summary">4.1 Concept Summary</h3>
 <table>
 <thead>
 <tr>
@@ -385,7 +391,7 @@
 <td>(Note: 12 in doc, but Address is embedded)</td>
 </tr>
 </tbody></table>
-<h3>4.2 FIBO Alignment</h3>
+<h3 id="42-fibo-alignment">4.2 FIBO Alignment</h3>
 <table>
 <thead>
 <tr>
@@ -436,7 +442,7 @@
 </tr>
 </tbody></table>
 <p><strong>Assessment:</strong> Good balance of FIBO-aligned core concepts and domain-specific extensions.</p>
-<h3>4.3 Identity vs Role Separation</h3>
+<h3 id="43-identity-vs-role-separation">4.3 Identity vs Role Separation</h3>
 <p><strong>Excellent design decision:</strong></p>
 <ul>
 <li><code>gcc-natural-persons</code> / <code>gcc-legal-entities</code> = <strong>Identity</strong> (WHO they are)</li>
@@ -449,8 +455,8 @@
 <li>Reusability of identity data</li>
 </ul>
 <hr>
-<h2>5. Issues Found</h2>
-<h3>5.1 Czech Text Remnants ⚠️</h3>
+<h2 id="5-issues-found">5. Issues Found</h2>
+<h3 id="51-czech-text-remnants">5.1 Czech Text Remnants ⚠️</h3>
 <table>
 <thead>
 <tr>
@@ -485,7 +491,7 @@
 <td><code>(group structure)</code></td>
 </tr>
 </tbody></table>
-<h3>5.2 Count Mismatch ⚠️</h3>
+<h3 id="52-count-mismatch">5.2 Count Mismatch ⚠️</h3>
 <table>
 <thead>
 <tr>
@@ -500,17 +506,17 @@
 <td>9 DPs</td>
 </tr>
 </tbody></table>
-<h3>5.3 Missing Request Reference ⚠️</h3>
+<h3 id="53-missing-request-reference">5.3 Missing Request Reference ⚠️</h3>
 <p><code>gcc-relations</code> Dependencies section mentions <code>R→ requests</code> in Summary Table but the detailed DP-GCC-004 section doesn&#39;t list it in Dependencies.</p>
 <hr>
-<h2>6. Recommendations</h2>
-<h3>6.1 Immediate Fixes (Before Implementation)</h3>
+<h2 id="6-recommendations">6. Recommendations</h2>
+<h3 id="61-immediate-fixes-before-implementation">6.1 Immediate Fixes (Before Implementation)</h3>
 <ol>
 <li><strong>Fix Czech text remnants</strong> (5 occurrences)</li>
 <li><strong>Update DP count</strong> in Section 7 from &quot;7 DPs&quot; to &quot;9 DPs&quot;</li>
 <li><strong>Add gcc-requests dependency</strong> to DP-GCC-004 detailed section</li>
 </ol>
-<h3>6.2 Future Enhancements</h3>
+<h3 id="62-future-enhancements">6.2 Future Enhancements</h3>
 <table>
 <thead>
 <tr>
@@ -540,7 +546,7 @@
 <td>Beyond T+1 (latency, availability)</td>
 </tr>
 </tbody></table>
-<h3>6.3 Implementation Order</h3>
+<h3 id="63-implementation-order">6.3 Implementation Order</h3>
 <p>The proposed roadmap is appropriate:</p>
 <ol>
 <li><strong>Phase 1:</strong> Identity (natural-persons, legal-entities) - foundation</li>
@@ -549,7 +555,7 @@
 <li><strong>Phase 4:</strong> Integration (API, consumers) - external access</li>
 </ol>
 <hr>
-<h2>7. Conclusion</h2>
+<h2 id="7-conclusion">7. Conclusion</h2>
 <p>The GCC Data Product Catalog demonstrates <strong>mature Data Mesh thinking</strong>:</p>
 <table>
 <thead>
@@ -585,8 +591,8 @@
 </tbody></table>
 <p><strong>Final Assessment:</strong> ✅ <strong>APPROVED</strong> for implementation after minor text fixes.</p>
 <hr>
-<h2>8. Appendix: Checklist Verification</h2>
-<h3>GOV-DM-001 Appendix A Checklist</h3>
+<h2 id="8-appendix-checklist-verification">8. Appendix: Checklist Verification</h2>
+<h3 id="gov-dm-001-appendix-a-checklist">GOV-DM-001 Appendix A Checklist</h3>
 <table>
 <thead>
 <tr>
