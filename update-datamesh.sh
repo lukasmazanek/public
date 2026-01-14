@@ -89,10 +89,16 @@ html_header() {
         pre {
             background: #f6f8fa;
             padding: 16px;
-            overflow: auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border-radius: 6px;
             font-size: 85%;
             line-height: 1.45;
+            max-width: 100%;
+        }
+        @media (max-width: 767px) {
+            body { padding: 16px; }
+            pre { font-size: 12px; padding: 12px; }
         }
         code {
             background: rgba(175,184,193,0.2);
@@ -160,6 +166,36 @@ find "$SOURCE_DIR" -name "*.md" | while read -r mdfile; do
         npx -y marked "$mdfile"
         html_footer
     } > "$htmlfile"
+
+    # Replace .md links with .html
+    sed -i '' 's/\.md\([)"'"'"']\)/\.html\1/g' "$htmlfile"
+    sed -i '' 's/\.md<\/a>/.html<\/a>/g' "$htmlfile"
+
+    # Add IDs to headings for TOC links
+    python3 -c "
+import re
+import sys
+
+with open('$htmlfile', 'r') as f:
+    content = f.read()
+
+def slugify(text):
+    text = text.lower()
+    text = re.sub(r'[^a-z0-9\s-]', '', text)
+    text = re.sub(r'[\s]+', '-', text)
+    return text.strip('-')
+
+def add_id(match):
+    tag = match.group(1)
+    content = match.group(2)
+    slug = slugify(re.sub(r'<[^>]+>', '', content))
+    return f'<h{tag} id=\"{slug}\">{content}</h{tag}>'
+
+content = re.sub(r'<h([1-6])>([^<]+)</h\1>', add_id, content)
+
+with open('$htmlfile', 'w') as f:
+    f.write(content)
+"
 
     echo "  $relpath -> ${htmlfile#$TARGET_DIR/}"
 done

@@ -35,35 +35,6 @@ window.BKB_DOMAINS_DATA = {
       "type": "domain",
       "path": "Example",
       "conceptCount": 20
-    },
-    "RBCZ": {
-      "type": "domain",
-      "path": "RBCZ",
-      "conceptCount": 6,
-      "children": {
-        "Retail": {
-          "type": "domain",
-          "path": "RBCZ/Retail",
-          "conceptCount": 14
-        },
-        "MIB": {
-          "type": "domain",
-          "path": "RBCZ/MIB",
-          "conceptCount": 22,
-          "children": {
-            "Investment": {
-              "type": "domain",
-              "path": "RBCZ/MIB/Investment",
-              "conceptCount": 349
-            },
-            "Allin": {
-              "type": "domain",
-              "path": "RBCZ/MIB/Allin",
-              "conceptCount": 339
-            }
-          }
-        }
-      }
     }
   }
 };
