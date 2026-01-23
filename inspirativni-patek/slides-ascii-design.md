@@ -370,16 +370,33 @@
 
 
 **Lukáš uvede:**
-> "Data patří těm, kdo je vytvářejí. Ale kdo je tedy zodpovědný? Michale?"
+> "Michale, kdo je zodpovědný za data v distribuovaném světě, když data vlastní každý?"
 
 **Michalův příběh (3 min):**
-> "Data byla vedlejší produkt aplikací. Nikdo za ně nebyl zodpovědný.
-> 'Hoď to do DWH, ať si to někdo vyřeší.'
+
+**0:00-0:45 — Háček: Strach z neznámého**
+> Ahoj, to je přesně ta otázka, která Vám nedá spát, že? Upřímně naprosto Vám rozumím. Z historie víme, že kolektivní odpovědnost je v naší společnosti synonymem pro to, že za průšvih nemůže nikdo.
 >
-> Teď? Data = produkt s vlastníkem. Tým, který data vytváří, za ně ručí.
-> [PŘÍKLAD: konkrétní datový produkt, kdo ho vlastní]
+> Když léčíme prezidenta, nechceme anonymní komisi, která se dohodne až když je pozdě. Chceme vidět konkrétního lékaře, který řekne: Tady jsem, toto je můj pacient a já ho zachráním.
 >
-> Není to víc práce. Je to jiná práce. A dává větší smysl."
+> Bojíme se, že bez Velkého bratra tam nahoře se prostě utopíme v datové anarchii.
+
+**0:45-1:45 — Kontrast: Past centralizace vs realita**
+> Ale pojďme si nalít čistého vína. Jak to funguje nyní v našem bezpečném centralizovaném světě? Hledáme onoho jednoho garanta, kterému zavoláme, když nám čísla nesedí. Když to z nějakého důvodu nejede, tak to eskalujeme problém šéfovi DWH. Ten koncept odpovědnosti je správný. My ten koncept nechceme zrušit. My ho chceme osvobodit. Chceme ten obří dort rozkrájet a dát ho těm, kteří těm datům rozumí nejlépe — do domén.
+
+**1:45-2:30 — Výzva: Nejdeme zpět, ale vpřed**
+> Teď ale přichází to nejdůležitější. Když delegujeme povinnosti, musíme mít odvahu delegovat i pravomoci. To co jsme se pracně učili v centrálním skladu, musíme teď vyžadovat o patro níž.
+>
+> Slyším ty hlasy: Nevracíme se o dvacet let zpátky do éry excelového pekla a chaosu? Moje odpověď zní: Ne. My ty zkušenosti z centrálního světa nezahazujeme. My je používáme jako základy, na kterých stavíme moderní, distribuovaný systém.
+>
+> Kdysi vznikaly centrální datové sklady právě proto, abychom zkrotili chaos lokálních reportingů. Tou decentralizaci se nesmíme vrátit o dvacet let zpátky do doby excelového pekla. Musíme jít dopředu. Musíme vzít tu znalost z centrálního světa a postavit na ní ten nový distribuovaný.
+
+**2:30-3:00 — Idea Worth Spreading: Nový řád**
+> Co mě na této cestě nejvíce překvapilo? Že to funguje. Že když dáte lidem důvěru a nástroje, tu odpovědnost přijmou. Ale má to jednu podmínku, přes kterou nejede vlak.
+>
+> Aby se naše svoboda nezvrhla v chaos, potřebujeme k tomu silnou federativní governance. Potřebujeme pravidla, která jsou společná pro všechny, aby data seděla napříč celou bankou. Protože v distribuovaném světe platí jedna nová prostá pravda: **Kdo data vytváří, ten za ně ručí.**
+>
+> Děkuji.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -390,13 +407,14 @@
 │                                                             │
 │   ┌───────────────────────────────────────────────────┐     │
 │   │                                                   │     │
-│   │   ┌──────┐   CO JSME ZDĚDILI                      │     │
-│   │   │(Michal)│ • Data = vedlejší produkt            │     │
-│   │   └──────┘   • "Hoď to do DWH"                    │     │
+│   │   ┌──────┐   STRACH                               │     │
+│   │   │(Michal)│ • Kolektivní odpovědnost = nikdo     │     │
+│   │   └──────┘   • Bez Velkého bratra = anarchie?     │     │
 │   │                                                   │     │
-│   │              CO JSME ZMĚNILI                      │     │
-│   │              • Data = produkt s vlastníkem        │     │
-│   │              • Kdo vytváří, ten ručí              │     │
+│   │              REALITA                              │     │
+│   │              • Koncept odpovědnosti zachováme     │     │
+│   │              • Dort rozkrájíme do domén           │     │
+│   │              • Zkušenosti nezahazujeme            │     │
 │   │                                                   │     │
 │   │   ┌───────────────────────────────────────────┐   │     │
 │   │   │ "Kdo data vytváří, ten za ně ručí."       │   │     │
