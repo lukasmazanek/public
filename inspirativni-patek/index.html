@@ -7,11 +7,11 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
-            --bg: #1a1a2e;
-            --surface: #16213e;
-            --primary: #e94560;
-            --text: #eee;
-            --text-muted: #888;
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --primary: #d63031;
+            --text: #2d3436;
+            --text-muted: #636e72;
         }
 
         * {
@@ -30,7 +30,7 @@
         header {
             background: var(--surface);
             padding: 1rem 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -51,7 +51,7 @@
 
         nav button {
             background: transparent;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(0,0,0,0.2);
             color: var(--text);
             padding: 0.5rem 1rem;
             border-radius: 4px;
@@ -61,12 +61,13 @@
         }
 
         nav button:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.05);
         }
 
         nav button.active {
             background: var(--primary);
             border-color: var(--primary);
+            color: #fff;
         }
 
         main {
@@ -86,7 +87,7 @@
             color: var(--primary);
             margin-top: 2rem;
             padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
         #content h1:first-child {
@@ -94,13 +95,15 @@
         }
 
         #content pre {
-            background: #0d1117;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
             padding: 1rem;
             border-radius: 6px;
             overflow-x: auto;
             font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
             font-size: 0.85rem;
             line-height: 1.4;
+            color: #212529;
         }
 
         #content code {
@@ -108,7 +111,7 @@
         }
 
         #content p code {
-            background: rgba(255,255,255,0.1);
+            background: #f1f3f4;
             padding: 0.2rem 0.4rem;
             border-radius: 3px;
             font-size: 0.9em;
@@ -121,7 +124,7 @@
         }
 
         #content strong {
-            color: #ffd700;
+            color: #2d3436;
         }
 
         #content ul, #content ol {
@@ -146,13 +149,13 @@
         }
 
         #content th, #content td {
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(0,0,0,0.1);
             padding: 0.5rem;
             text-align: left;
         }
 
         #content th {
-            background: rgba(255,255,255,0.1);
+            background: #f8f9fa;
         }
 
         .loading {
