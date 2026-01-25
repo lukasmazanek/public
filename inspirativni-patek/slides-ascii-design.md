@@ -166,9 +166,9 @@
 
 ---
 
-## SLIDE 6: Roman mluví 🎤
+## SLIDE 6: Roman mluví 🎤 — Co nás bolelo
 
-**Příběh:** 🎤 Roman ví svoje — týdny, měsíce.
+**Příběh:** 🎤 Roman ukazuje, proč centralizovaný model nefunguje — na příkladu CEU reportingu.
 
 
 **Lukáš uvede:**
@@ -176,27 +176,44 @@
 > Romane — co tě nejvíc bolí?"
 
 **Romanův příběh (2 min):**
-> "Potřebovali jsme data pro [PROJEKT].
-> Zadali jsme požadavek do DWH.
-> Čekali jsme [X] týdnů.
-> Mezitím jsme [improvizovali / ztratili příležitost].
+> **PROBLÉM:**
+> Kvalita adres v CEU reportingu. Nerealistické očekávání, že 1 centrální
+> tým DQ zodpovídá za kvalitu všech dat. Vlastník nebyl formálně známý.
 >
-> Není to o lidech v DWH. Systém je nastavený tak, že to jinak nejde."
+> **NEGATIVNÍ DOPAD:**
+> • Hrozba pokuty ČNB za neplnění standardů CEU reportingu
+> • Snížená důvěryhodnost u klientů
+> • Nedoručitelné výpisy z účtů, kampaně a nabídky
+>
+> **CO JSME UDĚLALI:**
+> Analýza dat → identifikace problematického zdroje (IB/SPB) →
+> návrh systémového opatření (našeptávač adres)
+>
+> **VÝSLEDEK:**
+> 75% zlepšení kvality adres. Od zjištění po implementaci: 3 měsíce.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│  ✕ Raiffeisen Bank  │ Jak to funguje dnes                   │
+│  ✕ Raiffeisen Bank  │ Co nás bolelo                         │
 │                                                             │
 │   ┌───────────────────────────────────────────────────┐     │
 │   │                                                   │     │
-│   │   ┌──────┐   CO JSME ZDĚDILI                      │     │
-│   │   │(Roman)│  • Požadavek do DWH                   │     │
-│   │   └──────┘   • Čekání [X] týdnů/měsíců            │     │
+│   │   ┌──────┐   PROBLÉM                              │     │
+│   │   │(Roman)│  • Kvalita adres v CEU reportingu     │     │
+│   │   └──────┘   • 1 centrální tým DQ za vše?         │     │
+│   │              • Vlastník nebyl formálně známý      │     │
 │   │                                                   │     │
-│   │              CO SE STALO                          │     │
-│   │              • Improvizace / workaround           │     │
-│   │              • Ztracená příležitost               │     │
+│   │              DOPAD                                │     │
+│   │              • Hrozba pokuty ČNB                  │     │
+│   │              • Nedoručitelné výpisy, kampaně      │     │
+│   │                                                   │     │
+│   │              ŘEŠENÍ                               │     │
+│   │              • Analýza → identifikace zdroje      │     │
+│   │              • Našeptávač adres                   │     │
+│   │                                                   │     │
+│   │              VÝSLEDEK                             │     │
+│   │              • 75% zlepšení za 3 měsíce           │     │
 │   │                                                   │     │
 │   │   ┌───────────────────────────────────────────┐   │     │
 │   │   │ "Problém není v lidech.                   │   │     │
@@ -213,7 +230,7 @@
 
 ## SLIDE 7: Co jsme zkoušeli
 
-**Příběh:** Zkoušeli jsme data mart share — trochu pomohl, ale velké věci stále týdny.
+**Příběh:** Zkoušeli jsme data mart share — hodně pomohl, ale velké věci stále týdny.
 
 
 ```
@@ -227,10 +244,10 @@
 │                                                             │
 │            Data mart share.                                 │
 │                                                             │
-│            Trochu pomohl.                                   │
+│            Hodně pomohl. Spousta věcí se zrychlila.         │
 │                                                             │
 │                                                             │
-│            Velké věci?                                      │
+│            Ale ty velké věci?                               │
 │            Stále týdny.                                     │
 │                                                             │
 │                                                             │
@@ -459,47 +476,79 @@
 
 ## SLIDE 14: Soňa mluví 🎤
 
-**Příběh:** 🎤 Soňa ho zná.
+**Příběh:** 🎤 Soňa vysvětlí, jak se mění governance v distribuovaném světě.
 
 
 **Lukáš uvede:**
-> "Rychlost bez pravidel je chaos. Proto máme Desatero. Soňo?"
+> "Rychlost bez pravidel je chaos. Proto máme Desatero.
+> Soňo — jak se mění role governance v distribuovaném světě?"
 
 **Sonin příběh (4 min):**
-> "Governance byla schvalovací proces. Pomalé, byrokratické.
-> Lidé se snažili governance obejít.
+
+**0:00-1:00 — CO JSME ZDĚDILI: Těžká koule u nohy**
+> Data Governance se mění zásadně. V centralizovaném světě je governance spojená s byrokracií.
 >
-> Teď? Governance = enabler, ne blokátor.
-> Desatero: 10 jasných pravidel, které všichni znají.
-> Pokud splníš Desatero, můžeš jet.
+> Pravidla, která musíme jako banka dodržovat, rostou exponenciálně. S tím roste i objem interních předpisů. Je obtížné se v nich orientovat, natož se podle nich řídit.
 >
-> [PŘÍKLAD: tým X mohl udělat Y bez čekání]
+> Lidé je obcházejí. Proč? Jsou složité, nesrozumitelné, spojené s vyplňováním centrálně definovaných šablon. A s nekončícím auditováním.
 >
-> Pravidla nejsou proto, aby vás brzdily.
-> Jsou proto, abyste mohli jet rychle a bezpečně."
+> Jeden dotazník pokrývající malou dílčí oblast trvá vyplnit i několik hodin. A centrální Governance má desítky takových dotazníků.
+
+**1:00-2:00 — Paradox centralizace**
+> Další problém: centrální governance nerozumí kontextu dat. Nemá znalosti ani kapacity řešit specifické nuance různých oddělení. Proto vytváří plošná a rigidní pravidla.
+>
+> A tady je paradox: **Snaha o centrální kontrolu vede ke ztrátě kontroly.**
+>
+> Zatímco v centralizovaném světě je governance těžkou koulí u nohy — v decentralizovaném světě je trenérem, který nastavuje mantinely tak, aby týmy mohly běžet rychle a efektivně.
+
+**2:00-3:00 — CO JSME ZMĚNILI: Trenér místo policisty**
+> Centrální governance v novém světě definuje pouze nezbytná návodná pravidla — říkejme jim Desatero.
+>
+> Většina z nich není vytesaná ve složité mnohastránkové směrnici, ale přímo v kódu. Jsou vynucována a kontrolována automaticky.
+>
+> Governance už nevytváří pravidla "toto nesmíš, takto to musíš". Staví platformu, která automaticky zajistí, aby se to dělalo správně.
+>
+> Doménové týmy mají větší autonomii. Samy se rozhodují, co je pro ně důležité.
+
+**3:00-3:40 — CO SE STALO: Změna kultury**
+> Hezkým příkladem je vlastnictví dat. Když vlastníka definuje centrálně governance, je to všem jedno. Nikdo necítí odpovědnost.
+>
+> Díky decentralizaci je za kvalitu odpovědný doménový vlastník. Governance je smluvně vázaná v kontraktu.
+>
+> A kultura? Mění se z "jak obejít pravidla a přitom splnit audity" na "jak dodat kvalitní produkt".
+
+**3:40-4:00 — CO BYCH VZKÁZALA**
+> Klíčem k efektivní governance je — možná paradoxně — decentralizace.
+>
+> Pravidla nejsou proto, aby vás brzdila. Jsou proto, abyste mohli jet rychle a bezpečně.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│  ✕ Raiffeisen Bank  │ Desatero                              │
+│  ✕ Raiffeisen Bank  │ Governance                            │
 │                                                             │
 │            "Ztratíme kontrolu." — Opravdu?                  │
 │                                                             │
 │   ┌───────────────────────────────────────────────────┐     │
 │   │                                                   │     │
 │   │   ┌──────┐   CO JSME ZDĚDILI                      │     │
-│   │   │(Soňa)│   • Governance = schvalování           │     │
-│   │   └──────┘   • Pomalé, byrokratické               │     │
+│   │   │(Soňa)│   • Governance = byrokracie            │     │
+│   │   └──────┘   • Desítky dotazníků, hodiny práce    │     │
 │   │              • Lidé to obcházeli                  │     │
+│   │              • Paradox: kontrola → ztráta kontroly│     │
 │   │                                                   │     │
 │   │              CO JSME ZMĚNILI                      │     │
-│   │              • Governance = enabler               │     │
-│   │              • 10 jasných pravidel                │     │
-│   │              • Splníš → můžeš jet                 │     │
+│   │              • Governance = trenér, ne policista  │     │
+│   │              • Pravidla v kódu, automatická       │     │
+│   │              • Desatero místo směrnic             │     │
+│   │                                                   │     │
+│   │              CO SE STALO                          │     │
+│   │              • Vlastník v doméně = odpovědnost    │     │
+│   │              • Kultura: "dodat kvalitu"           │     │
 │   │                                                   │     │
 │   │   ┌───────────────────────────────────────────┐   │     │
-│   │   │ "Rychlost bez pravidel je chaos.          │   │     │
-│   │   │  Pravidla bez rychlosti je byrokracie."   │   │     │
+│   │   │ "Klíčem k efektivní governance je —       │   │     │
+│   │   │  možná paradoxně — decentralizace."       │   │     │
 │   │   └───────────────────────────────────────────┘   │     │
 │   │                                         (4 min)   │     │
 │   └───────────────────────────────────────────────────┘     │
@@ -726,15 +775,32 @@
 > Evžene — co bys vzkázal kolegovi, který se bojí?"
 
 **Evženův příběh (3 min):**
-> "Strach ze změny: 'Co když to rozbiju?'
-> Pocit, že nové = více práce.
-> 'Proč měnit něco, co funguje?'
+
+**0:00-0:45 — CO JSEM SE BÁL: Nečekaná změna**
+> Když jsem přišel do týmu, očekával jsem, že budu připravovat datové kontrakty a strukturu v APEXu.
 >
-> Začali jsme [KONKRÉTNÍ ZMĚNA]. První týdny byly těžké.
-> Ale pak... Dřív [X], teď [Y].
-> [KONKRÉTNÍ ČÍSLA: 'Dřív 2 hodiny, teď 10 minut']
+> Vůbec jsem nečekal, že se budu starat o správu Gitu.
 >
-> Neboj se. První měsíc je blbej. Pak už nechceš zpátky."
+> Git jsem znal, ale nikdy jsem se nezabýval jeho architekturou nebo údržbou. Obával jsem se špatného návrhu struktury, ztráty dat, ztráty orientace.
+
+**0:45-1:30 — CO JSME ZMĚNILI: Šli jsme do toho**
+> Ale i přes ty obavy jsme Git začali používat.
+>
+> Ukázalo se, že to nebyly jen obavy — problémy skutečně přišly. Ale všechno bylo řešitelné. Časem jsme na to přišli.
+
+**1:30-2:30 — CO SE STALO: 30 minut → 1 minuta**
+> Dřív jsem se bál zasahovat do Gitu. Nějaká jednoduchá úprava mi mohla trvat až 30 minut.
+>
+> Teď? Všechno zvládnu za minutu.
+>
+> **30 minut → 1 minuta.** To je 30× rychleji.
+
+**2:30-3:00 — CO BYCH VZKÁZAL**
+> Na začátku je práce složitá. Obáváme se něco rozbít.
+>
+> Ale časem, když si to vyzkoušíme, nás výzvy začínají lákat.
+>
+> Neboj se. První měsíc je blbej. Pak už nechceš zpátky.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -747,12 +813,16 @@
 │   ┌───────────────────────────────────────────────────┐     │
 │   │                                                   │     │
 │   │   ┌──────┐   CO JSEM SE BÁL                       │     │
-│   │   │(Evžen)│  • "Co když to rozbiju?"              │     │
-│   │   └──────┘   • Nové = více práce                  │     │
+│   │   │(Evžen)│  • Očekával APEX, dostal Git          │     │
+│   │   └──────┘   • Strach: ztráta dat, orientace      │     │
+│   │                                                   │     │
+│   │              CO JSME ZMĚNILI                      │     │
+│   │              • Šli jsme do toho i přes obavy      │     │
+│   │              • Problémy přišly, ale řešitelné     │     │
 │   │                                                   │     │
 │   │              CO SE STALO                          │     │
-│   │              • První týdny těžké                  │     │
-│   │              • Pak: dřív [X], teď [Y]             │     │
+│   │              • 30 minut → 1 minuta (30×)          │     │
+│   │              • Výzvy začínají lákat               │     │
 │   │                                                   │     │
 │   │   ┌───────────────────────────────────────────┐   │     │
 │   │   │ "Neboj se. První měsíc je blbej.          │   │     │
@@ -1090,7 +1160,7 @@
 
 ## SLIDE 6: Roman mluví 🎤 (Governance)
 
-**Příběh:** 🎤 Roman mluví o governance.
+**Příběh:** 🎤 Roman vysvětluje 5 klíčových změn v governance díky decentralizaci.
 
 
 **Lukáš uvede:**
@@ -1098,42 +1168,54 @@
 > Romane — jak děláme governance v decentralizovaném světě?"
 
 **Romanův příběh (4 min):**
-> "Centrální governance. Schvalovací proces. Všechno kontrolovat.
-> Pomalé, byrokratické — lidé to obcházeli.
+> **CO SE ZMĚNILO:**
 >
-> Změnili jsme to. Governance jako služba, ne jako policie.
-> Jasná pravidla místo ad-hoc rozhodování.
-> Splníš pravidla? Můžeš jet. Bez čekání.
+> 1. **Odpovědnost je díky decentralizaci tam kde má být**
+>    (tým, který má know-how a reálně data vytváří/konzumuje)
 >
-> [KONKRÉTNÍ PŘÍKLAD] — dřív [Y dní], teď [Z dní / self-service].
-> A compliance se nezhoršil. Zlepšil. Protože pravidla jsou jasná."
+> 2. **Podstatně lepší efektivita vynaloženého úsilí**
+>    → soustředíme se na společnou infrastrukturu
+>    (platforma, DQI tool, monitoring, reporting, issue management)
+>
+> 3. **1 tým nemůže mít detailní znalost procesů v celé bance**
+>    → nové uspořádání respektuje specializaci jednotlivých týmů
+>
+> 4. **Jasné vymezení odpovědnosti:**
+>    • Zadavatel ví co chce (a to je jeho odpovědnost)
+>    • Centrální tým dodává framework a nástroje ("nevymýšlíme stále kolo")
+>
+> 5. **Nepálíme čas na marných bitvách s větrnými mlýny**
+>    → soustředíme se na to, v čem jsme opravdu dobří
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
 │  ✕ Raiffeisen Bank  │ MY: Governance                        │
 │                                                             │
-│            "Kdo hlídá pravidla?" — My všichni.              │
+│            "Kdo hlídá pravidla?" — Tým s know-how.          │
 │                                                             │
 │   ┌───────────────────────────────────────────────────┐     │
 │   │                                                   │     │
-│   │   ┌──────┐   CO JSME ZDĚDILI                      │     │
-│   │   │(Roman)│  • Centrální governance = schvalování │     │
-│   │   └──────┘   • Pomalé, byrokratické               │     │
-│   │              • Lidé to obcházeli                  │     │
+│   │   ┌──────┐   CO SE ZMĚNILO                        │     │
+│   │   │(Roman)│                                       │     │
+│   │   └──────┘   1. Odpovědnost je tam kde má být     │     │
+│   │                 (tým s know-how)                  │     │
 │   │                                                   │     │
-│   │              CO JSME ZMĚNILI                      │     │
-│   │              • Governance jako služba             │     │
-│   │              • Jasná pravidla (Desatero)          │     │
-│   │              • Splníš → jedeš                     │     │
+│   │              2. Lepší efektivita                  │     │
+│   │                 → společná infrastruktura         │     │
 │   │                                                   │     │
-│   │              CO SE STALO                          │     │
-│   │              • [Y dní] → [Z dní / self-service]   │     │
-│   │              • Compliance se zlepšil              │     │
+│   │              3. Respektujeme specializaci         │     │
+│   │                 (1 tým nezná celou banku)         │     │
+│   │                                                   │     │
+│   │              4. Jasné vymezení odpovědnosti       │     │
+│   │                 (zadavatel + centrální framework) │     │
+│   │                                                   │     │
+│   │              5. Nepálíme čas na marných bitvách   │     │
+│   │                 → děláme to, v čem jsme dobří     │     │
 │   │                                                   │     │
 │   │   ┌───────────────────────────────────────────┐   │     │
 │   │   │ "Regulace není výmluva. JPMorgan má       │   │     │
-│   │   │  tvrdší regulace než my. A zvládli to."   │   │     │
+│   │   │  tvrdší regulace než my."                 │   │     │
 │   │   └───────────────────────────────────────────┘   │     │
 │   │                                         (4 min)   │     │
 │   └───────────────────────────────────────────────────┘     │
@@ -1144,9 +1226,9 @@
 ---
 
 
-## SLIDE 7: Bára mluví 🎤 (Kvalita)
+## SLIDE 7: Bára mluví 🎤 (Datová kvalita)
 
-**Příběh:** 🎤 Bára o kvalitě.
+**Příběh:** 🎤 Bára vysvětluje dva přístupy k datové kvalitě: reaktivní a proaktivní.
 
 
 **Lukáš uvede:**
@@ -1154,43 +1236,113 @@
 > Když data vlastní každý, kdo hlídá chyby? Báro?"
 
 **Bářin příběh (4 min):**
-> "Decentralizace = riziko nekonzistence?
-> 'Kdo garantuje kvalitu?' — Oprávněná obava.
+> **PRINCIPY:**
+> • Kvalita dat je subjektivní — každý má trochu jiné nároky/požadavky
+> • Umíme měřit míru naplnění požadavků, pokud jsou definovány
+> • Měříme elementární vlastnosti: úplnost, konzistence, aktuálnost, platnost
+> • Dopady nekvality můžeme vyčíslit v penězích (náklady na opravu, ušlý zisk, pokuty)
 >
-> Data quality jako součást pipeline. Ne ruční review.
-> Automatické kontroly při každém publishu.
-> Vlastník dat = zodpovědný za kvalitu svých dat.
+> **JAK TO FUNGUJE:**
+> Měření DQ umožňuje vlastníkovi včas reagovat na změnu kvality dat:
 >
-> [ERROR RATE] — dřív [X%], teď [Y%].
-> [KONKRÉTNÍ PŘÍKLAD] — chyba zachycena automaticky, ne člověkem."
+> **REAKTIVNÍ ŘEŠENÍ:**
+> "V reportu vidím zhoršení, musím s tím něco dělat"
+> → Příklad: Zjistili jsme zhoršení kvality adres do CEU,
+>   implementovali našeptávač adres → **75% zlepšení**
+>
+> **PROAKTIVNÍ ŘEŠENÍ:**
+> "K tomuhle nesmí nikdy dojít, proto jsme nasadili opatření"
+> → Příklad: Pro NACE kódy je implementován číselník,
+>   vstupy v onboardingu se na něj musí odkazovat
+>   → **není možné zadat neexistující NACE kód**
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
 │  ✕ Raiffeisen Bank  │ MY: Datová kvalita                    │
 │                                                             │
-│            "Kdo hlídá chyby?" — Automat.                    │
+│            "Kdo hlídá chyby?" — Vlastník + automatika.      │
 │                                                             │
 │   ┌───────────────────────────────────────────────────┐     │
 │   │                                                   │     │
-│   │   ┌──────┐   PROBLÉM                              │     │
-│   │   │(Bára)│   • Decentralizace = nekonzistence?    │     │
-│   │   └──────┘   • Kdo garantuje kvalitu?             │     │
+│   │   ┌──────┐   PRINCIPY                             │     │
+│   │   │(Bára)│   • Kvalita je subjektivní             │     │
+│   │   └──────┘   • Měříme: úplnost, konzistence,      │     │
+│   │                aktuálnost, platnost               │     │
+│   │              • Dopady vyčíslíme v penězích        │     │
 │   │                                                   │     │
-│   │              ŘEŠENÍ                               │     │
-│   │              • Data quality v pipeline            │     │
-│   │              • Automatické kontroly               │     │
-│   │              • Vlastník = zodpovědný              │     │
+│   │              REAKTIVNÍ ŘEŠENÍ                     │     │
+│   │              "Vidím zhoršení → reaguji"           │     │
+│   │              → CEU adresy + našeptávač            │     │
+│   │              → 75% zlepšení                       │     │
 │   │                                                   │     │
-│   │              DŮKAZ                                │     │
-│   │              • Error rate: [X%] → [Y%]            │     │
-│   │              • Chyby zachyceny automaticky        │     │
+│   │              PROAKTIVNÍ ŘEŠENÍ                    │     │
+│   │              "Nesmí k tomu dojít → opatření"      │     │
+│   │              → NACE kódy s číselníkem             │     │
+│   │              → nelze zadat neexistující kód       │     │
 │   │                                                   │     │
 │   │   ┌───────────────────────────────────────────┐   │     │
 │   │   │ "Kvalita se nezhoršila. Zlepšila se.      │   │     │
 │   │   │  Protože je vidět."                       │   │     │
 │   │   └───────────────────────────────────────────┘   │     │
 │   │                                         (4 min)   │     │
+│   └───────────────────────────────────────────────────┘     │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## SLIDE 7a: Roman + Bára — Společné shrnutí 🎤
+
+**Příběh:** 🎤 Roman a Bára v krátkém dialogu ukáží, jak si kdokoli může vytvořit vlastní DQI.
+
+
+**Dialog (2 min):**
+
+> **Roman:** "Jak máme vůbec vyřešený proces pro vytváření nových DQI?
+>             Co bych měl udělat, kdybych chtěl mít svoje vlastní DQI?"
+>
+> **Bára:**  "Jasně, máme k tomu publikovanou gripkartu, na SharePointu máme
+>             dokonce online e-learningový tutoriál, a kdyby ti nic z toho
+>             nepomohlo, tak se mi ozvi a určitě tě nenechám na holičkách."
+>
+> **Roman:** "To je super, no a co budu pro vytvoření mého DQI potřebovat?"
+>
+> **Bára:**  "Ideálně když si dokážeš napsat svoje vlastní SQL, to je ideál.
+>             Poradíme si ale i bez toho — důležité je umět si vydefinovat
+>             pravidla DQ, to znamená musíš sám vědět, jak se poznají data,
+>             která pro tebe nejsou dost kvalitní. Pak už jen napíšeme DQI,
+>             která taková data umí vyhledat a vyreportovat."
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│  ✕ Raiffeisen Bank  │ Jak vytvořit vlastní DQI?             │
+│                                                             │
+│   ┌───────────────────────────────────────────────────┐     │
+│   │                                                   │     │
+│   │   ┌──────┐  ┌──────┐                              │     │
+│   │   │(Roman)│  │(Bára)│   DIALOG                    │     │
+│   │   └──────┘  └──────┘                              │     │
+│   │                                                   │     │
+│   │   Roman: "Jak vytvořím vlastní DQI?"              │     │
+│   │                                                   │     │
+│   │   Bára:  "Máme k tomu:                            │     │
+│   │          • Gripkartu                              │     │
+│   │          • E-learning na SharePointu              │     │
+│   │          • Osobní pomoc"                          │     │
+│   │                                                   │     │
+│   │   Roman: "Co budu potřebovat?"                    │     │
+│   │                                                   │     │
+│   │   Bára:  "Ideálně SQL. Ale hlavně musíš vědět,    │     │
+│   │          jak poznáš nekvalitní data."             │     │
+│   │                                                   │     │
+│   │   ┌───────────────────────────────────────────┐   │     │
+│   │   │ "Decentralizace + jasný proces            │   │     │
+│   │   │  = kvalita bez chaosu."                   │   │     │
+│   │   └───────────────────────────────────────────┘   │     │
+│   │                                         (2 min)   │     │
 │   └───────────────────────────────────────────────────┘     │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
@@ -1262,43 +1414,66 @@
 > Aničko — jak vypadá naše nová platforma?"
 
 **Anitin příběh (8 min):**
-> "Vše v Oracle. Noční batch. Včerejší data.
+
+**0:00-2:00 — CO JSME ZDĚDILI: Zlatá klec Oracle**
+> Vše v Oracle. Omezená škálovatelnost — daný počet CPU, velikost paměti, úložiště.
 >
-> Přešli jsme na AWS/Databricks. Modulární architektura.
-> A hlavně: streaming. Data v reálném čase.
+> Riziko ovlivňování produkčního zpracování. Nedostatečný výkon. Omezený self-service.
 >
-> [KONKRÉTNÍ USE CASE] — hyperpersonalizace, fraud detection, real-time reporting.
-> Dřív: batch přes noc. Teď: do 30 sekund.
+> A hlavně: omezuje nás na tradiční SQL a PL/SQL. Neumožňuje naplno využít sílu moderních technologií, které dnes formulují budoucnost práce s daty.
+
+**2:00-4:00 — CO JSME ZMĚNILI: Otevřené dveře**
+> Přešli jsme na Databricks. Modulární architektura, doménová autonomie.
 >
-> Strach 'data nejsou včas'? Tohle je odpověď."
+> Jednotlivé týmy mohou samostatně vytvářet, publikovat a spravovat datové produkty.
+>
+> Zabudované moderní nástroje pro vizualizaci, machine learning a AI. Podpora inovací.
+>
+> A prakticky neomezená škálovatelnost a storage.
+
+**4:00-6:30 — CO SE STALO: Desítky ML use casů**
+> Desítky ML use casů v oblasti Retail, Risk a AML — v Oracle by vůbec nešlo.
+>
+> Pokročilé datové analýzy využívající externí knihovny. Rychlé POC a experimenty. Optimalizační úlohy.
+>
+> Machine learning a AI — to, co dříve bylo nemožné nebo extrémně drahé.
+
+**6:30-8:00 — CO BYCH VZKÁZALA: Oracle není nepřítel**
+> Oracle není špatný. Je robustní a stabilní, dlouhodobě osvědčená platforma pro centralizované zpracování.
+>
+> Ale svět se mění.
+>
+> Pokud chceme inovovat a posunout se vpřed, je čas otevřít dveře novým platformám, které nám umožní využít moderní přístupy a technologie.
+>
+> Jeden nástroj na všechno je pohodlný. Ale omezující.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│  ✕ Raiffeisen Bank  │ MY: Platforma + Streaming             │
+│  ✕ Raiffeisen Bank  │ MY: Nová platforma                    │
 │                                                             │
-│            "Data nejsou včas." — Už jsou.                   │
+│            "Nemáme na to lidi / nástroje." — Už máme.       │
 │                                                             │
 │   ┌───────────────────────────────────────────────────┐     │
 │   │                                                   │     │
 │   │   ┌──────┐   CO JSME ZDĚDILI                      │     │
-│   │   │(Anita)│  • Vše v Oracle                       │     │
-│   │   └──────┘   • Noční batch                        │     │
-│   │              • Včerejší data                      │     │
+│   │   │(Anita)│  • Vše v Oracle (zlatá klec)          │     │
+│   │   └──────┘   • Omezená škálovatelnost             │     │
+│   │              • Jen SQL/PL-SQL                     │     │
 │   │                                                   │     │
 │   │              CO JSME ZMĚNILI                      │     │
-│   │              • AWS / Databricks                   │     │
-│   │              • Streaming pipeline                 │     │
-│   │              • Real-time capabilities             │     │
+│   │              • Databricks                         │     │
+│   │              • Týmy samostatně spravují DP        │     │
+│   │              • ML, AI, vizualizace zabudované     │     │
 │   │                                                   │     │
 │   │              CO SE STALO                          │     │
-│   │              • Batch přes noc → 30 sekund         │     │
-│   │              • Hyperpersonalizace možná           │     │
-│   │              • [KONKRÉTNÍ USE CASE]               │     │
+│   │              • Desítky ML use casů (Retail,       │     │
+│   │                Risk, AML)                         │     │
+│   │              • Rychlé POC a experimenty           │     │
 │   │                                                   │     │
 │   │   ┌───────────────────────────────────────────┐   │     │
-│   │   │ "Strach 'data nejsou včas'?               │   │     │
-│   │   │  Tohle je odpověď."                       │   │     │
+│   │   │ "Oracle není špatný. Ale svět se mění.    │   │     │
+│   │   │  Jeden nástroj na všechno je omezující."  │   │     │
 │   │   └───────────────────────────────────────────┘   │     │
 │   │                                         (8 min)   │     │
 │   └───────────────────────────────────────────────────┘     │
