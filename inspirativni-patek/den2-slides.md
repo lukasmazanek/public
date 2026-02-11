@@ -13,7 +13,7 @@
 
 1. Jak to děláme — příběh jedné investice v RBCZ.
 2. Minule jsme pojmenovali pět strachů. Dnes na každý odpovíme.
-3. Tomáš Jelínek potřeboval data pro kampaně a rozhodl se nestat do fronty na DWH.
+3. Tomáš Jelínek potřeboval data pro kampaně a rozhodl se nestat do fronty na DWH — dnes má 13 produktů, 5 v produkci.
 4. Aby mohl začít, potřeboval mapu — kde v bance jsou data, která hledá.
 5. BKB diagram na jednu A4 ukázal celý byznys: domény, subdomény, kandidátní datové produkty.
 6. Tři produkty v subdoméně CRM dostaly vlastníka — Karel Černý ví, co dodává a komu.
@@ -33,7 +33,7 @@
 20. DPCC AI self-service mu za 30 sekund ukázal co existuje, co ne a kde hledat dál.
 21. Produkt se jmenoval DP_CUSTOMER — Dušan čekal všechny zákazníky, dostal jen kampaňové kandidáty. Subset princip z ontologie vysvětluje proč: obě definice jsou legitimní podmnožiny RBCZ klienta. Dušanův požadavek se stal novým kandidátem v BKB.
 22. Data quality kontroly běžely v pipeline automaticky — vlastník odpovídal za kvalitu svých dat.
-23. Příběh jednoho produktu se zopakoval dvanáctkrát — Kanban drží přehled nad 12 projekty paralelně.
+23. Příběh jednoho produktu se zopakoval 79× napříč bankou — MIB vede s 5 v produkci, Retail startuje, Finance má první.
 24. Pět strachů z Den 1 dostalo pět konkrétních odpovědí z jednoho příběhu.
 25. Decentralizace není chaos. Je to jiný řád. A vy jste jeho součástí.
 26. Otázky a odpovědi — speakeři odpovídají ke svým kapitolám.
@@ -167,9 +167,11 @@ Jelínek se rozhodl zkusit nový přístup — vytvořit datové produkty vlastn
 
 Výsledek předběhl očekávání: v rámci projektu Salesforce v tribu Investice vzniklo za **9 měsíců 5 různých datových řešení**, která agilně reagovala na změny zadání. To je autonomie podpořená platformou — a důkaz, že time-to-market lze splnit i mimo centrální DWH.
 
+Dnes má Tomášova doména MIB **13 datových produktů** — 5 kandidátních, 3 ve vývoji a **5 v produkci**. Je nejdál v celé bance. Tohle je ten příběh.
+
 > "Tomáš Jelínek, šéf MIB. Potřeboval data pro marketingové kampaně v Investicích.
 > Měl dvě možnosti: zadat požadavek DWH a čekat měsíce. Nebo to zkusit jinak.
-> Zkusil to jinak. Tohle je ten příběh."
+> Zkusil to jinak. Dnes má 13 datových produktů, 5 v produkci. Tohle je ten příběh."
 
 ---
 
@@ -455,7 +457,7 @@ Společně tvoří základ, díky kterému si domény rozumí — i když pracuj
 └────────────────────────────────────────────────────────────┘
 ```
 
-Z DP Canvasu vzniká **Data Contract** — `.yml` soubor verzovaný na GitHubu. Data Contract je formalizovaná smlouva mezi producentem a konzumentem dat. Obsahuje:
+Z DP Canvasu vzniká **Data Contract** — `.yml` soubor verzovaný na GitHubu. Contract píše ručně datový architekt (Michal) společně s vlastníkem produktu (Karel) — přepisují strukturu z Canvasu do YAML formátu, který je strojově čitelný a verzovatelný. Žádný automat, žádná magie — člověk sedí a píše smlouvu. Data Contract je formalizovaná smlouva mezi producentem a konzumentem dat. Obsahuje:
 
 - **Vlastníka** (owner) — kdo za produkt odpovídá (Karel Černý)
 - **Doménu a produkt** — kam produkt patří a jak se jmenuje
@@ -928,6 +930,8 @@ Příběh jednoho projektu je u konce. Ale Tomášova doména není jediná — 
 > "Jeden projekt? Zvládnutelné. Ale Tomášova doména není jediná. Běží 12 projektů paralelně. Nad jedním týmem."
 
 Marek Boháč řídí realizaci datových produktů napříč doménami. V jednu chvíli běží **12 paralelních projektů** nad jedním realizačním týmem. Bez řídicího nástroje by to byl chaos — přesně ten strach z Den 1.
+
+A tady je celkový obraz: v RBCZ je dnes **79 datových produktů** v 7 subdoménách. 68 kandidátních, 5 ve vývoji, **6 v produkci**. MIB vede s 5 produkty v produkci. Retail startuje s 10 produkty, 2 ve vývoji. Finance má první produkt v produkci. Příběh, který jste právě viděli, se opakuje napříč celou bankou.
 
 Řešení: společný **Kanban board** s jasně definovanými fázemi (Backlog → Analysis → Build → Deploy → Done). Každý projekt je karta, každá karta má vlastníka, termín a stav. Pravidla:
 
