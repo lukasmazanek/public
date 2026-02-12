@@ -208,9 +208,11 @@
     <header>
         <h1>Inspirativni Patek</h1>
         <nav>
-            <button onclick="loadDoc('slides-ascii-design.md')" id="btn-slides" class="active">Slides</button>
+            <button onclick="loadDoc('slides-ascii-design.md')" id="btn-slides" class="active">Den 1 Slides</button>
+            <button onclick="loadDoc('den2-slides.md')" id="btn-den2">Den 2 Slides</button>
             <button onclick="loadDoc('outline.md')" id="btn-outline">Outline</button>
             <button onclick="loadDoc('pro-speakery.md')" id="btn-speakers">Pro Speakery</button>
+            <a href="den2-slides.html" style="display:inline-block;background:#d63031;color:#fff;padding:0.5rem 1rem;border-radius:4px;font-size:0.9rem;text-decoration:none;border:1px solid #d63031;transition:all 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Den 2 Prezentace</a>
         </nav>
     </header>
 
@@ -233,6 +235,7 @@
             // Update active button
             document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
             if (filename === 'slides-ascii-design.md') document.getElementById('btn-slides').classList.add('active');
+            if (filename === 'den2-slides.md') document.getElementById('btn-den2').classList.add('active');
             if (filename === 'outline.md') document.getElementById('btn-outline').classList.add('active');
             if (filename === 'pro-speakery.md') document.getElementById('btn-speakers').classList.add('active');
 
