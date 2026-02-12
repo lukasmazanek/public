@@ -3,1056 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jak to děláme — Inspirativní pátek Den 2</title>
+    <title>Den 2: Jak to děláme — Inspirativní pátek</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
-            --bg: #1a1a2e;
-            --surface: #16213e;
-            --primary: #e94560;
-            --accent: #0f3460;
-            --text: #eee;
-            --text-muted: #a0a0b0;
-            --chapter1: #e94560;
-            --chapter2: #0f3460;
-            --chapter3: #e94560;
-            --chapter4: #0f3460;
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --primary: #d63031;
+            --text: #2d3436;
+            --text-muted: #636e72;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg);
             color: var(--text);
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-        }
-
-        .slide-container {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .slide {
-            display: none;
-            width: 100%;
-            height: 100%;
-            padding: 3rem 5rem;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-        }
-
-        .slide.active {
-            display: flex;
-        }
-
-        /* Title slide */
-        .slide.title-slide {
-            background: linear-gradient(135deg, var(--bg) 0%, var(--surface) 50%, var(--accent) 100%);
-        }
-
-        .slide.title-slide h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            letter-spacing: 0.05em;
-            margin-bottom: 1rem;
-            color: #fff;
-        }
-
-        .slide.title-slide .subtitle {
-            font-size: 1.6rem;
-            color: var(--text-muted);
-            font-weight: 300;
-            margin-bottom: 3rem;
-        }
-
-        .slide.title-slide .event-info {
-            font-size: 1.1rem;
-            color: var(--primary);
-            font-weight: 500;
-        }
-
-        /* Chapter divider */
-        .slide.chapter-slide {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--bg) 100%);
-        }
-
-        .slide.chapter-slide .chapter-num {
-            font-size: 1.2rem;
-            color: var(--primary);
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
-
-        .slide.chapter-slide h2 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-        }
-
-        .slide.chapter-slide .chapter-icon {
-            font-size: 2.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            color: var(--text-muted);
-        }
-
-        .slide.chapter-slide .chapter-icon .arrow {
-            color: var(--primary);
-            font-size: 2rem;
-        }
-
-        /* Content slides */
-        .slide.content-slide {
-            background: var(--bg);
-            text-align: left;
-            align-items: flex-start;
-            padding: 3rem 6rem;
-        }
-
-        .slide.content-slide h2 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            width: 100%;
-        }
-
-        .slide.content-slide .slide-body {
-            font-size: 1.3rem;
-            line-height: 1.8;
-            max-width: 100%;
-            width: 100%;
-        }
-
-        .slide.content-slide .slide-body ul {
-            list-style: none;
+            margin: 0;
             padding: 0;
+            min-height: 100vh;
         }
 
-        .slide.content-slide .slide-body ul li {
-            padding: 0.4rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .slide.content-slide .slide-body ul li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0.85rem;
-            width: 8px;
-            height: 8px;
-            background: var(--primary);
-            border-radius: 50%;
-        }
-
-        /* Two-column layout */
-        .two-col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            width: 100%;
-        }
-
-        .col {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .col h3 {
-            font-size: 1.4rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        /* Diagram / code block */
-        .diagram {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 1.5rem 2rem;
-            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
-            font-size: 1rem;
-            line-height: 1.5;
-            white-space: pre;
-            color: var(--text-muted);
-            margin: 1rem 0;
-            overflow-x: auto;
-        }
-
-        .diagram .highlight {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        /* Quote */
-        .quote {
-            border-left: 4px solid var(--primary);
-            padding: 1rem 1.5rem;
-            margin: 1.5rem 0;
-            font-style: italic;
-            color: var(--text-muted);
-            font-size: 1.15rem;
-            line-height: 1.7;
-        }
-
-        /* Speaker badge */
-        .speaker-badge {
-            position: absolute;
-            top: 2rem;
-            right: 3rem;
-            background: rgba(233, 69, 96, 0.15);
-            color: var(--primary);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        /* Big message slide */
-        .slide.message-slide {
-            background: linear-gradient(135deg, var(--bg) 0%, #1a1a3e 100%);
-        }
-
-        .slide.message-slide h2 {
-            font-size: 3rem;
-            font-weight: 700;
-            line-height: 1.5;
-            max-width: 800px;
-        }
-
-        .slide.message-slide h2 .accent {
-            color: var(--primary);
-        }
-
-        /* Pause slide */
-        .slide.pause-slide {
-            background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
-        }
-
-        .slide.pause-slide .pause-icon {
-            font-size: 4rem;
-            margin-bottom: 2rem;
-        }
-
-        .slide.pause-slide h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .slide.pause-slide .cliffhanger {
-            font-size: 1.3rem;
-            color: var(--text-muted);
-            font-style: italic;
-            max-width: 600px;
-            line-height: 1.7;
-            margin-top: 1.5rem;
-        }
-
-        /* Table */
-        .slide-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-            font-size: 1.1rem;
-        }
-
-        .slide-table th {
-            text-align: left;
-            padding: 0.7rem 1rem;
-            border-bottom: 2px solid var(--primary);
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .slide-table td {
-            padding: 0.6rem 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            vertical-align: top;
-        }
-
-        .slide-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        /* Flow diagram */
-        .flow {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 1rem 0;
-            flex-wrap: wrap;
-        }
-
-        .flow-step {
-            background: rgba(233, 69, 96, 0.15);
-            border: 1px solid rgba(233, 69, 96, 0.3);
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            font-weight: 500;
-            font-size: 1.05rem;
-        }
-
-        .flow-arrow {
-            color: var(--primary);
-            font-size: 1.3rem;
-        }
-
-        .flow-step.fail {
-            background: rgba(255, 50, 50, 0.2);
-            border-color: rgba(255, 50, 50, 0.4);
-        }
-
-        /* Comparison */
-        .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            width: 100%;
-            margin: 1rem 0;
-        }
-
-        .comparison .bad {
-            opacity: 0.5;
-        }
-
-        .comparison .bad h3 {
-            color: #ff6b6b;
-        }
-
-        .comparison .good h3 {
-            color: #51cf66;
-        }
-
-        .comparison h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .comparison ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .comparison li {
-            padding: 0.3rem 0;
-            font-size: 1.1rem;
-        }
-
-        /* Box highlight */
-        .highlight-box {
-            background: rgba(233, 69, 96, 0.1);
-            border: 2px solid var(--primary);
-            border-radius: 8px;
-            padding: 1.5rem 2rem;
-            margin: 1rem 0;
-            text-align: center;
-        }
-
-        .highlight-box p {
-            font-size: 1.3rem;
-            font-weight: 500;
-        }
-
-        .highlight-box .small {
-            font-size: 1rem;
-            color: var(--text-muted);
-            margin-top: 0.5rem;
-        }
-
-        /* Navigation */
-        .nav-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(22, 33, 62, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 0.6rem 2rem;
+        header {
+            background: var(--surface);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 100;
-            border-top: 1px solid rgba(255,255,255,0.08);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .nav-bar .slide-num {
-            color: var(--text-muted);
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        header a {
+            color: var(--primary);
+            text-decoration: none;
             font-size: 0.9rem;
-            min-width: 80px;
         }
 
-        .nav-bar .progress {
-            flex: 1;
-            height: 3px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-            margin: 0 2rem;
-            position: relative;
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
-        .nav-bar .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 2px;
-            transition: width 0.3s ease;
+        #content {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 8px;
+            line-height: 1.6;
         }
 
-        .nav-btn {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.2);
-            color: var(--text);
-            padding: 0.4rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
+        #content h1, #content h2, #content h3 {
+            color: var(--primary);
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        #content h1:first-child {
+            margin-top: 0;
+        }
+
+        #content pre {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
             font-size: 0.85rem;
-            transition: all 0.2s;
+            line-height: 1.4;
+            color: #212529;
         }
 
-        .nav-btn:hover {
-            background: rgba(255,255,255,0.1);
+        #content code {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
         }
 
-        .nav-btns {
-            display: flex;
-            gap: 0.5rem;
+        #content p code {
+            background: #f1f3f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
         }
 
-        /* Print/download styling */
-        @media print {
-            .nav-bar { display: none; }
-            .slide {
-                display: flex !important;
-                page-break-after: always;
-                height: 100vh;
-                width: 100vw;
+        #content hr {
+            border: none;
+            border-top: 2px solid var(--primary);
+            margin: 3rem 0;
+        }
+
+        #content strong {
+            color: #2d3436;
+        }
+
+        #content ul, #content ol {
+            padding-left: 1.5rem;
+        }
+
+        #content li {
+            margin: 0.5rem 0;
+        }
+
+        #content blockquote {
+            border-left: 4px solid var(--primary);
+            margin: 1rem 0;
+            padding: 0.5rem 1rem;
+            background: rgba(233, 69, 96, 0.1);
+        }
+
+        #content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        #content th, #content td {
+            border: 1px solid rgba(0,0,0,0.1);
+            padding: 0.5rem;
+            text-align: left;
+        }
+
+        #content th {
+            background: #f8f9fa;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-muted);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 1rem;
             }
-            body { overflow: visible; }
-        }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .slide { padding: 2rem; }
-            .slide.content-slide { padding: 2rem 2.5rem; }
-            .slide.title-slide h1 { font-size: 2.5rem; }
-            .slide.title-slide .subtitle { font-size: 1.1rem; }
-            .slide.chapter-slide h2 { font-size: 2rem; }
-            .slide.content-slide h2 { font-size: 1.6rem; }
-            .slide.content-slide .slide-body { font-size: 1rem; }
-            .slide.message-slide h2 { font-size: 2rem; }
-            .two-col { grid-template-columns: 1fr; gap: 1.5rem; }
-            .comparison { grid-template-columns: 1fr; }
-            .diagram { font-size: 0.75rem; }
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            #content {
+                padding: 1rem;
+            }
+
+            #content pre {
+                font-size: 0.7rem;
+            }
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Den 2: Jak to děláme</h1>
+        <a href="./">← Zpět na přehled</a>
+    </header>
 
-<div class="slide-container">
-
-    <!-- SLIDE 1: Title -->
-    <div class="slide title-slide active" data-slide="1">
-        <h1>JAK TO DĚLÁME</h1>
-        <div class="subtitle">Jeden příběh. Od potřeby po produkci.</div>
-        <div class="event-info">Inspirativní pátek — Den 2</div>
-    </div>
-
-    <!-- SLIDE 2: Recap -->
-    <div class="slide content-slide" data-slide="2">
-        <span class="speaker-badge">Lukáš</span>
-        <h2>5 strachů z minula</h2>
-        <div class="slide-body">
-            <ul style="font-size: 1.5rem; line-height: 2.2;">
-                <li>Rozdělíme to a nedáme dohromady</li>
-                <li>Nikdo nebude zodpovědný</li>
-                <li>Bude chaos</li>
-                <li>Nemáme na to lidi</li>
-                <li>Data nejsou včas</li>
-            </ul>
-            <div class="quote">
-                Minule jsme mluvili proč. Dnes žádná teorie. Dnes uvidíte jeden skutečný projekt. Z naší banky. Od první schůzky po produkci.
-            </div>
+    <main>
+        <div id="content">
+            <div class="loading">Loading...</div>
         </div>
-    </div>
+    </main>
 
-    <!-- SLIDE 3: Hook — Tomášův problém -->
-    <div class="slide content-slide" data-slide="3">
-        <span class="speaker-badge">Lukáš</span>
-        <h2>Tomáš Jelínek, šéf MIB</h2>
-        <div class="slide-body">
-            <p style="font-size: 1.4rem; margin-bottom: 1.5rem;">Potřeboval data pro marketingové kampaně v Investicích.</p>
-            <p style="margin-bottom: 1.5rem;">Měl dvě možnosti:</p>
-            <div class="comparison" style="margin-bottom: 1.5rem;">
-                <div class="bad">
-                    <h3>DWH fronta</h3>
-                    <p style="font-size: 1.1rem;">Zadat požadavek a čekat měsíce.</p>
-                </div>
-                <div class="good">
-                    <h3>Zkusit to jinak</h3>
-                    <p style="font-size: 1.1rem;">Nový přístup s podporou DMT.</p>
-                </div>
-            </div>
-            <div class="highlight-box">
-                <p>Dnes má <strong>13 datových produktů</strong>, 5 v produkci.</p>
-                <p class="small">Tohle je ten příběh.</p>
-            </div>
-        </div>
-    </div>
+    <footer>
+        <a href="../">lukasmazanek.github.io/public</a>
+    </footer>
 
-    <!-- SLIDE 4: Chapter 1 divider -->
-    <div class="slide chapter-slide" data-slide="4">
-        <div class="chapter-num">Kapitola 1</div>
-        <h2>Od obrázku k architektuře</h2>
-        <div class="chapter-icon">
-            <span>Papír</span>
-            <span class="arrow">→</span>
-            <span>BKB</span>
-        </div>
-    </div>
-
-    <!-- SLIDE 5: BKB diagram -->
-    <div class="slide content-slide" data-slide="5">
-        <span class="speaker-badge">Lukáš</span>
-        <h2>Business Knowledge Blueprint</h2>
-        <div class="slide-body">
-            <div class="diagram">Strukturovaný obraz byznysu na jednu A4
-
-Domény → Subdomény → Kandidátní oblasti
-
-┌─────────────────────────────────────┐
-│  Investice (doména)                 │
-│  ├── CRM (subdoména)                │
-│  │   ├── Marketing Campaign Cand.   │
-│  │   ├── Investment Agreement       │
-│  │   └── Investment Customer Exp.   │
-│  ├── Trading                        │
-│  └── Risk                           │
-└─────────────────────────────────────┘</div>
-            <p>Soňa (business analytička) prošla s Karlem Černým jeho pracovní realitu: procesy, data, konzumenti.</p>
-        </div>
-    </div>
-
-    <!-- SLIDE 6: Kandidátní datové produkty -->
-    <div class="slide content-slide" data-slide="6">
-        <span class="speaker-badge">Lukáš</span>
-        <h2>Subdoména CRM — 3 datové produkty</h2>
-        <div class="slide-body">
-            <ul style="font-size: 1.4rem; line-height: 2.2;">
-                <li><strong>Marketing Campaign Candidates</strong><br><span style="color: var(--text-muted); font-size: 1rem;">Předvybraní klienti pro kampaně v Investicích</span></li>
-                <li><strong>Investment Agreement</strong><br><span style="color: var(--text-muted); font-size: 1rem;">Data o investičních smlouvách</span></li>
-                <li><strong>Investment Customer Exposition</strong><br><span style="color: var(--text-muted); font-size: 1rem;">Expozice klientů v investičních produktech</span></li>
-            </ul>
-            <div class="highlight-box" style="margin-top: 1.5rem;">
-                <p>Vlastník: <strong>Karel Černý</strong></p>
-                <p class="small">Konkrétní člověk, ne abstraktní governance.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- SLIDE 7: AI generuje dokumentaci -->
-    <div class="slide content-slide" data-slide="7">
-        <span class="speaker-badge">Lukáš</span>
-        <h2>AI generuje dokumentaci</h2>
-        <div class="slide-body">
-            <div class="two-col">
-                <div class="col">
-                    <h3>BKB diagram</h3>
-                    <div class="diagram" style="font-size: 0.9rem;">Strukturovaný diagram
-domén, subdomén
-a kandidátních oblastí
-
-→ Jasná struktura
-→ Sémantika</div>
-                </div>
-                <div class="col">
-                    <h3>AI-generated doc</h3>
-                    <div class="diagram" style="font-size: 0.9rem;">Srozumitelná dokumentace
-za minutu.
-
-Žádné psaní Wordů.
-
-Analytik by psal týden —
-AI to zvládne za minutu.</div>
-                </div>
-            </div>
-            <div class="quote" style="margin-top: 1.5rem;">
-                A pak jsme to BKB dali AI a za minutu jsme měli dokumentaci. Karel si říkal, jestli si děláme srandu.
-            </div>
-        </div>
-    </div>
-
-    <!-- SLIDE 8: Chapter 2 divider -->
-    <div class="slide chapter-slide" data-slide="8">
-        <div class="chapter-num">Kapitola 2</div>
-        <h2>Od kanvasu ke smlouvě</h2>
-        <div class="chapter-icon">
-            <span>Canvas</span>
-            <span class="arrow">→</span>
-            <span>.yml</span>
-        </div>
-    </div>
-
-    <!-- SLIDE 9: DP Canvas -->
-    <div class="slide content-slide" data-slide="9">
-        <span class="speaker-badge">Michal</span>
-        <h2>Data Product Canvas</h2>
-        <div class="slide-body">
-            <p style="margin-bottom: 1rem;">Analytický dokument na jednu flipchart stránku — vše na jednom místě:</p>
-            <div class="two-col">
-                <div class="col">
-                    <ul>
-                        <li>Zdrojová data</li>
-                        <li>Atributy a jejich význam</li>
-                        <li>Business Glossary mapping</li>
-                        <li>Kvalita dat</li>
-                    </ul>
-                </div>
-                <div class="col">
-                    <ul>
-                        <li>Aktualizační frekvence</li>
-                        <li>Relační model</li>
-                        <li>Sample data</li>
-                        <li>Infrastruktura</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="quote" style="margin-top: 1.5rem;">Máme obrázek. Máme oblasti. Ale jak z toho uděláme něco, co vývojář může vzít a postavit?</div>
-        </div>
-    </div>
-
-    <!-- SLIDE 10: Business Glossary + Ontologie -->
-    <div class="slide content-slide" data-slide="10">
-        <span class="speaker-badge">Michal</span>
-        <h2>Společný jazyk</h2>
-        <div class="slide-body">
-            <div class="two-col">
-                <div class="col">
-                    <h3>Business Glossary</h3>
-                    <p style="font-size: 1.15rem; margin-bottom: 0.8rem;">"Co to slovo znamená?"</p>
-                    <p style="color: var(--text-muted);">Definuje byznys termíny jednoznačně — klient, kampaň, expozice.</p>
-                </div>
-                <div class="col">
-                    <h3>Ontologie (FIBO)</h3>
-                    <p style="font-size: 1.15rem; margin-bottom: 0.8rem;">"Jak spolu věci souvisí?"</p>
-                    <p style="color: var(--text-muted);">Mezinárodní standard — vztahy mezi koncepty.</p>
-                </div>
-            </div>
-            <div class="diagram" style="margin-top: 1.5rem; font-size: 1rem;">FIBO (mezinárodní standard)
-  └── RBCZ klient (celá banka)
-        ├── MIB klient
-        │     └── Investment klient
-        │           └── <span class="highlight">Marketing Campaign Candidate</span>
-        └── Retail klient</div>
-            <p style="margin-top: 1rem; color: var(--text-muted); font-size: 1rem;">Každá nižší úroveň je podmnožinou vyšší. Nikdy si neprotiřečí.</p>
-        </div>
-    </div>
-
-    <!-- SLIDE 11: Data Contract -->
-    <div class="slide content-slide" data-slide="11">
-        <span class="speaker-badge">Michal</span>
-        <h2>Data Contract</h2>
-        <div class="slide-body">
-            <div class="diagram" style="font-size: 1.05rem;">owner: karel.cerny
-domain: investments
-subdomain: crm
-product: marketing-campaign-candidates
-version: 1.0
-
-schema:
-  - name: client_id
-    type: string
-  - name: campaign_score
-    type: float
-
-sla:
-  freshness: daily
-  availability: 99.5%</div>
-            <p style="margin-top: 1rem; font-size: 1.15rem;">.yml soubor na GitHubu — smlouva mezi producentem a konzumentem.</p>
-            <p style="color: var(--text-muted); margin-top: 0.5rem;">Registrovaný v DPCC katalogu. Maturity score. Verzovaný.</p>
-        </div>
-    </div>
-
-    <!-- SLIDE 12: DPCC katalog -->
-    <div class="slide content-slide" data-slide="12">
-        <span class="speaker-badge">Michal</span>
-        <h2>DPCC — Data Product Catalog & Compliance</h2>
-        <div class="slide-body">
-            <div class="flow" style="margin-bottom: 1.5rem;">
-                <span class="flow-step">Hledej produkt</span>
-                <span class="flow-arrow">→</span>
-                <span class="flow-step">Přečti contract</span>
-                <span class="flow-arrow">→</span>
-                <span class="flow-step">Připoj se</span>
-                <span class="flow-arrow">→</span>
-                <span class="flow-step">Použij data</span>
-            </div>
-            <ul style="font-size: 1.15rem;">
-                <li>AI self-service — dotazy v přirozeném jazyce</li>
-                <li>Automatické generování z contractu</li>
-                <li>Sandbox s testovacími daty za 5 minut</li>
-            </ul>
-            <div style="margin-top: 1.5rem;">
-                <p style="color: var(--text-muted); font-size: 1rem;">Maturity: <strong style="color: var(--text);">Candidate</strong> → <strong style="color: var(--text);">Certified</strong> → <strong style="color: var(--text);">Core</strong></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- SLIDE 13: Governance = Contract -->
-    <div class="slide content-slide" data-slide="13">
-        <span class="speaker-badge">Roman</span>
-        <h2>Kdo hlídá pravidla?</h2>
-        <div class="slide-body">
-            <div class="highlight-box" style="margin-bottom: 1.5rem;">
-                <p style="font-size: 1.6rem;"><strong>DATA CONTRACT = GOVERNANCE</strong></p>
-                <p class="small" style="font-size: 1.1rem;">Ne proces. Smlouva jako kód.</p>
-            </div>
-            <ul style="font-size: 1.2rem;">
-                <li><strong>Vlastník:</strong> Karel Černý — jasně zapsáno v kontraktu</li>
-                <li><strong>Odpovědnost:</strong> definována v kontraktu, ne v procesu</li>
-                <li><strong>Porušení:</strong> víš hned — a není to tvoje chyba</li>
-            </ul>
-            <div class="quote" style="margin-top: 1.5rem;">
-                Governance přestal být schvalovací proces — stal se smlouvou jako kód s jasným vlastníkem.
-            </div>
-        </div>
-    </div>
-
-    <!-- SLIDE 14: Chapter 3 divider -->
-    <div class="slide chapter-slide" data-slide="14">
-        <div class="chapter-num">Kapitola 3</div>
-        <h2>Od kódu k produkci</h2>
-        <div class="chapter-icon">
-            <span>Kód</span>
-            <span class="arrow">→</span>
-            <span>PROD</span>
-        </div>
-    </div>
-
-    <!-- SLIDE 15: Solution Architecture -->
-    <div class="slide content-slide" data-slide="15">
-        <span class="speaker-badge">Evžen</span>
-        <h2>Solution architektura datového produktu</h2>
-        <div class="slide-body">
-            <div class="two-col">
-                <div class="col">
-                    <ul style="font-size: 1.25rem;">
-                        <li><strong>Immutabilita</strong><br><span style="color: var(--text-muted); font-size: 1rem;">Jednou zapsaná data se nemění</span></li>
-                        <li><strong>Bitemporalita</strong><br><span style="color: var(--text-muted); font-size: 1rem;">Business time + system time</span></li>
-                    </ul>
-                </div>
-                <div class="col">
-                    <ul style="font-size: 1.25rem;">
-                        <li><strong>Read-only přístup</strong><br><span style="color: var(--text-muted); font-size: 1rem;">Konzument čte, nikdy nemění</span></li>
-                        <li><strong>Multimodalita</strong><br><span style="color: var(--text-muted); font-size: 1rem;">SQL, API, soubory</span></li>
-                    </ul>
-                </div>
-            </div>
-            <p style="margin-top: 2rem; font-size: 1.1rem; color: var(--text-muted);">DMT enablement tým dodal architekturu. Datový produkt deployován v prostředí <strong style="color: var(--text);">APEX</strong>.</p>
-        </div>
-    </div>
-
-    <!-- SLIDE 16: CI/CD + Enablement -->
-    <div class="slide content-slide" data-slide="16">
-        <span class="speaker-badge">Evžen</span>
-        <h2>"A kde vezmeme lidi, co to postaví?"</h2>
-        <div class="slide-body">
-            <h3 style="color: var(--primary); font-size: 1.4rem; margin-bottom: 1.2rem;">Enablement tým</h3>
-            <ul style="font-size: 1.25rem;">
-                <li>Hotové šablony pro datové produkty</li>
-                <li>CI/CD pipeline (GitHub Actions)</li>
-                <li>Automatické nasazení do APEX</li>
-                <li>Sandbox s testovacími daty za 5 min</li>
-            </ul>
-            <div class="highlight-box" style="margin-top: 2rem;">
-                <p style="font-size: 1.5rem;">Neřešíš <strong>JAK</strong> — řešíš <strong>CO</strong>.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- SLIDE 17: Databricks + FinOps -->
-    <div class="slide content-slide" data-slide="17">
-        <span class="speaker-badge">Anita</span>
-        <h2>Platforma a náklady</h2>
-        <div class="slide-body">
-            <div class="two-col">
-                <div class="col">
-                    <h3>Databricks Unity Catalog</h3>
-                    <ul>
-                        <li>Centrální katalog</li>
-                        <li>Řízení přístupů</li>
-                        <li>Verzování a metadata</li>
-                        <li>Standardní rozhraní</li>
-                    </ul>
-                </div>
-                <div class="col">
-                    <h3>FinOps</h3>
-                    <ul>
-                        <li>Náklady per datový produkt</li>
-                        <li>Compute, storage, přenosy</li>
-                        <li>Vlastník vidí svůj rozpočet</li>
-                        <li>Motivace optimalizovat</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="highlight-box" style="margin-top: 2rem;">
-                <p>Žádné překvapení na konci kvartálu.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- SLIDE 18: Pauza / Chapter 4 divider -->
-    <div class="slide pause-slide" data-slide="18">
-        <div class="pause-icon">☕</div>
-        <h2>Pauza</h2>
-        <div class="cliffhanger">
-            Produkt je v produkci. Kontrakt podepsaný. Platforma běží. Všechno vypadá krásně.<br><br>
-            <strong style="color: var(--primary);">Po pauze uvidíte, co se stane, když přijde někdo z Retailu.</strong>
-        </div>
-    </div>
-
-    <!-- SLIDE 19: Dušanův problém (was chapter 4 intro merged) -->
-    <div class="slide content-slide" data-slide="19">
-        <span class="speaker-badge">Lukáš</span>
-        <h2>"Chci všechny zákazníky Investic"</h2>
-        <div class="slide-body">
-            <p style="font-size: 1.3rem; margin-bottom: 1.5rem;">Dušan Psotný z Retailu čte Data Contract v DPCC:</p>
-            <div class="diagram" style="font-size: 1.1rem; text-align: center;">DP_CUSTOMER  ←  generický název
-
-"Ne. My potřebujeme VŠECHNY zákazníky
- Investic, ne jen předvybrané pro kampaně."</div>
-            <div class="quote" style="margin-top: 1.5rem;">
-                Každý si pod DP_CUSTOMER představí něco jiného. Finance by udělaly totéž. A pak chaos.
-            </div>
-        </div>
-    </div>
-
-    <!-- SLIDE 20: DPCC AI self-service -->
-    <div class="slide content-slide" data-slide="20">
-        <span class="speaker-badge">Lukáš</span>
-        <h2>DPCC AI: "Jaká data o klientech Investic existují?"</h2>
-        <div class="slide-body">
-            <div class="diagram" style="font-size: 1.05rem;">Otázka: "klienti Investic"
-
-→ <span class="highlight">Marketing Campaign Candidates</span>  (MIB/CRM)
-  Scope: předvybraní pro kampaně
-  Owner: Karel Černý
-
-→ ⚠ Žádný produkt "všichni klienti"
-  → Nový kandidát v BKB</div>
-            <p style="margin-top: 1.5rem; font-size: 1.15rem;">Dušan okamžitě vidí co existuje, co ne, a kde hledat dál.</p>
-            <p style="color: var(--text-muted); margin-top: 0.5rem;">Bez DPCC AI by obvolával kolegy. S DPCC AI má odpověď za 30 sekund.</p>
-        </div>
-    </div>
-
-    <!-- SLIDE 21: Glossary chrání -->
-    <div class="slide content-slide" data-slide="21">
-        <span class="speaker-badge">Lukáš</span>
-        <h2>Proč jména rozhodují</h2>
-        <div class="slide-body">
-            <div class="comparison">
-                <div class="bad">
-                    <h3>DP_CUSTOMER</h3>
-                    <ul>
-                        <li>❌ Generické</li>
-                        <li>❌ Každý si myslí něco jiného</li>
-                        <li>❌ Scope creep</li>
-                    </ul>
-                </div>
-                <div class="good">
-                    <h3>Marketing Campaign Candidates</h3>
-                    <ul>
-                        <li>✓ Přesné</li>
-                        <li>✓ Říká co obsahuje</li>
-                        <li>✓ Říká co NEobsahuje</li>
-                        <li>✓ Chráníš kód i architekturu</li>
-                    </ul>
-                </div>
-            </div>
-            <p style="margin-top: 1.5rem; font-size: 1.15rem;">Dušanův požadavek se stal <strong>novým kandidátem v BKB</strong> — ne rozšířením existujícího produktu. Systém funguje.</p>
-        </div>
-    </div>
-
-    <!-- SLIDE 22: Data Quality -->
-    <div class="slide content-slide" data-slide="22">
-        <span class="speaker-badge">Bára</span>
-        <h2>Kvalita dat v pipeline</h2>
-        <div class="slide-body">
-            <div class="flow" style="margin-bottom: 1.5rem; font-size: 1.1rem;">
-                <span class="flow-step">Data source</span>
-                <span class="flow-arrow">→</span>
-                <span class="flow-step">DQ checks</span>
-                <span class="flow-arrow">→</span>
-                <span class="flow-step">Build DP</span>
-                <span class="flow-arrow">→</span>
-                <span class="flow-step">Publish</span>
-            </div>
-            <div style="text-align: center; margin: 1rem 0;">
-                <span class="flow-step fail" style="font-size: 1.1rem;">❌ Fail = stop → Vlastník notifikován</span>
-            </div>
-            <ul style="font-size: 1.15rem; margin-top: 1.5rem;">
-                <li>Ne ruční review — automatické kontroly při každém publishu</li>
-                <li>Validace typů, completeness, business pravidla, referenční integrita</li>
-                <li>Vlastník dat = zodpovědný za kvalitu svých dat</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- SLIDE 23: 12 projektů → Kanban -->
-    <div class="slide content-slide" data-slide="23">
-        <span class="speaker-badge">Marek Boháč</span>
-        <h2>Jeden projekt? Zvládnutelné. Ale běží jich 12.</h2>
-        <div class="slide-body">
-            <div class="diagram" style="font-size: 0.95rem;">KANBAN
-
-Backlog │ Analysis │  Build  │ Deploy  │  Done
-────────┼──────────┼─────────┼─────────┼────────
-  ██    │  ██  ██  │   ██    │   ██    │ ██  ██
-  ██    │  ██      │   ██    │         │ ██  ██
-        │          │         │         │ ██
-
-12 projektů · 1 tým · disciplína + transparence</div>
-            <div class="highlight-box" style="margin-top: 1.5rem;">
-                <p><strong>79 datových produktů</strong> v 7 subdoménách</p>
-                <p class="small">MIB vede s 5 v produkci. Retail startuje. Finance má první.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- SLIDE 24: 5 strachů → 5 odpovědí -->
-    <div class="slide content-slide" data-slide="24">
-        <span class="speaker-badge">Lukáš</span>
-        <h2>5 strachů → 5 odpovědí</h2>
-        <div class="slide-body">
-            <table class="slide-table">
-                <tr>
-                    <th style="width: 40%;">Strach</th>
-                    <th>Odpověď</th>
-                </tr>
-                <tr>
-                    <td>Rozdělíme a nedáme dohromady</td>
-                    <td>BKB + ontologie drží celek</td>
-                </tr>
-                <tr>
-                    <td>Nikdo nebude zodpovědný</td>
-                    <td>Karel Černý. Data Contract. GitHub.</td>
-                </tr>
-                <tr>
-                    <td>Data nejsou včas</td>
-                    <td>CI/CD. APEX. Databricks.</td>
-                </tr>
-                <tr>
-                    <td>Nemáme na to lidi</td>
-                    <td>Enablement tým. Šablony. Sandbox za 5 min.</td>
-                </tr>
-                <tr>
-                    <td>Bude chaos</td>
-                    <td>Glossary chrání scope. Kanban řídí 12 projektů.</td>
-                </tr>
-            </table>
-            <div class="quote" style="margin-top: 1rem;">
-                Pět strachů. Pět odpovědí. Všechny z jednoho příběhu.
-            </div>
-        </div>
-    </div>
-
-    <!-- SLIDE 25: Core message -->
-    <div class="slide message-slide" data-slide="25">
-        <h2>
-            Decentralizace není chaos.<br>
-            <span class="accent">Je to jiný řád.</span><br>
-            A vy jste jeho součástí.
-        </h2>
-    </div>
-
-    <!-- SLIDE 26: Q&A -->
-    <div class="slide message-slide" data-slide="26">
-        <h2>Otázky?</h2>
-        <p style="color: var(--text-muted); margin-top: 2rem; font-size: 1.1rem;">Speakeři odpovídají ke svým kapitolám.</p>
-    </div>
-
-</div>
-
-<!-- Navigation bar -->
-<div class="nav-bar">
-    <div class="nav-btns">
-        <button class="nav-btn" onclick="goToSlide(1)" title="First slide">⏮</button>
-        <button class="nav-btn" onclick="prevSlide()" title="Previous (← or ↑)">◀ Prev</button>
-    </div>
-    <span class="slide-num" id="slideNum">1 / 26</span>
-    <div class="progress">
-        <div class="progress-fill" id="progressFill" style="width: 3.85%"></div>
-    </div>
-    <div class="nav-btns">
-        <button class="nav-btn" onclick="nextSlide()" title="Next (→ or ↓ or Space)">Next ▶</button>
-        <button class="nav-btn" onclick="goToSlide(26)" title="Last slide">⏭</button>
-    </div>
-</div>
-
-<script>
-    let current = 1;
-    const total = 26;
-
-    function showSlide(n) {
-        document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
-        const target = document.querySelector(`[data-slide="${n}"]`);
-        if (target) target.classList.add('active');
-        document.getElementById('slideNum').textContent = `${n} / ${total}`;
-        document.getElementById('progressFill').style.width = `${(n / total) * 100}%`;
-        current = n;
-    }
-
-    function nextSlide() {
-        if (current < total) showSlide(current + 1);
-    }
-
-    function prevSlide() {
-        if (current > 1) showSlide(current - 1);
-    }
-
-    function goToSlide(n) {
-        if (n >= 1 && n <= total) showSlide(n);
-    }
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
-            e.preventDefault();
-            nextSlide();
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-            e.preventDefault();
-            prevSlide();
-        } else if (e.key === 'Home') {
-            e.preventDefault();
-            goToSlide(1);
-        } else if (e.key === 'End') {
-            e.preventDefault();
-            goToSlide(total);
+    <script>
+        async function load() {
+            try {
+                const response = await fetch('den2-slides.md');
+                if (!response.ok) throw new Error('File not found');
+                const text = await response.text();
+                document.getElementById('content').innerHTML = marked.parse(text);
+            } catch (error) {
+                document.getElementById('content').innerHTML = '<p>Error loading document: ' + error.message + '</p>';
+            }
         }
-    });
-
-    // Touch support
-    let touchStartX = 0;
-    document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
-    document.addEventListener('touchend', (e) => {
-        const diff = touchStartX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 50) {
-            if (diff > 0) nextSlide();
-            else prevSlide();
-        }
-    });
-</script>
-
+        load();
+    </script>
 </body>
 </html>
