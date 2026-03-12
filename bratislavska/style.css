@@ -1,4 +1,5 @@
 /* 27bratislavská — Petunia theme for Pico CSS */
+/* ADR-020: Web Dashboard Design System */
 
 /* ─── Petunia Light ─────────────────────────── */
 [data-theme="light"] {
@@ -59,12 +60,27 @@ a:hover { text-decoration: none; }
 
 /* ─── Layout ────────────────────────────────── */
 
-header.container { padding-bottom: 0; }
+header.container {
+  padding-bottom: 0;
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  margin-bottom: 0.5rem;
+}
 nav { font-size: 0.85rem; }
 
+main.container { padding-top: 1.5rem; }
+
 #login-screen {
-  max-width: 400px;
-  margin: 2rem auto;
+  max-width: 360px;
+  margin: 4rem auto;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  background: var(--pico-card-background-color);
+}
+[data-theme="light"] #login-screen {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+[data-theme="dark"] #login-screen {
+  border: 1px solid var(--pico-muted-border-color);
 }
 
 .error {
@@ -80,6 +96,27 @@ nav { font-size: 0.85rem; }
   background: none;
   border: none;
   padding: 0.2rem 0.4rem;
+}
+
+/* ─── Cards (article) ──────────────────────── */
+
+[data-theme="light"] article {
+  border: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border-radius: 0.75rem;
+  margin-bottom: 0;
+}
+[data-theme="dark"] article {
+  box-shadow: none;
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: 0.75rem;
+  margin-bottom: 0;
+}
+
+/* ─── Dashboard grid rows ──────────────────── */
+
+#content > .grid + .grid {
+  margin-top: var(--pico-grid-row-gap, 1.2rem);
 }
 
 /* ─── Payment status indicators ─────────────── */
@@ -116,16 +153,27 @@ table {
   margin: 0;
 }
 td, th {
-  padding: 0.25rem 0.4rem;
+  padding: 0.35rem 0.5rem;
 }
-th {
+thead th {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   color: var(--pico-muted-color);
+  border-bottom: 2px solid var(--pico-muted-border-color);
 }
-h2 { font-size: 1.3rem; margin: 1rem 0 0.5rem; }
-h3 { font-size: 1.1rem; margin: 0.8rem 0 0.4rem; }
+h2 { font-size: 1.3rem; margin: 1.5rem 0 0.75rem; }
+h3 { font-size: 1.1rem; margin: 1.2rem 0 0.5rem; }
+article h3 { white-space: nowrap; }
+
+/* ─── Sum row separator ────────────────────── */
+
+tr.sum-row {
+  font-weight: bold;
+}
+tr.sum-row td {
+  border-top: 2px solid var(--pico-muted-border-color);
+}
 
 /* ─── Left-align table wrapper ─────────────── */
 
@@ -141,8 +189,38 @@ h3 { font-size: 1.1rem; margin: 0.8rem 0 0.4rem; }
 /* ─── Navigation active state ───────────────── */
 
 nav a.active {
-  font-weight: bold;
-  text-decoration: underline;
+  background: var(--pico-primary);
+  color: var(--pico-primary-inverse);
+  border-radius: 1rem;
+  padding: 0.2rem 0.6rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* ─── Detail grids (tenant detail) ──────────── */
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 1em;
+  font-size: 0.85rem;
+  min-width: 0;
+}
+.detail-grid .label {
+  color: var(--pico-muted-color);
+  white-space: nowrap;
+}
+.detail-grid > span:not(.label) {
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.detail-card {
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
 }
 
 /* ─── Month selector ────────────────────────── */
@@ -184,4 +262,23 @@ nav a.active {
 .parking-slot.free {
   background: var(--pico-ins-color);
   opacity: 0.4;
+}
+
+/* ─── Homepage card grids ──────────────────── */
+
+.home-recent { grid-template-columns: auto auto auto; }
+.home-ending { grid-template-columns: auto auto auto; }
+
+/* ─── Mobile responsive ────────────────────── */
+
+@media (max-width: 576px) {
+  .hide-mobile { display: none; }
+  .home-recent { grid-template-columns: auto auto; }
+  .home-ending { grid-template-columns: auto auto; }
+  #content > .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  #content > .grid-stack {
+    grid-template-columns: 1fr !important;
+  }
 }

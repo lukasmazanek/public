@@ -33,8 +33,15 @@ echo "🔄 Rebuilding SQLite..."
 python3 "$SOURCE_DIR/scripts/yaml_to_sqlite.py"
 echo ""
 
+if [ -z "$WEB_DB_PASSWORD" ]; then
+    echo -n "🔑 Encryption password: "
+    read -s WEB_DB_PASSWORD
+    echo ""
+    export WEB_DB_PASSWORD
+fi
+
 echo "🔒 Encrypting DB..."
-python3 "$SOURCE_DIR/scripts/encrypt_db.py"
+WEB_DB_PASSWORD="$WEB_DB_PASSWORD" python3 "$SOURCE_DIR/scripts/encrypt_db.py"
 echo ""
 
 # Sync web files

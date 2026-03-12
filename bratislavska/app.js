@@ -108,6 +108,11 @@ const COL_LABELS = {
   source: "Zdroj", floor: "Patro", purpose: "Účel",
   total_area_m2: "Plocha m²", tracking_mode: "Sledování",
   due_day: "Splatnost", due_type: "Typ splatnosti", includes: "Zahrnuje",
+  vendor: "Dodavatel", category: "Kategorie", paid: "Zapl.",
+  total_expenses_czk: "Náklady", total_income_czk: "Příjmy", net_czk: "Čistý",
+  utilities_czk: "Energie", insurance_czk: "Pojištění", maintenance_czk: "Údržba",
+  admin_czk: "Admin", expense_count: "Položek", count: "Počet",
+  subcategory: "Podkat.",
 };
 
 function renderTable(result, opts = {}) {
@@ -147,7 +152,7 @@ function renderTable(result, opts = {}) {
     html += "</tr>";
   });
   if (sumCols.length) {
-    html += "<tr style='font-weight:bold'>";
+    html += '<tr class="sum-row">';
     visibleCols.forEach((c) => {
       const cls = numCols.includes(c) ? ' class="num"' : "";
       if (sumCols.includes(c)) {
@@ -194,7 +199,7 @@ function viewPlatby(month) {
   // Same SELECT as platby.py skill
   const status = query(
     `SELECT unit_id, tenant_id, name, stav, month, expected_czk, received_czk, delta_czk, status
-     FROM v_payment_status
+     FROM v_payment
      WHERE month = ?
      ORDER BY unit_id, month DESC`,
     [month]
@@ -229,7 +234,7 @@ function viewPlatbyTenant(tenantId) {
   // Same SELECT as platby.py skill for individual tenant
   const status = query(
     `SELECT unit_id, name, stav, month, expected_czk, received_czk, delta_czk, status
-     FROM v_payment_status
+     FROM v_payment
      WHERE tenant_id = ?
      ORDER BY unit_id, month DESC`,
     [tenantId]
@@ -263,6 +268,17 @@ function viewPlatbyTenant(tenantId) {
       linkCols: { name: () => `#/tenant/${tenantId}` },
     });
   }
+
+  // Unmatched transactions for this tenant
+  const unmatched = query(
+    "SELECT date, amount, counterparty_account, variable_symbol, message FROM v_unmatched_transactions WHERE tenant_id = ? ORDER BY date",
+    [tenantId]
+  );
+  if (unmatched.rows.length) {
+    html += "<h3>Nespárované platby</h3>";
+    html += renderTable(unmatched, { numCols: ["amount"] });
+  }
+
   return html;
 }
 
@@ -285,8 +301,8 @@ function viewTenant(tenantId) {
   if (tenant.status) info.push(["Stav", tenant.status]);
   if (tenant.note) info.push(["Pozn.", tenant.note]);
   if (info.length) {
-    html += `<div style="display:inline-grid;grid-template-columns:auto 1fr;gap:0.2rem 1em;font-size:0.85rem;margin-bottom:1rem">`;
-    info.forEach(([k, v]) => { html += `<span style="color:var(--pico-muted-color)">${k}</span><span>${v}</span>`; });
+    html += `<div class="detail-grid" style="margin-bottom:1rem">`;
+    info.forEach(([k, v]) => { html += `<span class="label">${k}</span><span>${v}</span>`; });
     html += `</div>`;
   }
 
@@ -342,9 +358,10 @@ function viewTenant(tenantId) {
           : c.source;
         rows.push(["Smlouva", src]);
       }
-      html += `<div style="display:grid;grid-template-columns:auto 1fr;gap:0.2rem 1em;font-size:0.85rem;margin-bottom:1rem">`;
-      rows.forEach(([k, v]) => { html += `<span style="color:var(--pico-muted-color)">${k}</span><span>${v}</span>`; });
-      html += `</div>`;
+      html += `<div class="detail-card">`;
+      html += `<div class="detail-grid">`;
+      rows.forEach(([k, v]) => { html += `<span class="label">${k}</span><span>${v}</span>`; });
+      html += `</div></div>`;
     });
   }
 
@@ -364,18 +381,7 @@ function viewTenant(tenantId) {
 // --- Dluhy (debtors) ---
 
 function viewDluhy() {
-  const debtors = query(
-    `SELECT t.name, pm.tenant_id,
-       ABS(SUM(pm.allocated_received_czk - pm.expected_czk)) AS dluh_czk,
-       COUNT(DISTINCT pm.month) AS mesicu,
-       MIN(pm.month) AS od
-     FROM v_payment_monthly pm
-     JOIN tenants t ON t.id = pm.tenant_id
-     WHERE pm.stav = 'AKTIVNÍ' AND pm.month < strftime('%Y-%m', 'now')
-     GROUP BY pm.tenant_id
-     HAVING SUM(pm.allocated_received_czk - pm.expected_czk) < 0
-     ORDER BY SUM(pm.allocated_received_czk - pm.expected_czk)`
-  );
+  const debtors = query(`SELECT * FROM v_debtors`);
   let html = "<h2>Dlužníci</h2>";
   html += renderTable(debtors, {
     numCols: ["dluh_czk", "mesicu"],
@@ -474,28 +480,207 @@ function viewParking() {
   return html;
 }
 
+// --- Náklady (expenses) ---
+
+function viewNaklady() {
+  // Monthly summary
+  const summary = query(`
+    SELECT month, total_expenses_czk,
+           utilities_czk, insurance_czk, maintenance_czk,
+           admin_czk, tax_czk, services_czk, capital_czk, other_czk,
+           expense_count
+    FROM v_expense_summary
+    ORDER BY month DESC
+    LIMIT 12
+  `);
+
+  // Category totals (all time)
+  const byCat = query(`
+    SELECT category, SUM(amount_czk) AS total_czk, COUNT(*) AS count
+    FROM expenses
+    GROUP BY category
+    ORDER BY total_czk DESC
+  `);
+
+  // Recent expenses
+  const recent = query(`
+    SELECT date, vendor, category, amount_czk, source, paid
+    FROM expenses
+    ORDER BY date DESC
+    LIMIT 20
+  `);
+
+  // Net income
+  const net = query(`SELECT * FROM v_net_income ORDER BY month DESC LIMIT 6`);
+
+  let html = "<h2>Náklady</h2>";
+
+  // Net income table
+  if (net.rows.length) {
+    html += "<h3>Čistý příjem</h3>";
+    html += renderTable(net, {
+      numCols: ["total_income_czk", "total_expenses_czk", "net_czk"],
+      moneyDeltaCol: "net_czk",
+    });
+  }
+
+  // By category (clickable → drill into category)
+  if (byCat.rows.length) {
+    html += "<h3>Podle kategorie</h3>";
+    html += renderTable(byCat, {
+      numCols: ["total_czk", "count"],
+      sumCols: ["total_czk"],
+      linkCols: { category: (r) => `#/naklady/cat/${r.category}` },
+    });
+  }
+
+  // Monthly trend (clickable → drill into month)
+  if (summary.rows.length) {
+    html += "<h3>Měsíční trend</h3>";
+    html += renderTable(summary, {
+      numCols: ["total_expenses_czk", "utilities_czk", "insurance_czk", "maintenance_czk", "admin_czk", "expense_count"],
+      hideCols: ["tax_czk", "services_czk", "capital_czk", "other_czk"],
+      linkCols: { month: (r) => `#/naklady/${r.month}` },
+    });
+  }
+
+  // Recent expenses
+  if (recent.rows.length) {
+    html += "<h3>Poslední náklady</h3>";
+    html += renderTable(recent, {
+      numCols: ["amount_czk"],
+      sumCols: ["amount_czk"],
+    });
+  }
+
+  return html;
+}
+
+function viewNakladyCat(cat) {
+  const items = query(`
+    SELECT date, vendor, subcategory, description, amount_czk, source
+    FROM expenses WHERE category = ? ORDER BY date DESC
+  `, [cat]);
+  const total = items.rows.reduce((s, r) => s + (r.amount_czk || 0), 0);
+  let html = `<h2><a href="#/naklady">Náklady</a> › ${cat}</h2>`;
+  html += `<p>${items.rows.length} položek, celkem ${Number(total).toLocaleString("cs-CZ")} Kč</p>`;
+  html += renderTable(items, { numCols: ["amount_czk"], sumCols: ["amount_czk"] });
+  return html;
+}
+
+function viewNakladyMonth(month) {
+  const items = query(`
+    SELECT date, vendor, category, subcategory, description, amount_czk, source
+    FROM expenses WHERE strftime('%Y-%m', date) = ? ORDER BY amount_czk DESC
+  `, [month]);
+  const byCat = query(`
+    SELECT category, SUM(amount_czk) AS total_czk, COUNT(*) AS count
+    FROM expenses WHERE strftime('%Y-%m', date) = ?
+    GROUP BY category ORDER BY total_czk DESC
+  `, [month]);
+  const total = items.rows.reduce((s, r) => s + (r.amount_czk || 0), 0);
+  let html = `<h2><a href="#/naklady">Náklady</a> › ${month}</h2>`;
+  html += `<p>${items.rows.length} položek, celkem ${Number(total).toLocaleString("cs-CZ")} Kč</p>`;
+  if (byCat.rows.length) {
+    html += "<h3>Podle kategorie</h3>";
+    html += renderTable(byCat, {
+      numCols: ["total_czk", "count"], sumCols: ["total_czk"],
+      linkCols: { category: (r) => `#/naklady/${month}/${r.category}` },
+    });
+  }
+  html += "<h3>Všechny položky</h3>";
+  html += renderTable(items, { numCols: ["amount_czk"], sumCols: ["amount_czk"] });
+  return html;
+}
+
+function viewNakladyMonthCat(month, cat) {
+  const items = query(`
+    SELECT date, vendor, subcategory, description, amount_czk, source
+    FROM expenses WHERE strftime('%Y-%m', date) = ? AND category = ? ORDER BY amount_czk DESC
+  `, [month, cat]);
+  const total = items.rows.reduce((s, r) => s + (r.amount_czk || 0), 0);
+  let html = `<h2><a href="#/naklady">Náklady</a> › <a href="#/naklady/${month}">${month}</a> › ${cat}</h2>`;
+  html += `<p>${items.rows.length} položek, celkem ${Number(total).toLocaleString("cs-CZ")} Kč</p>`;
+  html += renderTable(items, { numCols: ["amount_czk"], sumCols: ["amount_czk"] });
+  return html;
+}
+
 // --- TODO ---
 
 function viewTodo() {
-  const ending = query("SELECT * FROM v_contracts_ending");
+  const calendar = query("SELECT * FROM v_contract_calendar ORDER BY event_type, event_date");
   const unmatched = query("SELECT * FROM v_unmatched_transactions LIMIT 20");
 
   let html = "<h2>TODO</h2>";
 
-  html += "<h3>Smlouvy s blížícím se koncem</h3>";
-  if (ending.rows.length) {
-    html += renderTable(ending, {
-      clickCol: "name",
-      hrefFn: (row) => row.tenant_id ? `#/platby/tenant/${row.tenant_id}` : null,
+  // Group calendar events by type
+  const groups = {};
+  calendar.rows.forEach((r) => {
+    (groups[r.event_type] = groups[r.event_type] || []).push(r);
+  });
+
+  const statusBadge = (s) => {
+    const map = {
+      overdue: '<span class="status-unpaid">po termínu</span>',
+      pending: '<span class="status-partial">čeká</span>',
+      urgent: '<span class="status-unpaid">urgentní</span>',
+      expired: '<span class="status-unpaid">vypršela</span>',
+      upcoming: '<span class="status-paid">blíží se</span>',
+      info: '<span>info</span>',
+    };
+    return map[s] || s;
+  };
+
+  // Inflation events
+  if (groups.inflation && groups.inflation.length) {
+    html += "<h3>Inflační úpravy</h3>";
+    html += "<table><thead><tr><th>Nájemce</th><th>Smlouva</th><th>Datum</th><th class=\"num\">Dní</th><th>Stav</th><th>Detail</th></tr></thead><tbody>";
+    groups.inflation.forEach((r) => {
+      html += `<tr${r.tenant_id ? ` data-href="#/tenant/${r.tenant_id}"` : ""}>`;
+      html += `<td>${r.tenant_id ? `<a href="#/tenant/${r.tenant_id}">${r.name}</a>` : r.name}</td>`;
+      html += `<td>${r.label || "—"}</td><td>${r.event_date}</td><td class="num">${r.days_until}</td>`;
+      html += `<td>${statusBadge(r.status)}</td><td>${r.detail || "—"}</td></tr>`;
     });
-  } else {
-    html += "<p>Žádné smlouvy s blížícím se koncem.</p>";
+    html += "</tbody></table>";
+  }
+
+  // Contract end dates
+  if (groups.end_date && groups.end_date.length) {
+    html += "<h3>Smlouvy s blížícím se koncem</h3>";
+    html += "<table><thead><tr><th>Nájemce</th><th>Smlouva</th><th>Konec</th><th class=\"num\">Dní</th><th>Stav</th><th>Detail</th></tr></thead><tbody>";
+    groups.end_date.forEach((r) => {
+      html += `<tr${r.tenant_id ? ` data-href="#/tenant/${r.tenant_id}"` : ""}>`;
+      html += `<td>${r.tenant_id ? `<a href="#/tenant/${r.tenant_id}">${r.name}</a>` : r.name}</td>`;
+      html += `<td>${r.label || "—"}</td><td>${r.event_date}</td><td class="num">${r.days_until}</td>`;
+      html += `<td>${statusBadge(r.status)}</td><td>${r.detail || "—"}</td></tr>`;
+    });
+    html += "</tbody></table>";
+  }
+
+  // Anniversaries
+  if (groups.anniversary && groups.anniversary.length) {
+    html += "<h3>Výročí smluv</h3>";
+    html += "<table><thead><tr><th>Nájemce</th><th>Smlouva</th><th>Datum</th><th class=\"num\">Dní</th><th>Detail</th></tr></thead><tbody>";
+    groups.anniversary.forEach((r) => {
+      html += `<tr${r.tenant_id ? ` data-href="#/tenant/${r.tenant_id}"` : ""}>`;
+      html += `<td>${r.tenant_id ? `<a href="#/tenant/${r.tenant_id}">${r.name}</a>` : r.name}</td>`;
+      html += `<td>${r.label || "—"}</td><td>${r.event_date}</td><td class="num">${r.days_until}</td>`;
+      html += `<td>${r.detail || "—"}</td></tr>`;
+    });
+    html += "</tbody></table>";
+  }
+
+  if (!calendar.rows.length) {
+    html += "<p>Žádné události v kalendáři.</p>";
   }
 
   if (unmatched.rows.length) {
-    html += "<h3>Nepřiřazené transakce</h3>";
+    html += "<h3>Nespárované platby</h3>";
     html += renderTable(unmatched, {
       numCols: ["amount"],
+      clickCol: "counterparty_name",
+      hrefFn: (row) => row.tenant_id ? `#/platby/tenant/${row.tenant_id}` : null,
+      hideCols: ["tenant_id"],
     });
   }
   return html;
@@ -503,13 +688,16 @@ function viewTodo() {
 
 function viewUnmatched() {
   const unmatched = query("SELECT * FROM v_unmatched_transactions");
-  let html = "<h2>Nepřiřazené transakce</h2>";
+  let html = "<h2>Nespárované platby</h2>";
   if (unmatched.rows.length) {
     html += renderTable(unmatched, {
       numCols: ["amount"],
+      clickCol: "counterparty_name",
+      hrefFn: (row) => row.tenant_id ? `#/platby/tenant/${row.tenant_id}` : null,
+      hideCols: ["tenant_id"],
     });
   } else {
-    html += "<p>Žádné nepřiřazené transakce.</p>";
+    html += "<p>Žádné nespárované platby.</p>";
   }
   return html;
 }
@@ -530,7 +718,7 @@ function viewHome() {
        SUM(CASE WHEN status = 'paid' THEN 1 ELSE 0 END) AS paid,
        SUM(CASE WHEN status IN ('partial','underpaid') THEN 1 ELSE 0 END) AS partial,
        SUM(CASE WHEN status = 'unpaid' THEN 1 ELSE 0 END) AS unpaid
-     FROM v_payment_status WHERE month = ? AND stav = 'AKTIVNÍ'`,
+     FROM v_payment WHERE month = ? AND stav = 'AKTIVNÍ'`,
     [curMonth]
   );
 
@@ -560,7 +748,7 @@ function viewHome() {
 
   // Longest unpaid streak
   const longestUnpaid = query(
-    "SELECT name, tenant_id, COUNT(*) AS months FROM v_payment_status " +
+    "SELECT name, tenant_id, COUNT(*) AS months FROM v_payment " +
     "WHERE stav = 'AKTIVNÍ' AND status = 'unpaid' GROUP BY tenant_id ORDER BY months DESC LIMIT 1"
   );
 
@@ -577,6 +765,14 @@ function viewHome() {
     "AND (c.end_date < date('now') OR c.status = 'draft' OR c.signing_status = 'unsigned')"
   );
 
+  // Inflation adjustments pending/overdue (ADR-023)
+  const inflationPending = scalar(
+    "SELECT COUNT(*) FROM v_contract_calendar WHERE event_type = 'inflation' AND status IN ('pending', 'overdue')"
+  ) || 0;
+  const inflationOverdue = scalar(
+    "SELECT COUNT(*) FROM v_contract_calendar WHERE event_type = 'inflation' AND status = 'overdue'"
+  ) || 0;
+
   let html = "<h2>Přehled</h2>";
 
   if (income.rows.length) {
@@ -589,6 +785,7 @@ function viewHome() {
       <article><h3>${parkingFree} volných</h3><p><a href="#/parking">Parking</a> (${parkingOccupied}/47)</p></article>
       <article><h3>${activeContracts}</h3><p><a href="#/smlouvy">Aktivních smluv</a></p></article>
       <article><h3>${todoCount || 0}</h3><p><a href="#/todo">Úkolů k řešení</a></p></article>
+      <article><h3${inflationOverdue > 0 ? ' class="status-unpaid"' : inflationPending > 0 ? ' class="status-partial"' : ''}>${inflationPending}</h3><p><a href="#/todo">Inflačních úprav</a>${inflationOverdue > 0 ? `<br>${inflationOverdue} po termínu` : ''}</p></article>
     </div>
     <div class="grid">
       ${topDebtor.rows.length ? `<article><h3 class="status-unpaid">${Number(topDebtor.rows[0].debt).toLocaleString("cs-CZ")} Kč</h3><p>Největší dlužník: <a href="#/platby/tenant/${topDebtor.rows[0].tenant_id}">${topDebtor.rows[0].name}</a></p></article>` : ''}
@@ -601,26 +798,90 @@ function viewHome() {
   if (stats.rows.length) {
     const s = stats.rows[0];
     html += `<div class="grid">
-      <article><h3>${scalar("SELECT COUNT(*) FROM v_unmatched_transactions") || 0}</h3><p><a href="#/unmatched">Nepřiřazených transakcí</a></p></article>
+      <article><h3>${scalar("SELECT COUNT(*) FROM v_unmatched_transactions") || 0}</h3><p><a href="#/unmatched">Nespárovaných plateb</a></p></article>
       <article><h3>${s.tenants_matched}</h3><p>Nájemců s platbami</p></article>
       <article><h3>${s.last_imported ? s.last_imported.replace('T', ' ').slice(0, 16) : s.last_date}</h3><p>Poslední zpracování</p></article>
     </div>`;
   }
+  // Expense cards
+  const expSummary = query(`SELECT month, total_expenses_czk FROM v_expense_summary ORDER BY month DESC LIMIT 12`);
+  const expTotal = expSummary.rows.reduce((s, r) => s + (r.total_expenses_czk || 0), 0);
+  const expAvg = expSummary.rows.length ? Math.round(expTotal / expSummary.rows.length) : 0;
+  const expThis = expSummary.rows.length ? expSummary.rows[0] : null;
+  const netThis = query(`SELECT net_czk FROM v_net_income ORDER BY month DESC LIMIT 1`);
+  const netVal = netThis.rows.length ? netThis.rows[0].net_czk : null;
+  html += `<div class="grid">
+    <article><h3>${expThis ? Number(expThis.total_expenses_czk).toLocaleString("cs-CZ") + " Kč" : "—"}</h3><p><a href="#/naklady${expThis ? "/" + expThis.month : ""}">Náklady</a>${expThis ? " " + expThis.month : ""}</p></article>
+    <article><h3>${Number(expAvg).toLocaleString("cs-CZ")} Kč</h3><p><a href="#/naklady">Náklady</a> ø/měsíc</p></article>
+    <article><h3>${netVal != null ? Number(Math.round(netVal)).toLocaleString("cs-CZ") + " Kč" : "—"}</h3><p><a href="#/naklady">Čistý příjem</a> (posl. měsíc)</p></article>
+  </div>`;
+
   if (recent.rows.length || ending.rows.length) {
-    html += `<div class="grid" style="grid-template-columns:1fr 1fr">`;
+    html += `<div class="grid grid-stack" style="grid-template-columns:1fr 1fr">`;
     if (recent.rows.length) {
-      html += `<article style="text-align:left"><h3>Poslední platby</h3><div style="display:inline-grid;grid-template-columns:auto auto auto;gap:0 1em;font-size:0.85rem">` +
+      html += `<article style="text-align:left"><h3>Poslední platby</h3><div class="detail-grid home-recent">` +
         recent.rows.map(r =>
-          `<span style="white-space:nowrap">${r.date}</span><span><a href="#/platby/tenant/${r.tenant_id}">${r.name}</a></span><span style="white-space:nowrap;font-variant-numeric:tabular-nums;text-align:left">${Number(r.amount_czk).toLocaleString("cs-CZ")} Kč</span>`
+          `<span class="hide-mobile" style="white-space:nowrap">${r.date}</span><span><a href="#/platby/tenant/${r.tenant_id}">${r.name}</a></span><span class="num">${Number(r.amount_czk).toLocaleString("cs-CZ")} Kč</span>`
         ).join('') + `</div></article>`;
     }
     if (ending.rows.length) {
-      html += `<article style="text-align:left"><h3>Smlouvy s blížícím se koncem</h3><div style="display:inline-grid;grid-template-columns:max-content max-content auto;gap:0 1em;font-size:0.85rem">` +
+      html += `<article style="text-align:left"><h3>Smlouvy s blížícím se koncem</h3><div class="detail-grid home-ending">` +
         ending.rows.map(r =>
-          `<span style="white-space:nowrap">${r.do}</span><span style="white-space:nowrap"><a href="#/platby/tenant/${r.tenant_id}">${r.name}</a></span><span>${r.doba}</span>`
+          `<span style="white-space:nowrap">${r.do}</span><span style="white-space:nowrap"><a href="#/platby/tenant/${r.tenant_id}">${r.name}</a></span><span class="hide-mobile">${r.doba}</span>`
         ).join('') + `</div></article>`;
     }
     html += `</div>`;
+  }
+
+  return html;
+}
+
+// ─── Audit (ADR-032) ──────────────────────────────────────
+
+function viewAudit() {
+  let html = "<h2>Audit</h2>";
+
+  const summary = query(
+    `SELECT run_at, total_checks, passed, warnings, errors
+     FROM v_audit_summary LIMIT 10`
+  );
+
+  if (!summary.rows.length) {
+    html += "<p>Zatím nebyl proveden žádný audit. Spusťte <code>!audit</code> v Slacku nebo <code>python3 scripts/audit.py</code>.</p>";
+    return html;
+  }
+
+  const latest = summary.rows[0];
+  const badge = latest.errors > 0 ? "❌" : latest.warnings > 0 ? "⚠️" : "✅";
+  const runDate = latest.run_at ? latest.run_at.substring(0, 16).replace("T", " ") : "?";
+  html += `<p>Poslední audit: <strong>${runDate}</strong> ${badge} (${latest.passed} OK, ${latest.warnings} varování, ${latest.errors} chyb)</p>`;
+
+  const issues = query(
+    `SELECT run_at, check_name, severity, entity_id, detail
+     FROM v_audit_issues LIMIT 50`
+  );
+
+  if (issues.rows.length) {
+    html += "<h3>Otevřené problémy</h3>";
+    html += "<table role='grid'><thead><tr><th>Kontrola</th><th>Závažnost</th><th>Entita</th><th>Detail</th></tr></thead><tbody>";
+    for (const r of issues.rows) {
+      const icon = r.severity === "error" ? "❌" : r.severity === "warning" ? "⚠️" : "ℹ️";
+      html += `<tr><td>${r.check_name}</td><td>${icon} ${r.severity}</td><td>${r.entity_id || "—"}</td><td>${r.detail || "—"}</td></tr>`;
+    }
+    html += "</tbody></table>";
+  } else {
+    html += "<p>✅ Žádné otevřené problémy.</p>";
+  }
+
+  if (summary.rows.length > 1) {
+    html += "<h3>Historie auditů</h3>";
+    html += "<table role='grid'><thead><tr><th>Datum</th><th>Kontroly</th><th>OK</th><th>Varování</th><th>Chyby</th></tr></thead><tbody>";
+    for (const r of summary.rows) {
+      const d = r.run_at ? r.run_at.substring(0, 16).replace("T", " ") : "?";
+      const rowIcon = r.errors > 0 ? "❌" : r.warnings > 0 ? "⚠️" : "✅";
+      html += `<tr><td>${d}</td><td>${r.total_checks}</td><td>${r.passed}</td><td>${r.warnings}</td><td>${rowIcon} ${r.errors}</td></tr>`;
+    }
+    html += "</tbody></table>";
   }
 
   return html;
@@ -659,10 +920,20 @@ function route() {
       html = viewSmlouvy();
     } else if (hash === "#/parking") {
       html = viewParking();
+    } else if (hash.match(/^#\/naklady\/(\d{4}-\d{2})$/)) {
+      html = viewNakladyMonth(RegExp.$1);
+    } else if (hash.match(/^#\/naklady\/(\d{4}-\d{2})\/(.+)$/)) {
+      html = viewNakladyMonthCat(RegExp.$1, decodeURIComponent(RegExp.$2));
+    } else if (hash.match(/^#\/naklady\/cat\/(.+)$/)) {
+      html = viewNakladyCat(decodeURIComponent(RegExp.$1));
+    } else if (hash === "#/naklady") {
+      html = viewNaklady();
     } else if (hash === "#/todo") {
       html = viewTodo();
     } else if (hash === "#/unmatched") {
       html = viewUnmatched();
+    } else if (hash === "#/audit") {
+      html = viewAudit();
     } else {
       html = "<p>Stránka nenalezena.</p>";
     }
