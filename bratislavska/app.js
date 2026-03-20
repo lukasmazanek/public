@@ -833,6 +833,46 @@ function viewHome() {
     html += `</div>`;
   }
 
+  // Backup status card (ADR-039)
+  const backup = query("SELECT * FROM v_backup_status");
+  if (backup.rows.length) {
+    const b = backup.rows[0];
+    const fmtDate = (d) => d && d !== "none" ? d.replace("T", " ").slice(0, 16) : null;
+    const rebuild = fmtDate(b.last_rebuild);
+    const gdrive = fmtDate(b.gdrive_sync);
+    const csvExp = fmtDate(b.csv_export);
+
+    // Staleness check: warn if gdrive sync > 7 days behind rebuild
+    let gdriveStatus = "—";
+    if (gdrive) {
+      const rebuildDate = new Date(b.last_rebuild);
+      const gdriveDate = new Date(b.gdrive_sync);
+      const daysBehind = Math.floor((rebuildDate - gdriveDate) / 86400000);
+      if (daysBehind > 7) {
+        gdriveStatus = `<span class="status-unpaid">${gdrive} (${daysBehind}d pozadu)</span>`;
+      } else {
+        gdriveStatus = `<span class="status-paid">${gdrive}</span>`;
+      }
+    } else {
+      gdriveStatus = `<span class="status-unpaid">chybí</span>`;
+    }
+
+    let csvStatus = csvExp ? `<span class="status-paid">${csvExp}</span>` : `<span class="status-partial">neexportováno</span>`;
+
+    html += `<div class="grid grid-stack" style="grid-template-columns:1fr">
+      <article style="text-align:left"><h3>Stav záloh</h3>
+        <div class="detail-grid" style="grid-template-columns:auto 1fr;gap:0.25rem 1rem">
+          <span>Poslední rebuild DB</span><span>${rebuild || "—"}</span>
+          <span>Audit trail (changelog)</span><span>${b.changelog_rows || 0} záznamů</span>
+          <span>Audit trail (platby)</span><span>${b.payment_matches_log_rows || 0} záznamů</span>
+          <span>Audit trail (náklady)</span><span>${b.expenses_log_rows || 0} záznamů</span>
+          <span>Google Drive sync</span><span>${gdriveStatus}</span>
+          <span>CSV export</span><span>${csvStatus}</span>
+        </div>
+      </article>
+    </div>`;
+  }
+
   return html;
 }
 

@@ -1,62 +1,6 @@
-/* 27bratislavská — Petunia theme for Pico CSS */
+/* 27bratislavská — App-specific styles */
+/* Theme: petunia-theme.css (shared Petunia design tokens) */
 /* ADR-020: Web Dashboard Design System */
-
-/* ─── Petunia Light ─────────────────────────── */
-[data-theme="light"] {
-  --pico-font-family: "Nunito", system-ui, sans-serif;
-  --pico-primary: #d4847c;
-  --pico-primary-hover: #c4746c;
-  --pico-primary-inverse: #ffffff;
-  --pico-background-color: #faf8f5;
-  --pico-card-background-color: #ffffff;
-  --pico-card-sectioning-background-color: #f5f0eb;
-  --pico-color: #3d3d3d;
-  --pico-muted-color: #9a9a9a;
-  --pico-muted-border-color: #e8e0d8;
-  --pico-table-border-color: #e8e0d8;
-  --pico-table-row-stripped-background-color: #f5f0eb;
-  --pico-secondary: #b8a9c9;
-  --pico-secondary-hover: #a899b9;
-  --pico-form-element-border-color: #e8e0d8;
-  --pico-form-element-focus-color: #d4847c;
-  --pico-h1-color: #3d3d3d;
-  --pico-h2-color: #3d3d3d;
-  --pico-h3-color: #3d3d3d;
-  --pico-del-color: #c62828;
-  --pico-ins-color: #2e7d32;
-}
-
-/* ─── Petunia Dark ──────────────────────────── */
-[data-theme="dark"] {
-  --pico-font-family: "Nunito", system-ui, sans-serif;
-  --pico-primary: #d4847c;
-  --pico-primary-hover: #e0948c;
-  --pico-primary-inverse: #ffffff;
-  --pico-background-color: #1a1614;
-  --pico-card-background-color: #2a2420;
-  --pico-card-sectioning-background-color: #2a2420;
-  --pico-color: #e8e0d8;
-  --pico-muted-color: #8a7e76;
-  --pico-muted-border-color: #3a342e;
-  --pico-table-border-color: #3a342e;
-  --pico-table-row-stripped-background-color: #2a2420;
-  --pico-secondary: #b8a9c9;
-  --pico-secondary-hover: #c8b9d9;
-  --pico-form-element-background-color: #2a2420;
-  --pico-form-element-border-color: #3a342e;
-  --pico-form-element-focus-color: #d4847c;
-  --pico-form-element-color: #e8e0d8;
-  --pico-h1-color: #e8e0d8;
-  --pico-h2-color: #e8e0d8;
-  --pico-h3-color: #e8e0d8;
-  --pico-del-color: #ef9a9a;
-  --pico-ins-color: #81c784;
-}
-
-/* ─── Links ────────────────────────────────── */
-
-a { text-decoration: none; }
-a:hover { text-decoration: none; }
 
 /* ─── Layout ────────────────────────────────── */
 
@@ -66,52 +10,19 @@ header.container {
   margin-bottom: 0.5rem;
 }
 nav { font-size: 0.85rem; }
+nav a[href="#/"] { color: var(--pico-h1-color) !important; }
+nav a[href="#/"]:hover { color: var(--pico-primary) !important; }
 
 main.container { padding-top: 1.5rem; }
-
-#login-screen {
-  max-width: 360px;
-  margin: 4rem auto;
-  padding: 2rem;
-  border-radius: 0.75rem;
-  background: var(--pico-card-background-color);
-}
-[data-theme="light"] #login-screen {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-[data-theme="dark"] #login-screen {
-  border: 1px solid var(--pico-muted-border-color);
-}
 
 .error {
   color: var(--pico-del-color);
 }
 
-/* ─── Theme toggle ──────────────────────────── */
+/* ─── Cards (article) — app-specific overrides ─ */
 
-#theme-toggle {
-  text-decoration: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0.2rem 0.4rem;
-}
-
-/* ─── Cards (article) ──────────────────────── */
-
-[data-theme="light"] article {
-  border: none;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  border-radius: 0.75rem;
-  margin-bottom: 0;
-}
-[data-theme="dark"] article {
-  box-shadow: none;
-  border: 1px solid var(--pico-muted-border-color);
-  border-radius: 0.75rem;
-  margin-bottom: 0;
-}
+[data-theme="light"] article { margin-bottom: 0; }
+[data-theme="dark"] article { margin-bottom: 0; }
 
 /* ─── Dashboard grid rows ──────────────────── */
 
@@ -121,15 +32,15 @@ main.container { padding-top: 1.5rem; }
 
 /* ─── Payment status indicators ─────────────── */
 
-[data-theme="light"] .status-paid { color: #2e7d32; }
-[data-theme="light"] .status-partial { color: #f57f17; }
-[data-theme="light"] .status-underpaid { color: #f57f17; }
-[data-theme="light"] .status-unpaid { color: #c62828; }
+[data-theme="light"] .status-paid { color: var(--petunia-status-ok-text); }
+[data-theme="light"] .status-partial { color: var(--petunia-status-warn-text); }
+[data-theme="light"] .status-underpaid { color: var(--petunia-status-warn-text); }
+[data-theme="light"] .status-unpaid { color: var(--petunia-status-error-text); }
 
-[data-theme="dark"] .status-paid { color: #81c784; }
-[data-theme="dark"] .status-partial { color: #ffd54f; }
-[data-theme="dark"] .status-underpaid { color: #ffd54f; }
-[data-theme="dark"] .status-unpaid { color: #ef9a9a; }
+[data-theme="dark"] .status-paid { color: var(--petunia-status-ok-text); }
+[data-theme="dark"] .status-partial { color: var(--petunia-status-warn-text); }
+[data-theme="dark"] .status-underpaid { color: var(--petunia-status-warn-text); }
+[data-theme="dark"] .status-unpaid { color: var(--petunia-status-error-text); }
 
 /* ─── Clickable table rows ──────────────────── */
 
@@ -186,17 +97,6 @@ tr.sum-row td {
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── Navigation active state ───────────────── */
-
-nav a.active {
-  background: var(--pico-primary);
-  color: var(--pico-primary-inverse);
-  border-radius: 1rem;
-  padding: 0.2rem 0.6rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-
 /* ─── Detail grids (tenant detail) ──────────── */
 
 .detail-grid {
@@ -217,7 +117,7 @@ nav a.active {
 }
 .detail-card {
   border: 1px solid var(--pico-muted-border-color);
-  border-radius: 0.5rem;
+  border-radius: var(--petunia-card-radius);
   padding: 0.75rem 1rem;
   margin-bottom: 0.75rem;
   overflow: hidden;
@@ -234,6 +134,7 @@ nav a.active {
 .month-nav button {
   width: auto;
   padding: 0.3rem 0.8rem;
+  border-radius: var(--petunia-button-radius);
 }
 .month-nav span {
   font-weight: bold;
