@@ -1,0 +1,11 @@
+Host support
+    HostName Monika--MacBook-Air.local
+    User petunia
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
+
+Host support-luke
+    HostName Monika--MacBook-Air.local
+    User luke
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes

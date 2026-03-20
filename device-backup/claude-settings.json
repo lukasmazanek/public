@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
+  },
+  "skipDangerousModePermissionPrompt": true
+}

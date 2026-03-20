@@ -1,0 +1,56 @@
+# NVM initialization
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+export IMAP_CZ_USER="podpora@isportsystem.cz"
+export IMAP_CZ_PASSWORD="ir18mail*.cz"
+alias claude='claude --chrome --model claude-opus-4-6'
+export CLICOLOR=1
+export LSCOLORS=ExGxdxdxCxDxDxBxBxExEx
+alias ll='ls -laG'
+alias haiku='claude --chrome --model haiku'
+alias sonnet='claude --chrome --model sonnet'
+alias opus='claude --chrome --model opus'
+export CLAUDE_CODE_DISABLE_TERMINAL_TITLE=1
+
+# Claude project directory
+export CLAUDE="$HOME/claude"
+
+
+export SEMANTIC_PLATFORM="$CLAUDE/semantic-platform"
+export BKB_EXPLORER="$CLAUDE/bkb-explorer"
+export APP_SUPPORT="$CLAUDE/application-support"
+
+# Semantic platform shortcut
+sp() {
+    cd "$SEMANTIC_PLATFORM" && opus "$@"
+}
+
+# Application support shortcut
+asup() {
+    cd "$APP_SUPPORT" && opus "$@"
+}
+
+# BKB explorer shortcut
+bkb() {
+    cd "$BKB_EXPLORER" && opus "$@"
+}
+
+# Bratislavská shortcut
+brat() {
+    cd "$CLAUDE/bratislavska" && claude "$@"
+}
+
+# Chrome with remote debugging for MCP/DevTools
+chrome-debug() {
+    nohup /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+        --remote-debugging-port=9222 \
+        --user-data-dir="$HOME/.chrome-debug-profile" \
+        "$@" > /dev/null 2>&1 &
+    disown
+}
+export PATH="$HOME/.local/bin:$PATH"
+
+# Show current directory in terminal window title
+chpwd() { print -Pn "\e]0;%1~\e\\" }
+precmd() { print -Pn "\e]0;%1~\e\\" }
