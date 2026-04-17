@@ -1,0 +1,185 @@
+/* 27bratislavská — App-specific styles */
+/* Theme: petunia-theme.css (shared Petunia design tokens) */
+/* ADR-020: Web Dashboard Design System */
+
+/* ─── Layout ────────────────────────────────── */
+
+header.container {
+  padding-bottom: 0;
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  margin-bottom: 0.5rem;
+}
+nav { font-size: 0.85rem; }
+nav a[href="#/"] { color: var(--pico-h1-color) !important; }
+nav a[href="#/"]:hover { color: var(--pico-primary) !important; }
+
+main.container { padding-top: 1.5rem; }
+
+.error {
+  color: var(--pico-del-color);
+}
+
+/* ─── Cards (article) — app-specific overrides ─ */
+
+[data-theme="light"] article { margin-bottom: 0; }
+[data-theme="dark"] article { margin-bottom: 0; }
+
+/* ─── Dashboard grid rows ──────────────────── */
+
+#content > .grid + .grid {
+  margin-top: var(--pico-grid-row-gap, 1.2rem);
+}
+
+/* ─── Payment status indicators ─────────────── */
+
+[data-theme="light"] .status-paid { color: var(--petunia-status-ok-text); }
+[data-theme="light"] .status-partial { color: var(--petunia-status-warn-text); }
+[data-theme="light"] .status-underpaid { color: var(--petunia-status-warn-text); }
+[data-theme="light"] .status-unpaid { color: var(--petunia-status-error-text); }
+
+[data-theme="dark"] .status-paid { color: var(--petunia-status-ok-text); }
+[data-theme="dark"] .status-partial { color: var(--petunia-status-warn-text); }
+[data-theme="dark"] .status-underpaid { color: var(--petunia-status-warn-text); }
+[data-theme="dark"] .status-unpaid { color: var(--petunia-status-error-text); }
+
+/* ─── Clickable table rows ──────────────────── */
+
+tr[data-href] {
+  cursor: pointer;
+}
+tr[data-href]:hover {
+  background: var(--pico-table-row-stripped-background-color);
+}
+
+/* ─── Compact tables ────────────────────────── */
+
+#content {
+  overflow-x: auto;
+}
+
+table {
+  font-size: 0.8rem;
+  white-space: nowrap;
+  width: auto;
+  margin: 0;
+}
+td, th {
+  padding: 0.35rem 0.5rem;
+}
+thead th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--pico-muted-color);
+  border-bottom: 2px solid var(--pico-muted-border-color);
+}
+h2 { font-size: 1.3rem; margin: 1.5rem 0 0.75rem; }
+h3 { font-size: 1.1rem; margin: 1.2rem 0 0.5rem; }
+article h3 { white-space: nowrap; }
+
+/* ─── Sum row separator ────────────────────── */
+
+tr.sum-row {
+  font-weight: bold;
+}
+tr.sum-row td {
+  border-top: 2px solid var(--pico-muted-border-color);
+}
+
+/* ─── Left-align table wrapper ─────────────── */
+
+.table-left table { margin: 0; }
+
+/* ─── Right-align numeric columns ───────────── */
+
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Detail grids (tenant detail) ──────────── */
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 1em;
+  font-size: 0.85rem;
+  min-width: 0;
+}
+.detail-grid .label {
+  color: var(--pico-muted-color);
+  white-space: nowrap;
+}
+.detail-grid > span:not(.label) {
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+.detail-card {
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--petunia-card-radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+/* ─── Month selector ────────────────────────── */
+
+.month-nav {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.month-nav button {
+  width: auto;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--petunia-button-radius);
+}
+.month-nav span {
+  font-weight: bold;
+  min-width: 7rem;
+  text-align: center;
+}
+
+/* ─── Parking grid ──────────────────────────── */
+
+.parking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 0.3rem;
+}
+.parking-slot {
+  padding: 0.4rem;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  border: 1px solid var(--pico-muted-border-color);
+}
+.parking-slot.occupied {
+  background: var(--pico-primary);
+  color: var(--pico-primary-inverse);
+}
+.parking-slot.free {
+  background: var(--pico-ins-color);
+  opacity: 0.4;
+}
+
+/* ─── Homepage card grids ──────────────────── */
+
+.home-recent { grid-template-columns: auto auto auto; }
+.home-ending { grid-template-columns: auto auto auto; }
+
+/* ─── Mobile responsive ────────────────────── */
+
+@media (max-width: 576px) {
+  .hide-mobile { display: none; }
+  .home-recent { grid-template-columns: auto auto; }
+  .home-ending { grid-template-columns: auto auto; }
+  #content > .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  #content > .grid-stack {
+    grid-template-columns: 1fr !important;
+  }
+}
