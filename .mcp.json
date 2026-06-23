@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "architect": {
+      "command": "ssh",
+      "args": ["architect@localhost", "/Users/architect/venv/bin/python3", "/Users/architect/mcp/architect_server.py"]
+    }
+  }
+}
